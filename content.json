@@ -8,7 +8,7 @@
     "og_site_name": "蘇魚的小窝"
   },
   "nav": {
-    "logo": "蘇",
+    "logo": "蘇魚",
     "links": [
       {
         "href": "#about",
@@ -63,7 +63,7 @@
     ]
   },
   "hero": {
-    "title": "蘇魚",
+    "title": "蘇",
     "subtitle": "汇文中学 · 初二 · 热爱生活",
     "tags": [
       "学习",
