@@ -17,10 +17,6 @@ label { display: block; font-size: 0.82rem; font-weight: 600; color: #555; margi
 input, textarea { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.88rem; font-family: inherit; background: #fafafa; }
 input:focus, textarea:focus { border-color: #6366f1; outline: none; background: #fff; }
 textarea { resize: vertical; min-height: 50px; }
-.array-field { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-.array-field input { flex: 1; min-width: 100px; }
-.array-item-row { display: flex; gap: 6px; align-items: start; margin-bottom: 6px; flex-wrap: wrap; }
-.array-item-row input, .array-item-row textarea { flex: 1; min-width: 80px; }
 .btn { padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.88rem; font-weight: 500; }
 .btn-primary { background: #6366f1; color: #fff; }
 .btn-primary:hover { background: #5254db; }
@@ -37,13 +33,30 @@ textarea { resize: vertical; min-height: 50px; }
 .token-input { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .token-input input { flex: 1; min-width: 200px; font-family: monospace; }
 .hint { font-size: 0.78rem; color: #999; margin-top: 2px; }
-.array-label { display: flex; justify-content: space-between; align-items: center; }
 .array-items { border-left: 2px solid #e8e8ff; padding-left: 10px; margin-top: 4px; }
-.icon-badge { font-size: 1.1rem; }
 @media (max-width: 600px) { body { padding: 10px; } .section { padding: 12px; } }
+
+/* 密码锁屏 */
+.lockscreen { position: fixed; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 999; }
+.lockscreen-box { text-align: center; }
+.lockscreen-box h2 { border: none; margin: 0 0 8px; color: #333; font-size: 1.1rem; }
+.lockscreen-box p { font-size: 0.82rem; color: #999; margin-bottom: 16px; }
+.lockscreen-box input { width: 200px; text-align: center; font-size: 1.2rem; letter-spacing: 6px; padding: 10px; }
+.lockscreen-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 8px; display: none; }
+.admin-content { display: none; }
 </style>
 </head>
 <body>
+<div class="lockscreen" id="lockScreen">
+  <div class="lockscreen-box">
+    <h2>🔒 内容管理</h2>
+    <p>请输入密码</p>
+    <input type="password" id="pwdInput" maxlength="20" autocomplete="off">
+    <div class="error" id="pwdError">密码错误</div>
+  </div>
+</div>
+
+<div class="admin-content" id="adminContent">
 <div class="container">
   <div class="toolbar">
     <h1>📝 SUYU 内容管理</h1>
@@ -55,9 +68,38 @@ textarea { resize: vertical; min-height: 50px; }
   </div>
   <div id="formRoot">加载中...</div>
 </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
+const PASSWORD = '120315';
+
+// 密码验证
+(function checkPwd() {
+  if (localStorage.getItem('suyu3_unlock') === '1') {
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    return;
+  }
+  const input = document.getElementById('pwdInput');
+  const err = document.getElementById('pwdError');
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      if (this.value === PASSWORD) {
+        localStorage.setItem('suyu3_unlock', '1');
+        document.getElementById('lockScreen').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        loadContent();
+      } else {
+        err.style.display = 'block';
+        this.value = '';
+        this.focus();
+      }
+    }
+  });
+  input.focus();
+})();
+
 let contentData = null;
 let TOKEN = localStorage.getItem('gh_token') || '';
 document.getElementById('tokenInput').value = TOKEN ? '已保存' : '';
@@ -344,7 +386,8 @@ async function saveAll() {
   btn.textContent = '💾 保存全部';
 }
 
-loadContent();
+// 如果已解锁则加载内容
+if (localStorage.getItem('suyu3_unlock') === '1') loadContent();
 </script>
 </body>
 </html>
