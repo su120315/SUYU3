@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUYU 内容管理</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Segoe UI', 'Noto Sans SC', sans-serif; background: #f5f5f5; color: #333; padding: 20px; }
+.container { max-width: 800px; margin: 0 auto; }
+h1 { font-size: 1.3rem; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+h2 { font-size: 1rem; color: #6366f1; margin: 20px 0 12px; padding-bottom: 6px; border-bottom: 1px solid #e0e0e0; }
+.section { background: #fff; border-radius: 8px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.field { margin-bottom: 10px; }
+.field:last-child { margin-bottom: 0; }
+label { display: block; font-size: 0.82rem; font-weight: 600; color: #555; margin-bottom: 3px; }
+input, textarea { width: 100%; padding: 8px 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.88rem; font-family: inherit; background: #fafafa; }
+input:focus, textarea:focus { border-color: #6366f1; outline: none; background: #fff; }
+textarea { resize: vertical; min-height: 50px; }
+.array-field { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.array-field input { flex: 1; min-width: 100px; }
+.array-item-row { display: flex; gap: 6px; align-items: start; margin-bottom: 6px; flex-wrap: wrap; }
+.array-item-row input, .array-item-row textarea { flex: 1; min-width: 80px; }
+.btn { padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.88rem; font-weight: 500; }
+.btn-primary { background: #6366f1; color: #fff; }
+.btn-primary:hover { background: #5254db; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-danger { background: #ef4444; color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 0.8rem; }
+.btn-outline { background: transparent; border: 1px solid #ddd; color: #555; }
+.btn-outline:hover { background: #f0f0f0; }
+.toolbar { position: sticky; top: 0; background: #f5f5f5; padding: 10px 0; z-index: 10; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid #e0e0e0; margin-bottom: 16px; }
+.toast { position: fixed; bottom: 20px; right: 20px; padding: 12px 20px; border-radius: 8px; color: #fff; font-size: 0.88rem; z-index: 999; opacity: 0; transition: opacity 0.3s; }
+.toast.show { opacity: 1; }
+.toast-success { background: #22c55e; }
+.toast-error { background: #ef4444; }
+.token-input { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.token-input input { flex: 1; min-width: 200px; font-family: monospace; }
+.hint { font-size: 0.78rem; color: #999; margin-top: 2px; }
+.array-label { display: flex; justify-content: space-between; align-items: center; }
+.array-items { border-left: 2px solid #e8e8ff; padding-left: 10px; margin-top: 4px; }
+.icon-badge { font-size: 1.1rem; }
+@media (max-width: 600px) { body { padding: 10px; } .section { padding: 12px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="toolbar">
+    <h1>📝 SUYU 内容管理</h1>
+    <div class="token-input">
+      <input type="password" id="tokenInput" placeholder="GitHub Token（首次需填写）">
+      <button class="btn btn-outline btn-sm" onclick="saveToken()">保存 Token</button>
+    </div>
+    <button class="btn btn-primary" id="saveBtn" onclick="saveAll()">💾 保存全部</button>
+  </div>
+  <div id="formRoot">加载中...</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+let contentData = null;
+let TOKEN = localStorage.getItem('gh_token') || '';
+document.getElementById('tokenInput').value = TOKEN ? '已保存' : '';
+
+function saveToken() {
+  const val = document.getElementById('tokenInput').value;
+  if (!val || val === '已保存') return toast('请输入有效的 Token', 'error');
+  localStorage.setItem('gh_token', val);
+  TOKEN = val;
+  document.getElementById('tokenInput').value = '已保存';
+  toast('Token 已保存到本地', 'success');
+}
+
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast toast-' + type + ' show';
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// 加载 content.json
+async function loadContent() {
+  try {
+    const res = await fetch('content.json?' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    contentData = await res.json();
+    buildForm(contentData);
+    document.getElementById('formRoot').querySelector('.loading')?.remove();
+  } catch (e) {
+    document.getElementById('formRoot').innerHTML = '<p style="color:red">❌ 加载 content.json 失败：' + e.message + '</p>';
+  }
+}
+
+// 构建表单
+function buildForm(data) {
+  const root = document.getElementById('formRoot');
+  root.innerHTML = '';
+
+  // 各个大段
+  addSection(root, '导航栏', [
+    { key: 'nav.logo', label: 'Logo', type: 'text' },
+    { key: 'nav.links', label: '导航链接（json数组，改不了,去content.json改）', type: 'skip' },
+    { key: 'nav.quickAccess', label: '快捷访问（json数组）', type: 'skip' },
+  ]);
+
+  addSection(root, '英雄区', [
+    { key: 'hero.title', label: '标题' },
+    { key: 'hero.subtitle', label: '副标题' },
+    { key: 'hero.tags', label: '标签（每个一行）', type: 'array' },
+    { key: 'hero.btnText', label: '按钮文字' },
+    { key: 'hero.scrollText', label: '滚动提示文字' },
+  ]);
+
+  addSection(root, '关于我', [
+    { key: 'about.label', label: '编号' },
+    { key: 'about.title', label: '标题' },
+    { key: 'about.paragraphs', label: '段落（每个一段）', type: 'array-text' },
+    { key: 'about.stats.0.number', label: '统计1-数字' },
+    { key: 'about.stats.0.label', label: '统计1-标签' },
+    { key: 'about.stats.1.number', label: '统计2-数字' },
+    { key: 'about.stats.1.label', label: '统计2-标签' },
+    { key: 'about.stats.2.number', label: '统计3-数字' },
+    { key: 'about.stats.2.label', label: '统计3-标签' },
+  ]);
+
+  addSection(root, '技能专长', [
+    { key: 'skills.label', label: '编号' },
+    { key: 'skills.title', label: '标题' },
+    { key: 'skills.items', label: '技能列表（json数组，请在content.json编辑结构）', type: 'skip' },
+  ]);
+
+  addSection(root, '作品', [
+    { key: 'projects.label', label: '编号' },
+    { key: 'projects.title', label: '标题' },
+    { key: 'projects.items', label: '作品列表（json数组）', type: 'skip' },
+  ]);
+
+  addSection(root, '兴趣爱好', [
+    { key: 'hobbies.label', label: '编号' },
+    { key: 'hobbies.title', label: '标题' },
+    { key: 'hobbies.items', label: '爱好列表（json数组）', type: 'skip' },
+  ]);
+
+  addSection(root, '天气', [
+    { key: 'weather.label', label: '编号' },
+    { key: 'weather.title', label: '标题' },
+    { key: 'weather.loading', label: '加载文字' },
+    { key: 'weather.location', label: '地点' },
+  ]);
+
+  addSection(root, '相册', [
+    { key: 'gallery.label', label: '编号' },
+    { key: 'gallery.title', label: '标题' },
+    { key: 'gallery.desc', label: '描述' },
+    { key: 'gallery.uploadBtn', label: '上传按钮' },
+    { key: 'gallery.clearBtn', label: '清空按钮' },
+    { key: 'gallery.notice', label: '规则提示（每行一条）', type: 'array-text' },
+    { key: 'gallery.emptyText', label: '空相册提示' },
+    { key: 'gallery.loadingText', label: '加载提示' },
+  ]);
+
+  addSection(root, '联系我', [
+    { key: 'contact.label', label: '编号' },
+    { key: 'contact.title', label: '标题' },
+    { key: 'contact.intro', label: '介绍（支持HTML）', type: 'textarea' },
+    { key: 'contact.email', label: '邮箱' },
+    { key: 'contact.tip', label: '底部提示' },
+  ]);
+
+  addSection(root, '留言板', [
+    { key: 'comments.label', label: '编号' },
+    { key: 'comments.title', label: '标题' },
+    { key: 'comments.desc', label: '描述' },
+    { key: 'comments.namePlaceholder', label: '名字占位符' },
+    { key: 'comments.contentPlaceholder', label: '内容占位符' },
+  ]);
+
+  addSection(root, '实用网站', [
+    { key: 'sites.label', label: '编号' },
+    { key: 'sites.title', label: '标题' },
+    { key: 'sites.items', label: '网站列表（json数组）', type: 'skip' },
+  ]);
+
+  addSection(root, '页脚', [
+    { key: 'footer.copyright', label: '版权' },
+    { key: 'footer.madeWith', label: '技术标签1' },
+    { key: 'footer.tech', label: '技术标签2' },
+    { key: 'footer.lastUpdate', label: '最后更新' },
+    { key: 'footer.sourceText', label: '源码链接文字' },
+    { key: 'footer.sourceUrl', label: '源码链接URL' },
+  ]);
+
+  addSection(root, 'AI 对话', [
+    { key: 'chat.title', label: '气泡提示' },
+    { key: 'chat.greeting', label: '欢迎语' },
+    { key: 'chat.headerTitle', label: '对话框标题' },
+    { key: 'chat.inputPlaceholder', label: '输入框占位符' },
+  ]);
+}
+
+// 添加一个区块
+function addSection(root, title, fields) {
+  const div = document.createElement('div');
+  div.className = 'section';
+  let html = '<h2>' + title + '</h2>';
+  for (const f of fields) {
+    if (f.type === 'skip') {
+      html += '<div class="field"><label>' + f.label + '</label><div class="hint">如需修改请在 GitHub 上编辑 content.json</div></div>';
+      continue;
+    }
+    const val = resolvePath(contentData, f.key);
+    const id = 'f-' + f.key.replace(/\./g, '-');
+    if (f.type === 'array' || f.type === 'array-text') {
+      const arr = Array.isArray(val) ? val : [];
+      const tag = f.type === 'array-text' ? 'textarea' : 'input';
+      html += '<div class="field"><label>' + f.label + '</label>';
+      html += '<div class="array-items" data-key="' + f.key + '" data-type="' + f.type + '">';
+      for (let i = 0; i < arr.length; i++) {
+        if (f.type === 'array-text') {
+          html += '<textarea style="margin-bottom:4px" data-idx="' + i + '">' + escHtml(arr[i]) + '</textarea>';
+        } else {
+          html += '<input style="margin-bottom:4px" data-idx="' + i + '" value="' + escHtml(arr[i]) + '">';
+        }
+      }
+      html += '<button class="btn btn-sm btn-outline" onclick="addArrayItem(this)">+ 添加</button>';
+      html += '</div></div>';
+    } else if (f.type === 'textarea') {
+      html += '<div class="field"><label for="' + id + '">' + f.label + '</label><textarea id="' + id + '" data-key="' + f.key + '">' + escHtml(String(val ?? '')) + '</textarea></div>';
+    } else {
+      html += '<div class="field"><label for="' + id + '">' + f.label + '</label><input id="' + id + '" data-key="' + f.key + '" value="' + escHtml(String(val ?? '')) + '"></div>';
+    }
+  }
+  html += '</div>';
+  div.innerHTML = html;
+  root.appendChild(div);
+}
+
+function resolvePath(obj, path) {
+  return path.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : null), obj);
+}
+
+function setPath(obj, path, val) {
+  const keys = path.split('.');
+  let cur = obj;
+  for (let i = 0; i < keys.length - 1; i++) {
+    if (!cur[keys[i]]) cur[keys[i]] = {};
+    cur = cur[keys[i]];
+  }
+  cur[keys[keys.length - 1]] = val;
+}
+
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function addArrayItem(btn) {
+  const container = btn.parentElement;
+  const type = container.dataset.type;
+  const tag = type === 'array-text' ? 'textarea' : 'input';
+  const el = document.createElement(tag);
+  el.style.marginBottom = '4px';
+  el.dataset.idx = container.querySelectorAll(tag + '[data-idx]').length;
+  container.insertBefore(el, btn);
+}
+
+// 收集表单数据并保存
+async function saveAll() {
+  if (!TOKEN || TOKEN === '已保存') {
+    const stored = localStorage.getItem('gh_token');
+    if (stored) TOKEN = stored;
+  }
+  if (!TOKEN || TOKEN === '已保存') {
+    toast('请先输入 GitHub Token', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ 保存中...';
+
+  try {
+    // 从表单收集数据
+    const newData = JSON.parse(JSON.stringify(contentData)); // 深拷贝
+
+    // 普通 input/textarea
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.dataset.key;
+      const val = el.value;
+      setPath(newData, key, val);
+    });
+
+    // 数组
+    document.querySelectorAll('.array-items').forEach(container => {
+      const key = container.dataset.key;
+      const type = container.dataset.type;
+      const tag = type === 'array-text' ? 'textarea' : 'input';
+      const items = [];
+      container.querySelectorAll(tag + '[data-idx]').forEach(el => {
+        const v = el.value.trim();
+        if (v) items.push(v);
+      });
+      setPath(newData, key, items);
+    });
+
+    // 通过 GitHub API 提交
+    const url = 'https://api.github.com/repos/su120315/SUYU3/contents/content.json';
+    const currentRes = await fetch(url, {
+      headers: { 'Authorization': 'token ' + TOKEN, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!currentRes.ok) throw new Error('获取文件信息失败: ' + currentRes.status);
+
+    const currentData = await currentRes.json();
+    const sha = currentData.sha;
+
+    const encoder = new TextEncoder();
+    const encoded = encoder.encode(JSON.stringify(newData, null, 2));
+    const base64Content = btoa(String.fromCharCode(...new Uint8Array(encoded)));
+
+    const putRes = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Authorization': 'token ' + TOKEN,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: '更新文案内容',
+        content: base64Content,
+        sha: sha
+      })
+    });
+
+    if (!putRes.ok) throw new Error('提交失败: ' + putRes.status);
+
+    contentData = newData;
+    toast('✅ 保存成功！主站下次加载即生效', 'success');
+  } catch (e) {
+    toast('❌ ' + e.message, 'error');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '💾 保存全部';
+}
+
+loadContent();
+</script>
+</body>
+</html>
