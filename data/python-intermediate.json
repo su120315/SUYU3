@@ -1,0 +1,830 @@
+{
+  "id": "python-intermediate",
+  "title": "Python 进阶编程",
+  "subtitle": "面向对象、模块、文件操作、异常处理",
+  "icon": "📦",
+  "color": "blue",
+  "description": "在掌握Python基础之后，本课程带你迈向进阶！涵盖函数进阶、作用域与闭包、面向对象编程、模块和包、文件操作、异常处理、推导式与生成器、迭代器与装饰器、正则表达式、日期时间处理，最后通过一个完整的个人记账本项目综合实战，全面提升你的Python工程能力。",
+  "duration": "18小时",
+  "lessons": 12,
+  "level": "中级",
+  "whatYouLearn": [
+    "函数进阶：*args、**kwargs、闭包与装饰器",
+    "面向对象编程：类、继承、多态、魔术方法",
+    "模块和包的组织与管理",
+    "文件操作：文本、CSV、JSON读写",
+    "异常处理与自定义异常",
+    "推导式、生成器与迭代器",
+    "正则表达式实战",
+    "日期时间处理",
+    "实战项目：命令行个人记账本"
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title": "函数进阶",
+      "duration": "80分钟",
+      "content": {
+        "introduction": "函数是Python编程的核心。在基础阶段我们学会了定义和调用函数，现在我们要深入学习函数的高级用法：位置参数、默认参数、关键字参数、可变参数*args和**kwargs、返回多个值、提前返回等技巧。掌握这些内容，你写的函数会更灵活、更优雅、更强大，为后面学习闭包和装饰器打下坚实基础。",
+        "sections": [
+          {
+            "title": "1.1 参数的种类",
+            "content": "Python函数的参数非常灵活，主要分为这几种：\n\n1. **位置参数** - 按位置一一对应传递，最基本的方式\n2. **默认参数** - 定义时给个默认值，调用时可以不传\n3. **关键字参数** - 调用时用 参数名=值 的形式，不用管顺序\n4. **可变位置参数 *args** - 收集多余的位置参数，打包成元组\n5. **可变关键字参数 **kwargs** - 收集多余的关键字参数，打包成字典\n\n参数定义的顺序很重要，必须遵守：位置参数 → 默认参数 → *args → **kwargs。顺序错了会报错！\n\n理解参数的传递方式，是写出灵活函数的关键。"
+          },
+          {
+            "title": "1.2 位置参数与默认参数",
+            "type": "code",
+            "language": "python",
+            "code": "# 位置参数：按顺序传递\ndef greet(name, greeting):\n    print(f'{greeting}，{name}！')\n\ngreet('小明', '你好')  # 你好，小明！\n\n# 默认参数：有默认值，调用时可不传\ndef greet2(name, greeting='你好'):\n    print(f'{greeting}，{name}！')\n\ngreet2('小红')           # 你好，小红！\ngreet2('小刚', '早上好')  # 早上好，小刚！\n\n# 注意：默认参数必须放在位置参数后面\n# def wrong(a=1, b):  # 报错！\n#     pass\n\n# 默认参数的陷阱：默认值是可变对象时\ndef add_item(item, lst=[]):  # 危险！lst会共享\n    lst.append(item)\n    return lst\n\nprint(add_item(1))  # [1]\nprint(add_item(2))  # [1, 2] —— 不是[2]！\n\n# 正确做法：用None做默认值\ndef add_item_safe(item, lst=None):\n    if lst is None:\n        lst = []\n    lst.append(item)\n    return lst\n\nprint(add_item_safe(1))  # [1]\nprint(add_item_safe(2))  # [2] —— 正确！"
+          },
+          {
+            "title": "1.3 关键字参数",
+            "content": "调用函数时，可以用 参数名=值 的形式传参，这叫关键字参数。好处是不用记参数顺序，代码可读性也更强。\n\n关键字参数的用途：\n- 参数多的时候，用关键字参数更清晰\n- 配合默认参数，只传你想改的参数\n- 让函数调用更'自解释'，看一眼就知道每个值代表什么\n\nPython内置函数很多都用关键字参数，比如print函数的end、sep参数。"
+          },
+          {
+            "title": "1.4 *args 和 **kwargs",
+            "type": "code",
+            "language": "python",
+            "code": "# *args 收集多余的位置参数，打包成元组\ndef sum_all(*args):\n    print(f'收到参数：{args}，类型：{type(args)}')\n    return sum(args)\n\nprint(sum_all(1, 2, 3))        # 收到参数：(1, 2, 3)\nprint(sum_all(1, 2, 3, 4, 5))  # 15\n\n# **kwargs 收集多余的关键字参数，打包成字典\ndef show_info(**kwargs):\n    print(f'收到参数：{kwargs}，类型：{type(kwargs)}')\n    for key, value in kwargs.items():\n        print(f'  {key}: {value}')\n\nshow_info(name='小明', age=18, city='北京')\n\n# 混合使用：位置参数、*args、**kwargs\ndef func(a, b, *args, **kwargs):\n    print(f'a={a}, b={b}')\n    print(f'args={args}')\n    print(f'kwargs={kwargs}')\n\nfunc(1, 2, 3, 4, 5, name='小明', age=18)\n# a=1, b=2\n# args=(3, 4, 5)\n# kwargs={'name': '小明', 'age': 18}\n\n# 参数解包：用*和**解包序列和字典\ndef add(a, b, c):\n    return a + b + c\n\nnums = [1, 2, 3]\nprint(add(*nums))  # 等同于 add(1, 2, 3)\n\ninfo = {'a': 1, 'b': 2, 'c': 3}\nprint(add(**info))  # 等同于 add(a=1, b=2, c=3)"
+          },
+          {
+            "title": "1.5 返回多个值",
+            "content": "Python函数可以方便地'返回多个值'，其实本质是返回一个元组，然后解包赋值。这是Python非常实用的特性。\n\n常见的多值返回场景：\n- 函数既返回结果，又返回状态\n- 返回多个相关数据，比如商和余数、最大值和最小值\n- 拆分字符串返回多个部分\n\n用元组解包接收多个返回值，代码简洁优雅。Python内置的divmod就是返回商和余数的典型例子。"
+          },
+          {
+            "title": "1.6 返回多个值与解包",
+            "type": "code",
+            "language": "python",
+            "code": "# 返回多个值（本质是返回元组）\ndef min_max(nums):\n    return min(nums), max(nums)\n\nresult = min_max([3, 1, 4, 1, 5, 9, 2, 6])\nprint(result)       # (1, 9)\nprint(type(result)) # <class 'tuple'>\n\n# 用解包接收多个返回值\nlow, high = min_max([3, 1, 4, 1, 5, 9, 2, 6])\nprint(f'最小值：{low}，最大值：{high}')\n\n# 实用例子：交换两个变量\na, b = 10, 20\na, b = b, a\nprint(a, b)  # 20 10\n\n# 商和余数\ndef divmod_custom(a, b):\n    return a // b, a % b\n\nquotient, remainder = divmod_custom(17, 5)\nprint(f'17 ÷ 5 = {quotient} 余 {remainder}')  # 3 余 2\n\n# 返回带标签的结果，更清晰\ndef parse_name(full_name):\n    parts = full_name.split()\n    if len(parts) >= 2:\n        return {'first': parts[0], 'last': parts[-1], 'valid': True}\n    return {'first': full_name, 'last': '', 'valid': False}\n\nprint(parse_name('张 三'))  # {'first': '张', 'last': '三', 'valid': True}"
+          },
+          {
+            "title": "1.7 提前返回与卫语句",
+            "content": "很多新手写函数喜欢用层层嵌套的if-else，导致代码缩进很深、很难读。更好的做法是'提前返回'（Early Return），也叫卫语句（Guard Clause）。\n\n核心思想：先处理异常情况或边界条件，不满足就直接return，把正常的逻辑放在最外层。这样代码扁平、清晰、好维护。\n\n对比：\n- 嵌套写法：if满足 { if满足 { if满足 { 核心逻辑 } } }\n- 卫语句：if不满足 return; if不满足 return; 核心逻辑\n\n提前返回是写出干净代码的重要技巧，强烈推荐！"
+          },
+          {
+            "title": "1.8 提前返回代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 嵌套写法（不推荐，缩进深）\ndef get_grade_nested(score):\n    if score >= 0 and score <= 100:\n        if score >= 90:\n            return '优秀'\n        else:\n            if score >= 80:\n                return '良好'\n            else:\n                if score >= 60:\n                    return '及格'\n                else:\n                    return '不及格'\n    else:\n        return '分数无效'\n\n# 提前返回写法（推荐，扁平清晰）\ndef get_grade(score):\n    # 卫语句：先处理异常情况\n    if score < 0 or score > 100:\n        return '分数无效'\n    if score >= 90:\n        return '优秀'\n    if score >= 80:\n        return '良好'\n    if score >= 60:\n        return '及格'\n    return '不及格'\n\nprint(get_grade(85))   # 良好\nprint(get_grade(150))  # 分数无效\n\n# 实用例子：计算阶乘，提前返回边界条件\ndef factorial(n):\n    if n < 0:\n        return None  # 负数没有阶乘\n    if n <= 1:\n        return 1\n    result = 1\n    for i in range(2, n + 1):\n        result *= i\n    return result\n\nprint(factorial(5))  # 120"
+          },
+          {
+            "title": "1.9 高阶函数与lambda",
+            "content": "Python中函数是一等公民，可以赋值给变量、作为参数传递、作为返回值返回。接收函数作为参数的函数叫高阶函数。\n\n常用的高阶函数：\n- **sorted(iterable, key=函数)** - 按指定规则排序\n- **map(函数, 可迭代对象)** - 对每个元素做映射\n- **filter(函数, 可迭代对象)** - 过滤满足条件的元素\n\n**lambda表达式**就是匿名函数，语法：`lambda 参数: 表达式`。适合写简短的、一次性的小函数，配合高阶函数用特别方便。"
+          },
+          {
+            "title": "1.10 高阶函数代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# sorted 排序\ndef sort_demo():\n    students = [\n        {'name': '小明', 'score': 85},\n        {'name': '小红', 'score': 92},\n        {'name': '小刚', 'score': 78},\n    ]\n    # 按分数排序\n    sorted_students = sorted(students, key=lambda s: s['score'], reverse=True)\n    for s in sorted_students:\n        print(f\"{s['name']}: {s['score']}\")\n\nsort_demo()\n\n# map 映射\nnums = [1, 2, 3, 4, 5]\nsquared = list(map(lambda x: x ** 2, nums))\nprint(squared)  # [1, 4, 9, 16, 25]\n\n# filter 过滤\nevens = list(filter(lambda x: x % 2 == 0, nums))\nprint(evens)  # [2, 4]\n\n# 函数作为参数\ndef apply(func, value):\n    return func(value)\n\nprint(apply(lambda x: x * 2, 10))  # 20\nprint(apply(abs, -5))              # 5\n\n# 函数作为返回值\ndef make_multiplier(n):\n    return lambda x: x * n\n\ndouble = make_multiplier(2)\ntriple = make_multiplier(3)\nprint(double(5))  # 10\nprint(triple(5))  # 15"
+          },
+          {
+            "title": "1.11 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 写一个函数 calculate(a, b, operation='+')，支持加减乘除四种运算，operation有默认值\n2. 写一个函数 sum_any(*args)，可以接收任意多个数字，返回它们的和\n3. 写一个函数 build_profile(**kwargs)，接收任意关键字参数，返回一个用户信息字典\n4. 写一个函数 find_extremes(nums)，同时返回列表的最大值和最小值\n5. 用提前返回的方式写一个函数 classify_number(n)，判断数字是正数、负数还是零，并处理非数字输入\n6. 用sorted和lambda，对一个字符串列表按字符串长度排序\n\n多写函数，体会灵活参数和提前返回的优雅！"
+          }
+        ],
+        "summary": "这节课我们学习了函数进阶：位置参数、默认参数、关键字参数、*args/**kwargs可变参数、返回多个值、提前返回、高阶函数和lambda。这些技巧让你的函数更灵活、更强大、更易读。可变参数和提前返回是日常开发最常用的，一定要熟练掌握！",
+        "quiz": {
+          "question": "下面函数定义中，参数顺序正确的是？",
+          "options": [
+            "def f(a=1, b, *args, **kwargs)",
+            "def f(b, a=1, *args, **kwargs)",
+            "def f(*args, b, a=1, **kwargs)",
+            "def f(b, **kwargs, a=1)"
+          ],
+          "answer": 1,
+          "explanation": "Python参数定义顺序必须是：位置参数 → 默认参数 → *args → **kwargs。选项B的 b(位置参数)、a=1(默认参数)、*args、**kwargs 顺序正确。"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "变量作用域与闭包",
+      "duration": "80分钟",
+      "content": {
+        "introduction": "变量作用域决定了变量在哪里能被访问。这节课我们深入学习Python的作用域规则（LEGB）、global和nonlocal关键字、闭包的概念，以及装饰器的入门。闭包和装饰器是Python的高级特性，理解它们能让你写出更优雅、更强大的代码，也是面试常考的知识点。",
+        "sections": [
+          {
+            "title": "2.1 LEGB作用域规则",
+            "content": "Python查找变量时，按LEGB顺序查找：\n\n1. **L (Local)** - 函数内部的局部变量\n2. **E (Enclosing)** - 外层嵌套函数的变量\n3. **G (Global)** - 模块级别的全局变量\n4. **B (Built-in)** - Python内置的变量/函数（如print、len）\n\nPython在函数内部可以读取外部变量，但如果想在函数内部'修改'外部变量，需要用global或nonlocal声明，否则Python会创建一个新的局部变量。\n\n理解作用域，能帮你避免很多'变量找不到'或'变量没改成功'的bug。"
+          },
+          {
+            "title": "2.2 全局变量与局部变量",
+            "type": "code",
+            "language": "python",
+            "code": "# 全局变量\nmessage = '我是全局变量'\n\ndef read_global():\n    print(message)  # 可以读取全局变量\n\nread_global()  # 我是全局变量\n\ndef try_modify_global():\n    # message = '修改了'  # 这会创建局部变量，不修改全局的！\n    # 要修改全局变量，必须用 global 声明\n    global message\n    message = '我在函数里被修改了'\n\ntry_modify_global()\nprint(message)  # 我在函数里被修改了\n\n# 局部变量：函数内定义的，外面访问不到\ndef make_local():\n    local_var = '我是局部的'\n    return local_var\n\nprint(make_local())  # 我是局部的\n# print(local_var)  # 报错！NameError\n\n# 常见陷阱：在函数内修改全局可变对象\ncounter = [0]\ndef increment():\n    counter[0] += 1  # 修改的是列表内容，不需要global\n\nincrement()\nincrement()\nprint(counter)  # [2]\n\n# 注意：global要少用，全局变量多了代码难维护\n# 推荐用函数参数和返回值传递数据"
+          },
+          {
+            "title": "2.3 nonlocal 关键字",
+            "content": "global用来修改全局变量，而nonlocal用来修改外层嵌套函数的变量（Enclosing作用域）。\n\nnonlocal的使用场景：嵌套函数中，内层函数想修改外层函数的变量。如果不加nonlocal，会创建新的局部变量而不是修改外层的。\n\nnonlocal和global的区别：\n- global - 声明变量来自全局作用域\n- nonlocal - 声明变量来自最近的外层函数作用域\n\nnonlocal在写闭包时特别有用，下一节的计数器例子就会用到。"
+          },
+          {
+            "title": "2.4 nonlocal 代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# nonlocal 的用法\ndef outer():\n    count = 0  # 外层函数的变量\n\n    def inner():\n        nonlocal count  # 声明要用外层的count，不是新建\n        count += 1\n        return count\n\n    return inner\n\ncounter = outer()\nprint(counter())  # 1\nprint(counter())  # 2\nprint(counter())  # 3\n\n# 对比：不用 nonlocal 会怎样\ndef outer_wrong():\n    count = 0\n\n    def inner():\n        # count += 1  # 报错！UnboundLocalError\n        # 因为 count += 1 等于 count = count + 1\n        # Python认为count是局部变量，但还没赋值就用了\n        pass\n\n    return inner\n\n# 实用例子：累加器\ndef make_accumulator():\n    total = 0\n    def add(n):\n        nonlocal total\n        total += n\n        return total\n    return add\n\nacc = make_accumulator()\nprint(acc(10))  # 10\nprint(acc(20))  # 30\nprint(acc(5))   # 35"
+          },
+          {
+            "title": "2.5 闭包的概念",
+            "content": "闭包（Closure）是函数式编程的重要概念。简单说：一个内部函数引用了外部函数的变量，并且在外部函数执行完后，这些变量依然被内部函数'记住'了，这个内部函数就是闭包。\n\n闭包的三个条件：\n1. 有嵌套函数（函数里定义函数）\n2. 内层函数引用了外层函数的变量\n3. 外层函数返回内层函数\n\n闭包的好处：\n- 数据封装：把变量'藏'在闭包里，外部访问不到\n- 状态保持：闭包能记住上次的值\n- 工厂函数：根据参数生成不同的函数\n\n上一节的计数器和累加器其实就是闭包！"
+          },
+          {
+            "title": "2.6 闭包代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 闭包：工厂函数\ndef make_power(exponent):\n    # 外层函数接收指数，内层函数接收底数\n    def power(base):\n        return base ** exponent  # 记住了exponent\n    return power\n\nsquare = make_power(2)\ncube = make_power(3)\nprint(square(5))  # 25\nprint(cube(2))    # 8\n\n# 闭包：数据封装（模拟私有变量）\ndef make_account(initial_balance):\n    balance = initial_balance\n\n    def deposit(amount):\n        nonlocal balance\n        balance += amount\n        return balance\n\n    def withdraw(amount):\n        nonlocal balance\n        if amount > balance:\n            return '余额不足'\n        balance -= amount\n        return balance\n\n    def get_balance():\n        return balance\n\n    # 返回多个函数（闭包）\n    return deposit, withdraw, get_balance\n\ndeposit, withdraw, get_balance = make_account(100)\nprint(deposit(50))   # 150\nprint(withdraw(30))  # 120\nprint(get_balance()) # 120\n# balance在外部无法直接访问，只能通过这些函数操作，实现了封装\n\n# 查看闭包变量\nprint(square.__closure__[0].cell_contents)  # 2"
+          },
+          {
+            "title": "2.7 装饰器入门",
+            "content": "装饰器（Decorator）是闭包的经典应用。装饰器就是一个函数，它接收一个函数作为参数，返回一个新函数，用来'增强'原函数的功能，而不修改原函数的代码。\n\n装饰器的语法：在函数定义上面加 `@装饰器名`。\n\n装饰器的本质：\n```python\n@my_decorator\ndef func():\n    pass\n# 等价于：func = my_decorator(func)\n```\n\n装饰器的用途：日志记录、性能计时、权限验证、缓存等。Python内置的@property、@staticmethod都是装饰器。装饰器是写出优雅代码的利器！"
+          },
+          {
+            "title": "2.8 装饰器代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "import time\n\n# 简单装饰器：记录函数调用\ndef log(func):\n    def wrapper(*args, **kwargs):\n        print(f'调用函数：{func.__name__}，参数：{args} {kwargs}')\n        result = func(*args, **kwargs)\n        print(f'函数 {func.__name__} 执行完毕')\n        return result\n    return wrapper\n\n@log\ndef add(a, b):\n    return a + b\n\nprint(add(3, 5))\n# 调用函数：add，参数：(3, 5) {}\n# 函数 add 执行完毕\n# 8\n\n# 计时装饰器\ndef timer(func):\n    def wrapper(*args, **kwargs):\n        start = time.time()\n        result = func(*args, **kwargs)\n        elapsed = time.time() - start\n        print(f'{func.__name__} 耗时 {elapsed:.4f} 秒')\n        return result\n    return wrapper\n\n@timer\ndef slow_function():\n    time.sleep(1)\n    return 'done'\n\nprint(slow_function())  # slow_function 耗时 1.00xx 秒\n\n# 带参数的装饰器（三层嵌套）\ndef repeat(n):\n    def decorator(func):\n        def wrapper(*args, **kwargs):\n            for i in range(n):\n                result = func(*args, **kwargs)\n            return result\n        return wrapper\n    return decorator\n\n@repeat(3)\ndef say_hi():\n    print('Hi!')\n\nsay_hi()  # 打印3次 Hi!"
+          },
+          {
+            "title": "2.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 写一个全局变量count，写一个函数每次调用让count加1（用global）\n2. 用闭包写一个 make_counter() 函数，返回一个计数器，每次调用加1并返回当前值\n3. 用闭包写一个 make_greeting(greeting) 工厂函数，返回一个函数，调用时传入name，输出 greeting+name\n4. 写一个日志装饰器 @debug，在函数调用前后打印日志\n5. 写一个缓存装饰器 @cache，缓存函数的计算结果，相同参数直接返回缓存\n6. 写一个带参数的装饰器 @repeat(n)，让函数重复执行n次\n\n闭包和装饰器是Python进阶的门槛，多练习多体会！"
+          }
+        ],
+        "summary": "这节课我们学习了LEGB作用域规则、global/nonlocal关键字、闭包的概念和应用、装饰器的入门。闭包让函数记住外部变量，装饰器用闭包优雅地增强函数功能。这些是Python高级编程的基础，下节课我们开始面向对象编程！",
+        "quiz": {
+          "question": "在嵌套函数中，想修改外层函数（非全局）的变量，应该用哪个关键字？",
+          "options": [
+            "global",
+            "nonlocal",
+            "local",
+            "不需要关键字"
+          ],
+          "answer": 1,
+          "explanation": "nonlocal用于在嵌套函数中修改外层（Enclosing）函数作用域的变量。global用于修改全局变量。不用关键字的话会创建新的局部变量。"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "面向对象基础",
+      "duration": "90分钟",
+      "content": {
+        "introduction": "面向对象编程（OOP）是Python最重要的编程范式之一。这节课我们从零开始学习类和对象、__init__构造方法、self参数、属性和方法，学会创建和使用对象。面向对象能把数据和操作数据的方法封装在一起，让代码更符合人类思维、更易维护、更易扩展，是写出大型程序的基础。",
+        "sections": [
+          {
+            "title": "3.1 类和对象的概念",
+            "content": "面向对象的核心概念：\n\n- **类（Class）** - 是一张'图纸'、一个模板，定义了一类事物的属性和行为\n- **对象（Object）** - 是根据类创建出来的具体实例\n\n比如：\n- '狗'是类，'你家的小白'是对象\n- '学生'是类，'小明同学'是对象\n- '手机'是类，'我手里的iPhone'是对象\n\n类有属性（数据）和方法（行为）：\n- 属性：对象有什么（比如学生的姓名、年龄、成绩）\n- 方法：对象能做什么（比如学生能学习、考试、介绍自己）\n\n面向对象三大特性：封装、继承、多态。这节课先学封装，下节课学继承和多态。"
+          },
+          {
+            "title": "3.2 定义类和创建对象",
+            "type": "code",
+            "language": "python",
+            "code": "# 定义类（首字母大写，驼峰命名）\nclass Dog:\n    # 类变量：所有实例共享\n    species = '犬科动物'\n\n    # 构造方法：创建对象时自动调用\n    def __init__(self, name, age):\n        # 实例变量：每个对象独有\n        self.name = name\n        self.age = age\n\n    # 实例方法\n    def bark(self):\n        print(f'{self.name}：汪汪汪！')\n\n    def describe(self):\n        print(f'我叫{self.name}，今年{self.age}岁，是{Dog.species}')\n\n# 创建对象（实例化）\ndog1 = Dog('旺财', 3)\ndog2 = Dog('小白', 1)\n\n# 调用方法\ndog1.bark()      # 旺财：汪汪汪！\ndog2.bark()      # 小白：汪汪汪！\ndog1.describe()  # 我叫旺财，今年3岁，是犬科动物\n\n# 访问属性\nprint(dog1.name)  # 旺财\nprint(dog2.age)   # 1\n\n# 访问类变量\nprint(Dog.species)   # 犬科动物\nprint(dog1.species)  # 也能通过实例访问"
+          },
+          {
+            "title": "3.3 __init__ 和 self 详解",
+            "content": "**__init__方法**是构造方法（初始化方法），在创建对象时自动调用，用来初始化对象的属性。它不是创建对象，而是初始化对象。\n\n**self参数**代表对象本身，哪个对象调用方法，self就是哪个对象。通过self可以访问对象的属性和方法。\n\n要点：\n1. __init__方法名前后各有两个下划线，是Python约定的特殊方法\n2. self必须作为第一个参数，但调用时不用手动传，Python自动传\n3. 在__init__里用 self.属性名 = 值 来创建实例属性\n4. self可以用其他名字，但强烈建议用self，这是约定俗成的\n\n理解self是理解面向对象的关键！"
+          },
+          {
+            "title": "3.4 属性和方法",
+            "type": "code",
+            "language": "python",
+            "code": "class Student:\n    # 类变量：属于类，所有实例共享\n    school = '汇文中学'\n    count = 0\n\n    def __init__(self, name, score):\n        # 实例变量：属于每个对象\n        self.name = name\n        self.score = score\n        Student.count += 1  # 每创建一个学生，计数加1\n\n    # 实例方法：访问实例属性\n    def introduce(self):\n        return f'我叫{self.name}，成绩{self.score}分，就读于{self.school}'\n\n    # 类方法：用 @classmethod，第一个参数是类本身\n    @classmethod\n    def get_count(cls):\n        return f'已创建{cls.count}个学生对象'\n\n    # 静态方法：用 @staticmethod，不需要self和cls\n    @staticmethod\n    def is_pass(score):\n        return score >= 60\n\ns1 = Student('小明', 85)\ns2 = Student('小红', 92)\ns3 = Student('小刚', 55)\n\nprint(s1.introduce())  # 我叫小明，成绩85分，就读于汇文中学\nprint(Student.get_count())  # 已创建3个学生对象\nprint(Student.is_pass(55))  # False\nprint(s3.is_pass(s3.score)) # False\n\n# 动态添加属性（仅对当前对象生效）\ns1.grade = '初三'\nprint(s1.grade)  # 初三\n# print(s2.grade)  # 报错！s2没有grade属性"
+          },
+          {
+            "title": "3.5 封装与私有属性",
+            "content": "封装是面向对象的核心思想之一：把数据藏在对象内部，外部不能直接访问，只能通过方法来操作。这样可以保护数据不被随意修改。\n\nPython的封装约定：\n- **public** - 普通属性，前面没有下划线，公开可访问\n- **protected** - 前面一个下划线 `_name`，约定不直接访问（但能访问）\n- **private** - 前面两个下划线 `__name`，会被'名称重整'，外部不易直接访问\n\n注意：Python没有真正的私有，只是一种约定。双下划线只是改了名字（_类名__属性），还是能通过特殊方式访问。一般用一个下划线表示'这是私有的，别在外面碰'就够了。\n\n用@property装饰器可以像属性一样访问方法，实现getter/setter的效果。"
+          },
+          {
+            "title": "3.6 封装代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "class BankAccount:\n    def __init__(self, owner, balance=0):\n        self.owner = owner        # 公开属性\n        self._id = '001'          # 受保护属性（约定）\n        self.__balance = balance  # 私有属性（名称重整）\n\n    # getter：用@property像属性一样访问\n    @property\n    def balance(self):\n        return self.__balance\n\n    # setter：用@属性名.setter做赋值校验\n    @balance.setter\n    def balance(self, value):\n        if value < 0:\n            raise ValueError('余额不能为负数')\n        self.__balance = value\n\n    def deposit(self, amount):\n        if amount <= 0:\n            print('存款金额必须大于0')\n            return\n        self.__balance += amount\n        print(f'{self.owner} 存入 {amount}，余额 {self.__balance}')\n\n    def withdraw(self, amount):\n        if amount > self.__balance:\n            print('余额不足！')\n            return\n        self.__balance -= amount\n        print(f'{self.owner} 取出 {amount}，余额 {self.__balance}')\n\nacc = BankAccount('小明', 1000)\nprint(acc.owner)         # 小明\nprint(acc.balance)       # 1000（通过@property访问）\n# print(acc.__balance)   # 报错！不能直接访问私有属性\n\nacc.deposit(500)         # 小明 存入 500，余额 1500\nacc.withdraw(2000)       # 余额不足！\nacc.balance = 2000       # 通过setter赋值（有校验）\nprint(acc.balance)       # 2000\n# acc.balance = -100     # 报错！ValueError"
+          },
+          {
+            "title": "3.7 类的设计实践",
+            "content": "设计类的一般步骤：\n\n1. **找名词** - 需求里的名词往往是类（比如'学生'、'课程'）\n2. **找动词** - 动词往往是方法（比如'选课'、'考试'）\n3. **找形容词** - 形容词往往是属性（比如'姓名'、'成绩'）\n\n好的类设计原则：\n- 单一职责：一个类只做一件事\n- 高内聚低耦合：类内部紧密相关，类之间依赖少\n- 数据要封装：属性尽量私有，通过方法操作\n- 方法名要语义化：看名字就知道做什么\n\n举例：设计一个'图书'类，属性有书名、作者、ISBN，方法有借出、归还、显示信息。多练习设计类，培养面向对象思维。"
+          },
+          {
+            "title": "3.8 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 定义一个 Person 类，有姓名、年龄属性，有 introduce() 方法自我介绍，有 is_adult() 方法判断是否成年\n2. 定义一个 Rectangle（矩形）类，有宽和高属性，有 area() 计算面积和 perimeter() 计算周长的方法\n3. 定义一个 Circle（圆）类，把半径设为私有属性，用@property提供访问，area()计算面积\n4. 定义一个 Counter（计数器）类，有 increment()、decrement()、reset()、get_value() 方法\n5. 定义一个 Book 类，有书名、作者、是否借出状态，有 borrow() 和 return_book() 方法，并处理重复借出的情况\n6. 定义一个 Student 类，统计创建了多少个学生对象（用类变量）\n\n面向对象是Python进阶的核心，一定要多写类、多思考！"
+          }
+        ],
+        "summary": "这节课我们学习了面向对象基础：类和对象的概念、__init__构造方法、self参数、实例变量和类变量、实例方法/类方法/静态方法、封装和私有属性、@property装饰器。学会了这些，你就能用面向对象的思维组织代码了。下节课学习继承和多态！",
+        "quiz": {
+          "question": "关于self参数，下面说法正确的是？",
+          "options": [
+            "self是类本身",
+            "self代表调用该方法的实例对象",
+            "self必须手动传入",
+            "self只能在__init__里用"
+          ],
+          "answer": 1,
+          "explanation": "self代表调用方法的实例对象本身，哪个对象调用方法，self就指向哪个对象。Python自动传入self，不需要手动传。self可以在所有实例方法中使用。"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "面向对象进阶",
+      "duration": "90分钟",
+      "content": {
+        "introduction": "上节课我们学会了定义类，这节课继续深入面向对象：继承让子类复用父类的代码，super()调用父类方法，方法重写实现个性化，多态让不同对象响应同一消息，魔术方法让自定义类支持内置操作。掌握这些，你写的类会更强大、更灵活、更像Python内置类型。",
+        "sections": [
+          {
+            "title": "4.1 继承",
+            "content": "继承（Inheritance）是面向对象的核心特性之一。子类可以继承父类的属性和方法，实现代码复用。\n\n继承的好处：\n- 代码复用：不用重复写同样的代码\n- 建立类的层次关系：父类通用，子类专一\n- 易扩展：在子类添加新功能，不影响父类\n\n语法：`class 子类(父类):`\n\nPython支持多重继承（一个子类继承多个父类），但要注意方法解析顺序（MRO），一般不推荐多用多重继承，容易混乱。推荐用'单继承+组合'的方式。\n\n所有类的最终父类是object，Python3中定义类默认继承object。"
+          },
+          {
+            "title": "4.2 继承与super()",
+            "type": "code",
+            "language": "python",
+            "code": "# 父类\nclass Animal:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n\n    def eat(self):\n        print(f'{self.name} 在吃东西')\n\n    def sleep(self):\n        print(f'{self.name} 在睡觉')\n\n# 子类继承父类\nclass Dog(Animal):\n    def __init__(self, name, age, breed):\n        # super() 调用父类的__init__\n        super().__init__(name, age)\n        self.breed = breed  # 子类新增属性\n\n    def bark(self):  # 子类新增方法\n        print(f'{self.name}（{self.breed}）：汪汪汪！')\n\nclass Cat(Animal):\n    def __init__(self, name, age, color):\n        super().__init__(name, age)\n        self.color = color\n\n    def meow(self):\n        print(f'{self.name}（{self.color}）：喵喵喵！')\n\ndog = Dog('旺财', 3, '金毛')\ndog.eat()    # 继承自父类：旺财 在吃东西\ndog.sleep()  # 继承自父类：旺财 在睡觉\ndog.bark()   # 子类自己的方法\n\ncat = Cat('咪咪', 2, '橘色')\ncat.eat()\ncat.meow()\n\n# isinstance 判断对象是否是某个类的实例\nprint(isinstance(dog, Dog))     # True\nprint(isinstance(dog, Animal))  # True（子类实例也是父类实例）\nprint(isinstance(cat, Dog))     # False"
+          },
+          {
+            "title": "4.3 方法重写",
+            "content": "方法重写（Override）：子类可以重新定义父类的方法，实现自己的行为。当子类对象调用该方法时，执行的是子类的版本。\n\n重写的应用：\n- 父类方法不够用，子类需要不同的实现\n- 父类定义了接口，子类提供具体实现\n- 在重写的方法里可以用super()调用父类版本，再扩展\n\n重写要注意：方法名、参数要和父类一致。Python没有像Java那样的@Override注解，但可以通过命名约定和文档来表明。"
+          },
+          {
+            "title": "4.4 多态与重写代码",
+            "type": "code",
+            "language": "python",
+            "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        # 父类定义接口，子类重写\n        raise NotImplementedError('子类必须实现speak方法')\n\nclass Dog(Animal):\n    def speak(self):  # 重写父类方法\n        return f'{self.name}：汪汪！'\n\nclass Cat(Animal):\n    def speak(self):\n        return f'{self.name}：喵喵！'\n\nclass Duck(Animal):\n    def speak(self):\n        return f'{self.name}：嘎嘎！'\n\n# 多态：同一个方法，不同对象不同表现\ndef animal_speak(animal):\n    # 不管传进来的是什么动物，都调用speak\n    # 具体表现取决于对象的实际类型\n    print(animal.speak())\n\nanimals = [Dog('旺财'), Cat('咪咪'), Duck('唐老鸭')]\nfor a in animals:\n    animal_speak(a)\n# 旺财：汪汪！\n# 咪咪：喵喵！\n# 唐老鸭：嘎嘎！\n\n# 多态的好处：animal_speak函数不用管具体类型\n# 新增动物类时，不用修改这个函数\n# 这就是'对扩展开放，对修改关闭'（开闭原则）"
+          },
+          {
+            "title": "4.5 魔术方法",
+            "content": "魔术方法（Magic Methods）是Python以双下划线开头和结尾的方法（也叫dunder方法）。它们让自定义类支持各种内置操作，让对象用起来像内置类型一样自然。\n\n常用魔术方法：\n- `__str__` - print/str对象时的显示，面向用户\n- `__repr__` - 开发者看到的表示，面向调试\n- `__len__` - 支持len()函数\n- `__eq__` - 支持==比较\n- `__lt__`/`__gt__` - 支持</>比较\n- `__add__` - 支持+运算\n- `__getitem__` - 支持索引访问 obj[key]\n- `__iter__` - 支持迭代\n- `__call__` - 让对象可像函数一样调用\n\n学会魔术方法，你的类会更好用！"
+          },
+          {
+            "title": "4.6 魔术方法代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "class Vector:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    # __str__：print时显示，面向用户\n    def __str__(self):\n        return f'Vector({self.x}, {self.y})'\n\n    # __repr__：调试时显示，面向开发者\n    def __repr__(self):\n        return f'Vector(x={self.x}, y={self.y})'\n\n    # __eq__：支持 == 比较\n    def __eq__(self, other):\n        return self.x == other.x and self.y == other.y\n\n    # __add__：支持 + 运算\n    def __add__(self, other):\n        return Vector(self.x + other.x, self.y + other.y)\n\n    # __len__：支持 len()\n    def __len__(self):\n        return 2\n\n    # __lt__：支持 < 比较，配合sorted用\n    def __lt__(self, other):\n        return self.x ** 2 + self.y ** 2 < other.x ** 2 + other.y ** 2\n\nv1 = Vector(1, 2)\nv2 = Vector(3, 4)\n\nprint(v1)            # Vector(1, 2)  调用 __str__\nprint(repr(v2))      # Vector(x=3, y=4)  调用 __repr__\nprint(v1 == Vector(1, 2))  # True  调用 __eq__\nprint(v1 + v2)       # Vector(4, 6)  调用 __add__\nprint(len(v1))       # 2  调用 __len__\n\n# 排序\nvectors = [Vector(3, 4), Vector(1, 2), Vector(0, 1)]\nprint([str(v) for v in sorted(vectors)])\n# ['Vector(0, 1)', 'Vector(1, 2)', 'Vector(3, 4)']"
+          },
+          {
+            "title": "4.7 综合示例：图书管理系统",
+            "content": "把继承、重写、魔术方法综合起来，做一个简单的图书管理系统的类设计：\n- LibraryItem（父类）：书名、ID，有display方法\n- Book（子类）：作者、页数\n- Magazine（子类）：期号\n- 重写display方法，子类各自显示\n- 用__str__让对象能直接print\n\n这就是面向对象的实际应用：父类定义通用接口，子类实现具体细节，多态让统一处理变得简单。"
+          },
+          {
+            "title": "4.8 综合示例代码",
+            "type": "code",
+            "language": "python",
+            "code": "from abc import ABC, abstractmethod\n\n# 抽象基类\nclass LibraryItem(ABC):\n    def __init__(self, title, item_id):\n        self.title = title\n        self.item_id = item_id\n        self._borrowed = False\n\n    @abstractmethod\n    def display(self):\n        pass\n\n    def borrow(self):\n        if self._borrowed:\n            print(f'《{self.title}》已被借出')\n            return False\n        self._borrowed = True\n        print(f'成功借出《{self.title}》')\n        return True\n\n    def return_item(self):\n        self._borrowed = False\n        print(f'已归还《{self.title}》')\n\n    def __str__(self):\n        status = '已借出' if self._borrowed else '可借'\n        return f'[{self.item_id}] {self.title} ({status})'\n\nclass Book(LibraryItem):\n    def __init__(self, title, item_id, author, pages):\n        super().__init__(title, item_id)\n        self.author = author\n        self.pages = pages\n\n    def display(self):  # 重写\n        print(f'📚 图书：{self.title} | 作者：{self.author} | {self.pages}页')\n\nclass Magazine(LibraryItem):\n    def __init__(self, title, item_id, issue):\n        super().__init__(title, item_id)\n        self.issue = issue\n\n    def display(self):  # 重写\n        print(f'📰 杂志：{self.title} | 第{self.issue}期')\n\n# 使用\nitems = [\n    Book('Python编程', 'B001', '小明', 400),\n    Magazine('科技周刊', 'M001', 50),\n    Book('算法导论', 'B002', '小红', 800),\n]\n\n# 多态：统一调用display\nfor item in items:\n    item.display()\n    print(f'  {item}')  # 调用 __str__\n\n# 借还书\nitems[0].borrow()\nitems[0].borrow()  # 已借出\nitems[0].return_item()"
+          },
+          {
+            "title": "4.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 定义 Animal 父类（有name、age），写 Dog 和 Cat 子类，重写speak方法\n2. 定义 Shape 父类（抽象方法area），写 Circle、Rectangle、Triangle 子类实现area\n3. 定义一个 Student 类，实现 __str__、__eq__、__lt__，让Student对象可以print、比较、排序\n4. 定义一个 Money 类，实现 __add__、__sub__、__eq__，让Money对象可以加减比较\n5. 定义一个 Stack（栈）类，实现 __len__、__str__、push、pop、peek方法\n6. 用继承设计一个员工管理系统：Employee父类，Manager和Developer子类，各有calculate_salary方法\n\n继承、多态、魔术方法是面向对象的精华，多写多练！"
+          }
+        ],
+        "summary": "这节课我们学习了面向对象进阶：继承实现代码复用，super()调用父类方法，方法重写实现个性化，多态让统一接口有不同表现，抽象基类定义规范，魔术方法让自定义类支持内置操作。这些让面向对象更强大更灵活，下节课学习模块和包！",
+        "quiz": {
+          "question": "下面哪个魔术方法让对象支持 print() 时的友好显示？",
+          "options": [
+            "__init__",
+            "__str__",
+            "__len__",
+            "__repr__"
+          ],
+          "answer": 1,
+          "explanation": "__str__定义print()或str()时面向用户的显示内容。__repr__面向开发者调试。__len__支持len()函数。__init__是构造方法。"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "模块和包",
+      "duration": "70分钟",
+      "content": {
+        "introduction": "随着代码量增加，把所有代码写在一个文件里会变得混乱难维护。模块和包是Python组织代码的方式：模块是一个.py文件，包是包含多个模块的文件夹。这节课学习import导入、自定义模块、__name__=='__main__'的用法、pip安装第三方库，以及常用的标准库，让你的代码井井有条。",
+        "sections": [
+          {
+            "title": "5.1 模块和import",
+            "content": "模块（Module）就是一个.py文件，里面定义了函数、类、变量。通过import可以在别的文件里使用这些代码，实现代码复用和组织。\n\n导入模块的几种方式：\n1. `import 模块名` - 导入整个模块，用 模块名.东西 访问\n2. `import 模块名 as 别名` - 起个简短的别名\n3. `from 模块名 import 东西` - 只导入需要的，直接用名字\n4. `from 模块名 import *` - 导入全部（不推荐，容易命名冲突）\n5. `from 模块名 import 东西 as 别名` - 给导入的东西起别名\n\n推荐用前三种，明确、不易冲突。"
+          },
+          {
+            "title": "5.2 import 用法示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 方式1：导入整个模块\nimport math\nprint(math.pi)          # 3.141592653589793\nprint(math.sqrt(16))    # 4.0\n\n# 方式2：起别名\nimport random as r\nprint(r.randint(1, 10))  # 随机1-10\n\n# 方式3：从模块导入特定内容\nfrom datetime import datetime, timedelta\nnow = datetime.now()\nprint(now)\n\n# 方式4：导入并起别名\nfrom math import sqrt as s\nprint(s(25))  # 5.0\n\n# 方式5：导入全部（不推荐）\n# from math import *\n# print(pi)  # 直接用，但不知道pi哪来的，易冲突\n\n# 查看模块内容\nprint(dir(math))  # 列出math模块的所有内容\n\n# 查看模块帮助\n# help(math)  # 查看详细文档\n\n# 查看模块路径\nimport math\nprint(math.__file__)  # 模块文件的位置"
+          },
+          {
+            "title": "5.3 自定义模块",
+            "content": "自己写的.py文件也可以作为模块被导入！只要文件在同一目录，或在Python搜索路径中。\n\n创建模块的步骤：\n1. 写一个.py文件，比如 utils.py，里面定义函数、类\n2. 在另一个文件里 import utils 就能用了\n3. 也可以 from utils import 某函数\n\n模块命名规范：\n- 用小写字母，单词间用下划线（如 my_utils）\n- 不要用数字开头\n- 不要和Python标准库重名（千万别叫math.py、random.py）\n\n当项目变大，把不同功能的代码放在不同模块里，结构清晰好维护。"
+          },
+          {
+            "title": "5.4 自定义模块和包示例",
+            "type": "code",
+            "language": "python",
+            "code": "# ===== 文件：math_utils.py（自定义模块）=====\n\"\"\"数学工具模块，提供常用数学函数\"\"\"\n\nPI = 3.14159265\n\ndef circle_area(radius):\n    \"\"\"计算圆的面积\"\"\"\n    return PI * radius ** 2\n\ndef is_prime(n):\n    \"\"\"判断是否素数\"\"\"\n    if n < 2:\n        return False\n    for i in range(2, int(n ** 0.5) + 1):\n        if n % i == 0:\n            return False\n    return True\n\n# 这部分只有在直接运行本文件时才执行\n# 被import时不执行\nif __name__ == '__main__':\n    # 测试代码\n    print(circle_area(5))  # 78.53981625\n    print(is_prime(17))    # True\n\n# ===== 文件：main.py（使用模块）=====\n# import math_utils\n# print(math_utils.circle_area(5))\n# from math_utils import is_prime, PI\n# print(is_prime(17))\n\n# ===== 包的结构 =====\n# myproject/\n#   main.py\n#   mypackage/           <- 包（文件夹）\n#     __init__.py        <- 包的初始化文件（可为空）\n#     string_utils.py\n#     math_utils.py\n#\n# 导入包里的模块：\n# from mypackage import math_utils\n# from mypackage.string_utils import capitalize_first"
+          },
+          {
+            "title": "5.5 __name__ == '__main__'",
+            "content": "每个Python模块都有一个__name__属性：\n- 当文件被直接运行时，__name__等于'__main__'\n- 当文件被import导入时，__name__等于模块名（文件名）\n\n所以 `if __name__ == '__main__':` 的作用是：这段代码只在直接运行本文件时执行，被导入时不执行。\n\n用途：\n1. 写测试代码，直接运行时测试，导入时不跑\n2. 写脚本的入口逻辑\n3. 让模块既能被导入使用，又能独立运行\n\n这是Python非常常见且重要的写法，几乎所有规范的项目都会用到。"
+          },
+          {
+            "title": "5.6 pip 安装第三方库",
+            "type": "code",
+            "language": "python",
+            "code": "# pip 是 Python 的包管理工具，用来安装第三方库\n# 在命令行（终端）使用，不是在Python代码里！\n\n# 安装库\n# pip install requests\n# pip install numpy pandas matplotlib\n\n# 指定版本\n# pip install requests==2.28.0\n# pip install 'requests>=2.28'\n\n# 升级库\n# pip install --upgrade requests\n\n# 卸载库\n# pip uninstall requests\n\n# 查看已安装的库\n# pip list\n\n# 查看某个库的信息\n# pip show requests\n\n# 导出依赖（生成requirements.txt）\n# pip freeze > requirements.txt\n\n# 批量安装依赖\n# pip install -r requirements.txt\n\n# 换国内镜像源加速（国内推荐）\n# pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple\n\n# 在代码中使用安装的库\n# import requests\n# response = requests.get('https://api.github.com')\n# print(response.status_code)"
+          },
+          {
+            "title": "5.7 常用标准库",
+            "content": "Python自带了很多强大的标准库，不用安装就能用，非常实用：\n\n- **os** - 操作系统接口（文件路径、环境变量）\n- **sys** - Python解释器相关（命令行参数、路径）\n- **math** - 数学函数\n- **random** - 随机数\n- **datetime** - 日期时间\n- **json** - JSON数据处理\n- **re** - 正则表达式\n- **collections** - 高级容器（Counter、defaultdict等）\n- **itertools** - 迭代工具\n- **functools** - 函数工具（reduce、lru_cache）\n- **pathlib** - 面向对象的路径操作（推荐替代os.path）\n- **logging** - 日志记录\n\n标准库是Python'自带电池'理念的体现，写代码前先看看标准库有没有现成的！"
+          },
+          {
+            "title": "5.8 标准库使用示例",
+            "type": "code",
+            "language": "python",
+            "code": "import os\nimport sys\nimport random\nimport collections\nimport itertools\nimport functools\n\n# os 模块\nprint(os.getcwd())           # 当前工作目录\nprint(os.path.join('a', 'b', 'c.txt'))  # a/b/c.txt（跨平台路径）\n\n# random 模块\nprint(random.randint(1, 100))   # 随机整数\nprint(random.choice(['苹果', '香蕉', '橘子']))  # 随机选一个\nnums = [1, 2, 3, 4, 5]\nrandom.shuffle(nums)  # 打乱顺序\nprint(nums)\n\n# collections.Counter 统计词频\ntext = 'hello world hello python'\nword_counts = collections.Counter(text.split())\nprint(word_counts)  # Counter({'hello': 2, 'world': 1, 'python': 1})\nprint(word_counts.most_common(2))  # 最多的2个\n\n# collections.defaultdict 带默认值的字典\ndd = collections.defaultdict(list)\ndd['水果'].append('苹果')\ndd['水果'].append('香蕉')\nprint(dd)  # {'水果': ['苹果', '香蕉']}\n\n# itertools.chain 拼接多个可迭代对象\nfor item in itertools.chain([1, 2], [3, 4], [5]):\n    print(item, end=' ')  # 1 2 3 4 5\nprint()\n\n# functools.reduce 归并\nproduct = functools.reduce(lambda a, b: a * b, [1, 2, 3, 4])\nprint(product)  # 24"
+          },
+          {
+            "title": "5.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 创建一个 string_utils.py 模块，写反转字符串、统计元音字母、判断回文等函数，再写一个main.py导入使用\n2. 在模块里写测试代码，用 if __name__ == '__main__' 包起来\n3. 用 collections.Counter 统计一段文字中每个字符出现的次数\n4. 用 random 模块写一个猜数字游戏（1-100）\n5. 用 pip 安装 requests 库，写一个获取网页内容的程序（获取百度首页）\n6. 创建一个包，包含多个模块，练习包的导入\n\n模块化是工程化编程的基础，把代码组织好！"
+          }
+        ],
+        "summary": "这节课我们学习了模块和包：import的各种用法、自定义模块、__name__=='__main__'的作用、pip安装第三方库、常用标准库。把代码按功能拆分到不同模块，用包组织模块，是写出可维护项目的基础。下节课学习文件操作！",
+        "quiz": {
+          "question": "if __name__ == '__main__': 这行代码的作用是？",
+          "options": [
+            "让模块不能被导入",
+            "让代码只在文件被直接运行时执行，被import导入时不执行",
+            "定义主函数",
+            "导入主模块"
+          ],
+          "answer": 1,
+          "explanation": "当文件被直接运行时__name__等于'__main__'，被import时__name__等于模块名。所以这个判断让代码只在直接运行时执行，被导入时不执行，常用于测试代码和脚本入口。"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "文件操作",
+      "duration": "80分钟",
+      "content": {
+        "introduction": "程序运行时的数据存在内存里，关机就没了。要永久保存数据，就得写入文件。这节课学习Python的文件操作：打开/读取/写入文本文件、with语句自动关闭文件、CSV文件处理、JSON文件读写、文件路径操作。文件操作是数据持久化的基础，几乎所有实用程序都要读写文件。",
+        "sections": [
+          {
+            "title": "6.1 打开和读写文件",
+            "content": "Python用open()函数打开文件，返回文件对象，然后可以读取或写入。\n\nopen()的参数：\n- 文件路径\n- 模式（mode）：\n  - 'r' - 只读（默认）\n  - 'w' - 只写（覆盖，文件不存在则创建）\n  - 'a' - 追加（在末尾加，文件不存在则创建）\n  - 'r+' - 读写\n  - 加'b' - 二进制模式（如'rb'、'wb'）\n- encoding - 编码（中文建议用utf-8）\n\n操作完文件一定要close()，否则可能数据没写入！所以推荐用with语句（下一节讲）。"
+          },
+          {
+            "title": "6.2 读写文件示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 写入文件\nf = open('test.txt', 'w', encoding='utf-8')\nf.write('你好，Python！\\n')\nf.write('这是第二行\\n')\nf.writelines(['第三行\\n', '第四行\\n'])  # 写入多行\nf.close()  # 一定要关闭！\n\n# 读取文件（全部读取）\nf = open('test.txt', 'r', encoding='utf-8')\ncontent = f.read()  # 读取全部内容\nprint(content)\nf.close()\n\n# 按行读取\nf = open('test.txt', 'r', encoding='utf-8')\nline = f.readline()  # 读一行\nprint('第一行：', line.strip())\nf.close()\n\n# 读取所有行为列表\nf = open('test.txt', 'r', encoding='utf-8')\nlines = f.readlines()  # ['你好...\\n', '这是第二行\\n', ...]\nprint(f'共{len(lines)}行')\nfor line in lines:\n    print(line.strip())\nf.close()\n\n# 追加内容\nf = open('test.txt', 'a', encoding='utf-8')\nf.write('这是追加的内容\\n')\nf.close()\n\n# 注意：read()会一次性读取整个文件，大文件可能爆内存\n# 大文件用for line in f 逐行读取更安全"
+          },
+          {
+            "title": "6.3 with 语句",
+            "content": "with语句是操作文件的推荐方式，它会自动管理文件的关闭，即使中间出错了也会正确关闭文件，不用手动close()。\n\n好处：\n1. 自动关闭文件，不会忘记\n2. 即使出异常也能正确关闭\n3. 代码更简洁\n\n语法：\n```python\nwith open('文件', '模式') as f:\n    # 操作f\n# 离开with块，f自动关闭\n```\n\n这叫'上下文管理器'，不仅文件能用，任何实现了__enter__和__exit__的对象都能用with。日常开发中，文件操作请永远用with语句！"
+          },
+          {
+            "title": "6.4 with语句与路径操作",
+            "type": "code",
+            "language": "python",
+            "code": "from pathlib import Path\n\n# with 语句读写文件（推荐）\nwith open('test.txt', 'w', encoding='utf-8') as f:\n    f.write('用with写的内容\\n')\n    f.write('安全又方便\\n')\n# 离开with块自动关闭，不用f.close()\n\nwith open('test.txt', 'r', encoding='utf-8') as f:\n    for line in f:  # 逐行读取，适合大文件\n        print(line.strip())\n\n# pathlib：面向对象的路径操作（推荐）\np = Path('data')\np.mkdir(exist_ok=True)  # 创建文件夹（已存在不报错）\n\nfile_path = p / 'info.txt'  # 路径拼接，比 os.path.join 优雅\nfile_path.write_text('hello pathlib', encoding='utf-8')\nprint(file_path.read_text(encoding='utf-8'))\n\n# 路径信息\nprint(file_path.name)       # info.txt\nprint(file_path.stem)       # info\nprint(file_path.suffix)     # .txt\nprint(file_path.parent)     # data\nprint(file_path.exists())   # True\n\n# 遍历文件夹\nfor child in p.iterdir():\n    print(child)\n\n# 查找文件\nfor py_file in Path('.').rglob('*.py'):  # 递归查找所有.py文件\n    print(py_file)"
+          },
+          {
+            "title": "6.5 CSV 文件处理",
+            "content": "CSV（逗号分隔值）是存储表格数据的常用格式，每行是一条记录，字段用逗号分隔。Python内置csv模块来处理CSV。\n\ncsv模块提供两种读写方式：\n- 普通方式：reader/writer，返回列表\n- Dict方式：DictReader/DictWriter，返回字典（更直观，推荐）\n\nCSV常用于数据导入导出、Excel交互、数据分析。用csv模块比自己用split(',')解析更安全，能正确处理字段里有逗号、引号的情况。"
+          },
+          {
+            "title": "6.6 CSV 读写示例",
+            "type": "code",
+            "language": "python",
+            "code": "import csv\n\n# 写入CSV\nstudents = [\n    {'name': '小明', 'age': 18, 'score': 85},\n    {'name': '小红', 'age': 17, 'score': 92},\n    {'name': '小刚', 'age': 18, 'score': 78},\n]\n\nwith open('students.csv', 'w', encoding='utf-8', newline='') as f:\n    writer = csv.DictWriter(f, fieldnames=['name', 'age', 'score'])\n    writer.writeheader()  # 写表头\n    writer.writerows(students)  # 写多行\n\n# 读取CSV（DictReader，推荐）\nwith open('students.csv', 'r', encoding='utf-8') as f:\n    reader = csv.DictReader(f)\n    for row in reader:\n        print(f\"姓名:{row['name']}, 年龄:{row['age']}, 成绩:{row['score']}\")\n\n# 普通方式读写\nwith open('data.csv', 'w', encoding='utf-8', newline='') as f:\n    writer = csv.writer(f)\n    writer.writerow(['姓名', '年龄', '成绩'])\n    writer.writerow(['小明', 18, 85])\n    writer.writerows([['小红', 17, 92], ['小刚', 18, 78]])\n\nwith open('data.csv', 'r', encoding='utf-8') as f:\n    reader = csv.reader(f)\n    for row in reader:\n        print(row)  # ['姓名', '年龄', '成绩']\n\n# 注意：写CSV时 newline='' 避免Windows出现空行\n# 中文用 encoding='utf-8'，Excel可能需要 utf-8-sig"
+          },
+          {
+            "title": "6.7 JSON 文件处理",
+            "content": "JSON是一种轻量级的数据交换格式，和Python的字典/列表结构很像，广泛用于配置文件、API数据、数据存储。\n\nPython内置json模块处理JSON：\n- `json.dumps(obj)` - Python对象转JSON字符串（dump string）\n- `json.loads(str)` - JSON字符串转Python对象（load string）\n- `json.dump(obj, f)` - 写入文件\n- `json.load(f)` - 从文件读取\n\n记忆技巧：带's'的指string字符串操作，不带的指文件操作。JSON和Python类型对应：object↔dict，array↔list，string↔str，number↔int/float，true/false↔True/False，null↔None。"
+          },
+          {
+            "title": "6.8 JSON 读写示例",
+            "type": "code",
+            "language": "python",
+            "code": "import json\n\n# Python对象 -> JSON字符串\ndata = {\n    'name': '小明',\n    'age': 18,\n    'hobbies': ['编程', '游戏'],\n    'is_student': True,\n    'score': None\n}\n\njson_str = json.dumps(data, ensure_ascii=False, indent=2)\nprint(json_str)\n# ensure_ascii=False 让中文正常显示\n# indent=2 让输出有缩进，好看\n\n# JSON字符串 -> Python对象\nparsed = json.loads(json_str)\nprint(parsed['name'])      # 小明\nprint(parsed['hobbies'])   # ['编程', '游戏']\n\n# 写入JSON文件\nwith open('data.json', 'w', encoding='utf-8') as f:\n    json.dump(data, f, ensure_ascii=False, indent=2)\n\n# 读取JSON文件\nwith open('data.json', 'r', encoding='utf-8') as f:\n    loaded = json.load(f)\n    print(loaded)\n\n# 实用：保存和加载配置\nconfig = {\n    'app_name': '我的应用',\n    'version': '1.0',\n    'theme': 'dark',\n    'font_size': 14\n}\n\n# 保存配置\ndef save_config(cfg, path='config.json'):\n    with open(path, 'w', encoding='utf-8') as f:\n        json.dump(cfg, f, ensure_ascii=False, indent=2)\n\n# 加载配置\ndef load_config(path='config.json'):\n    try:\n        with open(path, 'r', encoding='utf-8') as f:\n            return json.load(f)\n    except FileNotFoundError:\n        return {}  # 文件不存在返回默认值\n\nsave_config(config)\nprint(load_config())"
+          },
+          {
+            "title": "6.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 用with语句写一个程序，把用户输入的若干行文字保存到文件，再读取出来显示\n2. 写一个函数，统计一个文本文件中有多少行、多少单词、多少字符\n3. 创建一个学生信息CSV文件，包含姓名、年龄、成绩，然后读取并计算平均成绩\n4. 把一个字典数据保存为JSON文件，再读取出来验证\n5. 写一个简单的配置管理类，能保存和加载JSON格式的配置文件\n6. 用pathlib遍历某个文件夹，找出所有大于1MB的文件\n\n文件操作是数据持久化的基础，多做几个小项目练手！"
+          }
+        ],
+        "summary": "这节课我们学习了文件操作：open()打开文件、读写文本、with语句自动关闭、pathlib路径操作、CSV文件用csv模块处理、JSON文件用json模块处理。文件操作让程序能永久保存数据，是实用程序的基础。下节课学习异常处理！",
+        "quiz": {
+          "question": "使用 with open(...) as f 操作文件的好处是？",
+          "options": [
+            "读写速度更快",
+            "自动关闭文件，即使出错也能正确关闭",
+            "可以同时打开更多文件",
+            "文件内容会自动加密"
+          ],
+          "answer": 1,
+          "explanation": "with语句（上下文管理器）会在代码块结束时自动关闭文件，即使发生异常也能正确关闭，避免资源泄漏，是文件操作的推荐方式。"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "异常处理",
+      "duration": "70分钟",
+      "content": {
+        "introduction": "程序运行时难免出错：文件找不到、除以零、网络断开……如果不处理，程序直接崩溃。异常处理让程序在出错时优雅地应对，而不是直接挂掉。这节课学习try/except/else/finally、常见异常类型、raise主动抛出异常、自定义异常类，写出健壮可靠的程序。",
+        "sections": [
+          {
+            "title": "7.1 什么是异常",
+            "content": "异常（Exception）就是程序运行时发生的错误。Python遇到错误会'抛出异常'，如果不处理，程序会终止并显示错误信息（Traceback）。\n\n常见的异常：\n- ZeroDivisionError - 除以零\n- TypeError - 类型错误\n- ValueError - 值错误\n- IndexError - 索引越界\n- KeyError - 字典key不存在\n- FileNotFoundError - 文件找不到\n- NameError - 变量名未定义\n- AttributeError - 属性不存在\n\n异常处理的思路：预料到可能出错的地方，用try捕获，做出合适的处理，让程序继续运行或优雅退出。不要让用户看到一堆英文报错！"
+          },
+          {
+            "title": "7.2 try/except 基础",
+            "type": "code",
+            "language": "python",
+            "code": "# 基本用法\ntry:\n    num = int(input('请输入数字：'))\n    result = 10 / num\n    print(f'10 / {num} = {result}')\nexcept ZeroDivisionError:\n    print('错误：不能除以零！')\nexcept ValueError:\n    print('错误：请输入有效的数字！')\n\n# 捕获多种异常，分别处理\ntry:\n    lst = [1, 2, 3]\n    print(lst[10])  # IndexError\nexcept (IndexError, KeyError) as e:\n    print(f'索引或键错误：{e}')\n\n# 捕获所有异常（不推荐滥用，会隐藏bug）\ntry:\n    1 / 0\nexcept Exception as e:\n    print(f'发生异常：{type(e).__name__}: {e}')\n\n# 获取异常信息\ntry:\n    'abc' + 123\nexcept TypeError as e:\n    print(f'类型错误：{e}')\n\n# 注意：先捕获具体的异常，再捕获宽泛的\n# except 子句顺序：具体 -> 宽泛，否则具体的永远捕获不到"
+          },
+          {
+            "title": "7.3 else 和 finally",
+            "content": "try语句还可以有else和finally子句：\n\n- **try** - 尝试执行的代码\n- **except** - 出异常时执行的代码\n- **else** - 没出异常时执行的代码（只在try成功时执行）\n- **finally** - 无论是否异常都会执行的代码（清理工作）\n\n执行顺序：\n- 没异常：try → else → finally\n- 有异常：try → except → finally\n\nfinally常用于释放资源（关闭文件、数据库连接等），保证无论是否出错都会执行。else适合放'依赖try成功'的代码，让逻辑更清晰。"
+          },
+          {
+            "title": "7.4 else/finally 示例",
+            "type": "code",
+            "language": "python",
+            "code": "# else 和 finally\ntry:\n    f = open('test.txt', 'r', encoding='utf-8')\nexcept FileNotFoundError:\n    print('文件不存在！')\nelse:\n    # try成功才执行\n    content = f.read()\n    print('文件内容：', content[:50])\n    f.close()\nfinally:\n    # 无论是否异常都执行\n    print('操作完成')\n\n# 实用例子：安全的除法\ndef safe_divide(a, b):\n    try:\n        result = a / b\n    except ZeroDivisionError:\n        print('错误：除数不能为零')\n        return None\n    except TypeError:\n        print('错误：参数必须是数字')\n        return None\n    else:\n        print(f'{a} / {b} = {result}')\n        return result\n    finally:\n        print('---除法运算结束---')\n\nsafe_divide(10, 2)   # 10 / 2 = 5.0\nsafe_divide(10, 0)   # 错误：除数不能为零\nsafe_divide('a', 2)  # 错误：参数必须是数字\n\n# finally 在 return 之后也会执行\ndef test():\n    try:\n        return 'try的返回值'\n    finally:\n        print('finally依然会执行！')\n\nprint(test())"
+          },
+          {
+            "title": "7.5 raise 抛出异常",
+            "content": "除了捕获异常，我们还可以用raise主动抛出异常。当输入不合法、条件不满足时，主动抛出异常让调用者处理。\n\n用法：\n- `raise 异常类(信息)` - 抛出指定异常\n- `raise` - 重新抛出当前异常（在except里用）\n\n什么时候抛异常：\n- 函数参数不合法\n- 操作不满足前置条件\n- 资源不可用\n- 业务逻辑不允许\n\n抛异常的好处：让错误被发现、被处理，而不是默默返回错误结果。'尽早失败'比'隐藏错误'更好。"
+          },
+          {
+            "title": "7.6 raise 与自定义异常",
+            "type": "code",
+            "language": "python",
+            "code": "# raise 抛出异常\ndef set_age(age):\n    if not isinstance(age, int):\n        raise TypeError('年龄必须是整数')\n    if age < 0 or age > 150:\n        raise ValueError(f'年龄 {age} 不合理，应在0-150之间')\n    return age\n\ntry:\n    set_age(-5)\nexcept ValueError as e:\n    print(e)  # 年龄 -5 不合理...\n\n# 自定义异常类（继承Exception）\nclass InsufficientFundsError(Exception):\n    \"\"\"余额不足异常\"\"\"\n    def __init__(self, balance, amount):\n        self.balance = balance\n        self.amount = amount\n        super().__init__(\n            f'余额不足：当前{balance}，需{amount}，差{amount - balance}'\n        )\n\nclass InvalidPasswordError(Exception):\n    \"\"\"密码错误异常\"\"\"\n    pass\n\nclass BankAccount:\n    def __init__(self, balance=0):\n        self.balance = balance\n\n    def withdraw(self, amount):\n        if amount <= 0:\n            raise ValueError('取款金额必须大于0')\n        if amount > self.balance:\n            raise InsufficientFundsError(self.balance, amount)\n        self.balance -= amount\n        return self.balance\n\n# 使用自定义异常\nacc = BankAccount(100)\ntry:\n    acc.withdraw(200)\nexcept InsufficientFundsError as e:\n    print(f'取款失败：{e}')\n    print(f'你还可以尝试取 {e.balance} 元')\nexcept ValueError as e:\n    print(f'输入错误：{e}')\n\n# 自定义异常让错误处理更有语义"
+          },
+          {
+            "title": "7.7 异常处理最佳实践",
+            "content": "异常处理的几个最佳实践：\n\n1. **别捕获所有异常** - 不要裸的 `except:`，要捕获具体的异常类型\n2. **别吞掉异常** - 捕获了至少要记录日志或处理，别空except\n3. **try范围要小** - 只包可能出错的代码，不要一大段都包起来\n4. **用else** - 依赖try成功的代码放else里，更清晰\n5. **finally清理资源** - 文件、连接等在finally里关闭\n6. **合理用raise** - 不该在函数内处理的，抛给调用者\n7. **自定义异常** - 业务异常用自定义类，更有语义\n8. **失败要早** - 尽早发现和抛出错误，别让错误传播\n\n好的异常处理让程序既健壮又好调试。"
+          },
+          {
+            "title": "7.8 综合示例",
+            "type": "code",
+            "language": "python",
+            "code": "import json\n\nclass ConfigError(Exception):\n    \"\"\"配置错误\"\"\"\n    pass\n\ndef load_config(path):\n    \"\"\"加载JSON配置文件，带完整异常处理\"\"\"\n    try:\n        with open(path, 'r', encoding='utf-8') as f:\n            content = f.read()\n    except FileNotFoundError:\n        raise ConfigError(f'配置文件不存在：{path}')\n    except PermissionError:\n        raise ConfigError(f'无权限读取文件：{path}')\n\n    try:\n        config = json.loads(content)\n    except json.JSONDecodeError as e:\n        raise ConfigError(f'配置文件格式错误：{e}')\n\n    if not isinstance(config, dict):\n        raise ConfigError('配置必须是JSON对象')\n\n    return config\n\n# 使用\ndef main():\n    try:\n        cfg = load_config('config.json')\n        print('配置加载成功：', cfg)\n    except ConfigError as e:\n        print(f'配置错误：{e}')\n        print('使用默认配置')\n        cfg = {'theme': 'light', 'font': 14}\n    except Exception as e:\n        # 兜底：捕获意外异常\n        print(f'未知错误：{e}')\n        cfg = {}\n    finally:\n        print('配置加载流程结束')\n\n    print('最终配置：', cfg)\n\nmain()"
+          },
+          {
+            "title": "7.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 写一个安全的整数输入函数 safe_input_int()，捕获ValueError，输入错误让用户重新输入\n2. 写一个除法函数，捕获ZeroDivisionError和TypeError，返回结果或错误信息\n3. 写一个读文件函数，处理文件不存在、权限错误等情况\n4. 定义一个 PasswordError 自定义异常，写一个设置密码的函数，密码长度不够时抛出\n5. 写一个简单的计算器，处理各种可能的异常（除零、非法输入等）\n6. 写一个函数把列表元素转成整数，跳过不能转的元素并记录错误\n\n健壮的程序离不开异常处理，多写多体会！"
+          }
+        ],
+        "summary": "这节课我们学习了异常处理：try/except捕获异常、else在成功时执行、finally无论如何都执行、raise主动抛出异常、自定义异常类、异常处理最佳实践。好的异常处理让程序健壮可靠，下节课学习推导式和生成器！",
+        "quiz": {
+          "question": "try语句中，finally块的代码什么时候执行？",
+          "options": [
+            "只有发生异常时执行",
+            "只有没异常时执行",
+            "无论是否发生异常都会执行",
+            "在return之后不执行"
+          ],
+          "answer": 2,
+          "explanation": "finally块的代码无论是否发生异常都会执行，即使try或except里有return，finally也会在return之前执行。常用于释放资源。"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "列表推导式与生成器",
+      "duration": "75分钟",
+      "content": {
+        "introduction": "推导式（Comprehension）是Python最优雅的特性之一，能用一行代码生成列表、字典、集合，简洁高效。生成器（Generator）则是一种'惰性计算'的利器，不一次性生成所有数据，节省内存。这节课学习各种推导式、生成器函数yield、生成器表达式，写出更Pythonic的代码。",
+        "sections": [
+          {
+            "title": "8.1 列表推导式",
+            "content": "列表推导式用一行代码生成列表，比for循环简洁得多。\n\n基本语法：`[表达式 for 变量 in 可迭代对象 if 条件]`\n\n读法：对可迭代对象的每个元素，满足条件的话，用表达式处理后放入列表。\n\n执行流程：\n1. 遍历可迭代对象\n2. 每个元素判断if条件（可选）\n3. 满足条件的，用表达式处理，加入结果列表\n\n列表推导式是Python的特色，掌握它能让代码简洁很多。但太复杂的逻辑还是用普通for循环更易读。"
+          },
+          {
+            "title": "8.2 列表推导式示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 基本用法\nnums = [1, 2, 3, 4, 5]\n\n# 生成平方列表\nsquares = [x ** 2 for x in nums]\nprint(squares)  # [1, 4, 9, 16, 25]\n\n# 带条件过滤：偶数的平方\neven_squares = [x ** 2 for x in nums if x % 2 == 0]\nprint(even_squares)  # [4, 16]\n\n# 对比传统写法\nsquares_old = []\nfor x in nums:\n    squares_old.append(x ** 2)\n# 推导式一行搞定，更简洁\n\n# 更多例子\n# 1-10的偶数\nevens = [x for x in range(1, 11) if x % 2 == 0]\nprint(evens)  # [2, 4, 6, 8, 10]\n\n# 字符串转ASCII\ncodes = [ord(c) for c in 'hello']\nprint(codes)  # [104, 101, 108, 108, 111]\n\n# 嵌套循环（笛卡尔积）\npairs = [(x, y) for x in [1, 2] for y in ['a', 'b']]\nprint(pairs)  # [(1,'a'), (1,'b'), (2,'a'), (2,'b')]\n\n# 处理嵌套列表（二维转一维）\nmatrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nflat = [num for row in matrix for num in row]\nprint(flat)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]\n\n# 带条件表达式（if-else）\nlabels = ['偶' if x % 2 == 0 else '奇' for x in range(1, 6)]\nprint(labels)  # ['奇', '偶', '奇', '偶', '奇']"
+          },
+          {
+            "title": "8.3 字典和集合推导式",
+            "content": "除了列表推导式，Python还支持字典推导式和集合推导式：\n\n- **字典推导式**：`{key表达式: value表达式 for ... if ...}`\n- **集合推导式**：`{表达式 for ... if ...}`（用花括号，自动去重）\n\n字典推导式常用于：反转字典、统计、转换。集合推导式常用于：去重、提取唯一值。\n\n推导式的语法很统一，记住方括号是列表、花括号带冒号是字典、花括号不带冒号是集合。"
+          },
+          {
+            "title": "8.4 字典/集合推导式示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 字典推导式\n# 生成字典\nsquares_dict = {x: x ** 2 for x in range(1, 6)}\nprint(squares_dict)  # {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}\n\n# 反转字典（key和value互换）\noriginal = {'a': 1, 'b': 2, 'c': 3}\nreversed_dict = {v: k for k, v in original.items()}\nprint(reversed_dict)  # {1: 'a', 2: 'b', 3: 'c'}\n\n# 统计字符出现次数\ntext = 'hello world'\nchar_count = {c: text.count(c) for c in set(text) if c != ' '}\nprint(char_count)  # {'h': 1, 'e': 1, 'l': 3, 'o': 2, ...}\n\n# 集合推导式\n# 提取唯一单词长度\nwords = ['apple', 'banana', 'cat', 'dog', 'elephant']\nlengths = {len(w) for w in words}\nprint(lengths)  # {3, 5, 6, 8}（自动去重）\n\n# 从列表提取唯一元素\nnums = [1, 2, 2, 3, 3, 3, 4]\nunique = {x for x in nums}\nprint(unique)  # {1, 2, 3, 4}\n\n# 实用：用字典推导式过滤字典\nscores = {'小明': 85, '小红': 92, '小刚': 55, '小华': 78}\npassed = {name: score for name, score in scores.items() if score >= 60}\nprint(passed)  # {'小明': 85, '小红': 92, '小华': 78}"
+          },
+          {
+            "title": "8.5 生成器函数 yield",
+            "content": "生成器是一种'惰性'的迭代器，不会一次性生成所有数据，而是每次需要时才生成一个，大大节省内存。\n\n生成器函数：用yield代替return的函数。调用生成器函数不会执行函数体，而是返回一个生成器对象。每次next()时执行到yield暂停并返回值，下次next()从暂停处继续。\n\nyield和return的区别：\n- return：返回值，函数结束\n- yield：返回值，函数暂停（状态保留），下次继续执行\n\n生成器适合处理大数据流、无限序列、文件逐行等场景。读取大文件时，生成器不会一次把文件全读进内存。"
+          },
+          {
+            "title": "8.6 生成器函数示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 生成器函数：用 yield\ndef count_up(n):\n    i = 1\n    while i <= n:\n        yield i  # 暂停并返回i\n        i += 1   # 下次从这里继续\n\n# 调用生成器函数，返回生成器对象\ngen = count_up(5)\nprint(gen)  # <generator object>\n\n# 用next逐个获取\nprint(next(gen))  # 1\nprint(next(gen))  # 2\nprint(next(gen))  # 3\n\n# 也可以用for遍历（推荐）\nfor num in count_up(5):\n    print(num, end=' ')  # 1 2 3 4 5\nprint()\n\n# 生成无限序列（普通列表做不到！）\ndef fibonacci():\n    a, b = 0, 1\n    while True:\n        yield a\n        a, b = b, a + b\n\n# 取前10个斐波那契数\nfib = fibonacci()\nfor _ in range(10):\n    print(next(fib), end=' ')  # 0 1 1 2 3 5 8 13 21 34\nprint()\n\n# 实用：逐行读取大文件\ndef read_large_file(path):\n    with open(path, 'r', encoding='utf-8') as f:\n        for line in f:\n            yield line.strip()\n\n# 不会一次读完整个文件，省内存\n# for line in read_large_file('big.txt'):\n#     process(line)\n\n# 生成器 vs 列表：内存对比\nimport sys\nbig_list = [x for x in range(1000000)]\nbig_gen = (x for x in range(1000000))\nprint(f'列表内存：{sys.getsizeof(big_list)} 字节')  # ~8MB+\nprint(f'生成器内存：{sys.getsizeof(big_gen)} 字节')  # ~120字节"
+          },
+          {
+            "title": "8.7 生成器表达式",
+            "content": "生成器表达式是列表推导式的'惰性版本'，把方括号换成圆括号就行。\n\n语法：`(表达式 for 变量 in 可迭代对象 if 条件)`\n\n和列表推导式的区别：\n- 列表推导式 [...] - 立即生成所有元素，占内存\n- 生成器表达式 (...) - 惰性生成，省内存，但只能遍历一次\n\n生成器表达式常配合sum()、max()、min()、any()、all()等函数使用，既简洁又省内存。这是Pythonic编程的常用技巧。"
+          },
+          {
+            "title": "8.8 生成器表达式示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 列表推导式 vs 生成器表达式\n# 列表推导式（方括号）：立即生成\nnums_list = [x ** 2 for x in range(5)]\nprint(nums_list)       # [0, 1, 4, 9, 16]\nprint(type(nums_list)) # <class 'list'>\n\n# 生成器表达式（圆括号）：惰性\nnums_gen = (x ** 2 for x in range(5))\nprint(nums_gen)        # <generator object>\nprint(type(nums_gen))  # <class 'generator'>\n\n# 生成器只能遍历一次\nprint(list(nums_gen))  # [0, 1, 4, 9, 16]\nprint(list(nums_gen))  # [] 已经遍历完了！\n\n# 配合sum/max/min等函数，省内存\n# 求平方和\n# 列表方式：先建列表再求和（占内存）\ntotal = sum([x ** 2 for x in range(1000000)])\n# 生成器方式：边生成边求和（省内存）\ntotal = sum(x ** 2 for x in range(1000000))  # 注意：函数调用时括号可省\nprint(total)\n\n# any/all 配合生成器\nnums = [1, 3, 5, 7, 9]\nhas_even = any(x % 2 == 0 for x in nums)\nprint(has_even)  # False\nall_odd = all(x % 2 == 1 for x in nums)\nprint(all_odd)  # True\n\n# 找最大值\nmax_len = max(len(w) for w in ['apple', 'banana', 'cat'])\nprint(max_len)  # 6\n\n# 链式处理：生成器可以链起来\nresult = sum(x for x in range(100) if x % 2 == 0)\nprint(result)  # 偶数之和"
+          },
+          {
+            "title": "8.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 用列表推导式生成1-100中所有能被3或5整除的数\n2. 用列表推导式把一个字符串列表全部转成大写\n3. 用字典推导式把两个列表（姓名、成绩）合并成一个字典\n4. 写一个生成器函数 generate_squares(n)，依次产生1到n的平方数\n5. 写一个无限生成器 natural_numbers()，产生自然数1,2,3...\n6. 用生成器表达式求1-1000中所有偶数的平方和\n7. 写一个生成器函数 read_words(text)，逐个产生一段文字中的单词\n\n推导式和生成器是Pythonic编程的精髓，多体会简洁之美！"
+          }
+        ],
+        "summary": "这节课我们学习了列表推导式、字典推导式、集合推导式，用一行代码优雅地生成数据；生成器函数yield实现惰性计算，生成器表达式配合内置函数省内存。推导式让代码简洁，生成器让程序高效处理大数据。下节课学习迭代器与装饰器！",
+        "quiz": {
+          "question": "生成器表达式 (x for x in range(10)) 和列表推导式 [x for x in range(10)] 的主要区别是？",
+          "options": [
+            "没有区别",
+            "生成器表达式惰性计算，省内存，但只能遍历一次",
+            "列表推导式更省内存",
+            "生成器表达式能修改元素"
+          ],
+          "answer": 1,
+          "explanation": "生成器表达式用圆括号，是惰性的，按需生成，省内存但只能遍历一次。列表推导式用方括号，立即生成所有元素存内存，可多次遍历。"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "title": "迭代器与装饰器",
+      "duration": "85分钟",
+      "content": {
+        "introduction": "迭代器和装饰器是Python两个重要的高级特性。迭代器是for循环背后的机制，理解它能自定义可迭代对象；装饰器能不修改原函数代码就增强功能，是Python最优雅的特性之一。这节课深入学习__iter__/__next__、内置迭代器工具、装饰器原理和写法、常用装饰器，揭开Python优雅语法背后的秘密。",
+        "sections": [
+          {
+            "title": "9.1 迭代器协议",
+            "content": "迭代器（Iterator）是一个可以记住遍历位置的对象。for循环的本质就是用迭代器遍历。\n\n迭代器协议：\n- `__iter__()` - 返回迭代器本身\n- `__next__()` - 返回下一个值，没有更多值时抛出StopIteration异常\n\n可迭代对象（Iterable）：实现了__iter__()的对象，比如列表、字符串、字典。\n迭代器（Iterator）：同时实现了__iter__()和__next__()的对象。\n\nfor循环的原理：\n1. 调用 iter(对象) 得到迭代器\n2. 不断调用 next(迭代器) 取值\n3. 遇到StopIteration停止\n\n理解迭代器，就能自定义可迭代行为。"
+          },
+          {
+            "title": "9.2 迭代器使用与自定义",
+            "type": "code",
+            "language": "python",
+            "code": "# 迭代器的基本使用\nnums = [10, 20, 30]\nit = iter(nums)  # 获取迭代器\nprint(next(it))  # 10\nprint(next(it))  # 20\nprint(next(it))  # 30\n# print(next(it))  # StopIteration！\n\n# 字符串也是可迭代的\nfor c in 'abc':\n    print(c, end=' ')  # a b c\nprint()\n\n# 自定义迭代器：倒数\nclass Countdown:\n    def __init__(self, start):\n        self.current = start\n\n    def __iter__(self):\n        return self  # 迭代器返回自己\n\n    def __next__(self):\n        if self.current <= 0:\n            raise StopIteration  # 结束迭代\n        self.current -= 1\n        return self.current + 1\n\n# 使用\ncd = Countdown(5)\nfor num in cd:\n    print(num, end=' ')  # 5 4 3 2 1\nprint()\n\n# 自定义可迭代对象：range的简化版\nclass MyRange:\n    def __init__(self, start, end):\n        self.start = start\n        self.end = end\n\n    def __iter__(self):\n        # 返回一个新的迭代器\n        return MyRangeIterator(self.start, self.end)\n\nclass MyRangeIterator:\n    def __init__(self, start, end):\n        self.current = start\n        self.end = end\n\n    def __iter__(self):\n        return self\n\n    def __next__(self):\n        if self.current >= self.end:\n            raise StopIteration\n        value = self.current\n        self.current += 1\n        return value\n\nfor i in MyRange(1, 5):\n    print(i, end=' ')  # 1 2 3 4\nprint()"
+          },
+          {
+            "title": "9.3 内置迭代器工具",
+            "content": "Python的itertools模块提供了很多强大的迭代器工具，处理迭代数据非常方便：\n\n- **count(start, step)** - 无限计数\n- **cycle(iterable)** - 无限循环\n- **repeat(elem, n)** - 重复元素\n- **chain(*iterables)** - 串联多个迭代器\n- **islice(iterable, start, stop)** - 切片（对迭代器切片）\n- **zip_longest(*iterables)** - 最长zip\n- **product(*iterables)** - 笛卡尔积\n- **permutations(iterable, r)** - 排列\n- **combinations(iterable, r)** - 组合\n- **groupby(iterable, key)** - 分组\n- **accumulate(iterable)** - 累积\n\nitertools是函数式编程的利器，能写出非常简洁高效的代码。"
+          },
+          {
+            "title": "9.4 itertools 示例",
+            "type": "code",
+            "language": "python",
+            "code": "import itertools\n\n# count 无限计数（要配合islice或break用）\nfor i in itertools.count(10, 2):\n    print(i, end=' ')  # 10 12 14 16 18\n    if i >= 18:\n        break\nprint()\n\n# cycle 无限循环\ncount = 0\nfor item in itertools.cycle(['红', '绿', '蓝']):\n    print(item, end=' ')  # 红 绿 蓝 红 绿\n    count += 1\n    if count >= 5:\n        break\nprint()\n\n# chain 串联\nfor x in itertools.chain([1, 2], [3, 4], [5]):\n    print(x, end=' ')  # 1 2 3 4 5\nprint()\n\n# product 笛卡尔积\nfor a, b in itertools.product('AB', '12'):\n    print(a + b, end=' ')  # A1 A2 B1 B2\nprint()\n\n# permutations 排列\nfor p in itertools.permutations('ABC', 2):\n    print(''.join(p), end=' ')  # AB AC BA BC CA CB\nprint()\n\n# combinations 组合\nfor c in itertools.combinations('ABC', 2):\n    print(''.join(c), end=' ')  # AB AC BC\nprint()\n\n# groupby 分组（要先排序）\ndata = [('水果', '苹果'), ('水果', '香蕉'), ('蔬菜', '白菜'), ('蔬菜', '萝卜')]\nfor key, group in itertools.groupby(data, key=lambda x: x[0]):\n    print(f'{key}: {[g[1] for g in group]}')\n\n# accumulate 累积\nprint(list(itertools.accumulate([1, 2, 3, 4])))  # [1, 3, 6, 10]"
+          },
+          {
+            "title": "9.5 装饰器原理",
+            "content": "装饰器本质是'函数的函数'：接收一个函数，返回一个增强后的新函数。在函数式编程里，这叫高阶函数。\n\n装饰器的工作原理：\n```python\n@decorator\ndef func():\n    pass\n# 等价于：func = decorator(func)\n```\n\n也就是说，@语法只是语法糖，本质是把原函数传给装饰器，用返回的新函数替换原函数。\n\n写装饰器的要点：\n1. 装饰器是函数，参数是被装饰的函数\n2. 内部定义wrapper函数，用 *args, **kwargs 接收任意参数\n3. wrapper里调用原函数，前后加增强逻辑\n4. 用 functools.wraps 保留原函数的元信息（名字、文档）\n\n上节课我们初步接触了装饰器，这里深入理解原理。"
+          },
+          {
+            "title": "9.6 装饰器原理示例",
+            "type": "code",
+            "language": "python",
+            "code": "import functools\nimport time\n\n# 理解装饰器本质\ndef my_decorator(func):\n    @functools.wraps(func)  # 保留原函数信息\n    def wrapper(*args, **kwargs):\n        print(f'调用前：{func.__name__}')\n        result = func(*args, **kwargs)\n        print(f'调用后：{func.__name__}')\n        return result\n    return wrapper\n\n@my_decorator\ndef say_hello(name):\n    '''打招呼'''\n    print(f'Hello, {name}！')\n\nsay_hello('小明')\n# 不用 @ 的等价写法：\n# say_hello = my_decorator(say_hello)\n\nprint(say_hello.__name__)  # say_hello（因为用了wraps）\nprint(say_hello.__doc__)   # 打招呼\n\n# functools.wraps 的作用：不加的话__name__会变成'wrapper'\n\n# 计时装饰器（实用）\ndef timer(func):\n    @functools.wraps(func)\n    def wrapper(*args, **kwargs):\n        start = time.perf_counter()\n        result = func(*args, **kwargs)\n        elapsed = time.perf_counter() - start\n        print(f'{func.__name__} 耗时 {elapsed:.6f}秒')\n        return result\n    return wrapper\n\n@timer\ndef slow_sum(n):\n    return sum(range(n))\n\nprint(slow_sum(1000000))  # slow_sum 耗时 0.0xxxxx秒"
+          },
+          {
+            "title": "9.7 常用装饰器",
+            "content": "Python内置了很多实用的装饰器：\n\n**functools模块：**\n- `@functools.wraps(func)` - 装饰器辅助，保留原函数信息\n- `@functools.lru_cache(maxsize)` - 缓存函数结果，相同参数直接返回缓存（自动记忆化）\n- `@functools.singledispatch` - 根据第一个参数类型分派\n\n**类相关：**\n- `@property` - 把方法变成属性访问\n- `@staticmethod` - 静态方法\n- `@classmethod` - 类方法\n- `@abstractmethod` - 抽象方法\n\n**其他：**\n- `@dataclass` - 自动生成__init__、__repr__等（Python 3.7+）\n\nlru_cache特别实用，递归函数加它能大幅提升性能。dataclass让定义数据类超简洁。"
+          },
+          {
+            "title": "9.8 lru_cache 与 dataclass",
+            "type": "code",
+            "language": "python",
+            "code": "import functools\nfrom dataclasses import dataclass\n\n# lru_cache：缓存函数结果，避免重复计算\n@functools.lru_cache(maxsize=128)\ndef fibonacci(n):\n    if n < 2:\n        return n\n    return fibonacci(n - 1) + fibonacci(n - 2)\n\n# 不用缓存，fibonacci(40)要好几秒\n# 用了lru_cache，瞬间完成\nprint(fibonacci(100))  # 354224848179261915075\nprint(fibonacci.cache_info())  # 查看缓存信息\n\n# dataclass：自动生成 __init__、__repr__、__eq__\n@dataclass\nclass Student:\n    name: str\n    age: int\n    score: float = 0.0  # 有默认值\n\n# 自动有了构造方法\ns1 = Student('小明', 18, 85.5)\ns2 = Student('小红', 17)\nprint(s1)  # Student(name='小明', age=18, score=85.5)\nprint(s2)  # Student(name='小红', age=17, score=0.0)\nprint(s1 == Student('小明', 18, 85.5))  # True，自动__eq__\n\n# property 装饰器\nclass Temperature:\n    def __init__(self, celsius):\n        self._celsius = celsius\n\n    @property\n    def celsius(self):\n        return self._celsius\n\n    @property\n    def fahrenheit(self):\n        return self._celsius * 9 / 5 + 32\n\n    @celsius.setter\n    def celsius(self, value):\n        if value < -273.15:\n            raise ValueError('温度不能低于绝对零度')\n        self._celsius = value\n\nt = Temperature(25)\nprint(t.fahrenheit)  # 77.0\nt.celsius = 30       # 调用setter\nprint(t.fahrenheit)  # 86.0"
+          },
+          {
+            "title": "9.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 自定义一个迭代器类 Range2(start, end, step)，实现 __iter__ 和 __next__\n2. 写一个自定义迭代器，遍历时产生斐波那契数列的前n项\n3. 用 itertools.combinations 写一个彩票选号程序（从35选7的所有组合数）\n4. 写一个 @retry 装饰器，函数出错时自动重试n次\n5. 写一个 @log 装饰器，记录函数调用的时间、参数、返回值到文件\n6. 用 lru_cache 优化递归实现的爬楼梯问题（每次走1或2步，n阶有多少种走法）\n7. 用 dataclass 定义一个 Person 类，体验简洁写法\n\n迭代器和装饰器是Python高级特性的精华，多写多悟！"
+          }
+        ],
+        "summary": "这节课我们学习了迭代器协议（__iter__/__next__）、itertools工具库、装饰器原理和写法、functools.wraps保留函数信息、lru_cache缓存优化、dataclass简化数据类定义、property装饰器。迭代器是for循环的本质，装饰器是代码复用和增强的利器。下节课学习正则表达式！",
+        "quiz": {
+          "question": "装饰器 @functools.lru_cache 的作用是？",
+          "options": [
+            "让函数运行更快",
+            "缓存函数结果，相同参数直接返回缓存，避免重复计算",
+            "限制函数调用次数",
+            "让函数变成私有"
+          ],
+          "answer": 1,
+          "explanation": "lru_cache是最近最少使用缓存，会缓存函数的结果。当用相同参数再次调用时，直接返回缓存结果，不重新计算，大幅提升性能，特别适合递归函数。"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "title": "正则表达式",
+      "duration": "85分钟",
+      "content": {
+        "introduction": "正则表达式（Regular Expression）是处理文本的强大工具，用一种简洁的语法描述字符串模式，能实现复杂的匹配、查找、替换。验证邮箱、提取网页内容、清洗数据都离不开它。这节课学习Python的re模块、匹配/搜索/替换、分组、常用正则模式，并通过实战案例掌握正则表达式的使用。",
+        "sections": [
+          {
+            "title": "10.1 正则表达式基础",
+            "content": "正则表达式用特殊符号描述字符串模式：\n\n**普通字符** - 匹配自身，如 abc 匹配 'abc'\n\n**元字符（特殊含义）：**\n- `.` - 匹配任意一个字符（除换行）\n- `^` - 匹配字符串开头\n- `$` - 匹配字符串结尾\n- `*` - 前一个字符出现0次或多次\n- `+` - 前一个字符出现1次或多次\n- `?` - 前一个字符出现0次或1次\n- `{n}` - 出现n次，`{n,m}` - 出现n到m次\n- `[]` - 字符集，匹配其中任意一个\n- `|` - 或\n- `()` - 分组\n- `\\` - 转义\n\n**预定义字符集：**\n- `\\d` - 数字，`\\D` - 非数字\n- `\\w` - 字母数字下划线，`\\W` - 反之\n- `\\s` - 空白字符，`\\S` - 非空白\n\n正则看似难，多写多练就熟了。"
+          },
+          {
+            "title": "10.2 re 模块基础",
+            "type": "code",
+            "language": "python",
+            "code": "import re\n\n# re.match 从开头匹配\ntext = 'Hello Python World'\nm = re.match(r'Hello', text)\nif m:\n    print(f'matched: {m.group()}')  # Hello\n\n# re.search 搜索整个字符串第一个匹配\nm = re.search(r'\\w+', text)  # 第一个单词\nprint(m.group())  # Hello\n\n# re.findall 找所有匹配\nwords = re.findall(r'\\w+', text)\nprint(words)  # ['Hello', 'Python', 'World']\n\n# re.finditer 找所有匹配（返回迭代器）\nfor m in re.finditer(r'\\w+', text):\n    print(m.group(), m.span())\n\n# 基本元字符\nprint(re.findall(r'o', text))         # 所有o\nprint(re.findall(r'^H\\w+', text))     # 开头的H单词\nprint(re.findall(r'\\w+d$', text))     # 结尾的单词\nprint(re.findall(r'[aeiou]', text))   # 所有元音\n\n# 量词\nprint(re.findall(r'\\w{5}', text))    # 5个字符的单词\nprint(re.findall(r'l+', text))        # l出现1次以上\n\n# match vs search 的区别\n# match只从开头匹配，search搜索整个字符串\nprint(re.match(r'Python', text))  # None（不是开头）\nprint(re.search(r'Python', text)) # <Match> 找到了"
+          },
+          {
+            "title": "10.3 分组与替换",
+            "content": "用()可以分组，提取匹配的部分。分组在提取数据时非常有用。\n\n分组相关：\n- `()` - 捕获分组\n- `(?:...)` - 非捕获分组（不提取）\n- `(?P<name>...)` - 命名分组\n- `m.group(0)` - 整个匹配，`m.group(1)` - 第1个分组\n- `m.groups()` - 所有分组\n\n替换：\n- `re.sub(pattern, repl, string)` - 替换所有匹配\n- `re.sub(pattern, repl, string, count=n)` - 替换n个\n- repl可以用 \\1, \\2 引用分组\n\n分组和替换配合，能做强大的文本处理。"
+          },
+          {
+            "title": "10.4 分组与替换示例",
+            "type": "code",
+            "language": "python",
+            "code": "import re\n\n# 分组提取\ntext = '2024-01-15 发布'\nm = re.search(r'(\\d{4})-(\\d{2})-(\\d{2})', text)\nif m:\n    print(m.group(0))   # 2024-01-15（整个匹配）\n    print(m.group(1))   # 2024（第1组）\n    print(m.group(2))   # 01\n    print(m.group(3))   # 15\n    print(m.groups())   # ('2024', '01', '15')\n\n# 命名分组\nm = re.search(r'(?P<year>\\d{4})-(?P<month>\\d{2})-(?P<day>\\d{2})', text)\nif m:\n    print(m.group('year'))   # 2024\n    print(m.groupdict())     # {'year': '2024', 'month': '01', 'day': '15'}\n\n# 替换\n# 把日期格式 2024-01-15 改成 01/15/2024\nresult = re.sub(r'(\\d{4})-(\\d{2})-(\\d{2})', r'\\2/\\3/\\1', text)\nprint(result)  # 01/15/2024 发布\n\n# 简单替换：把数字替换成#\nresult = re.sub(r'\\d', '#', '电话13800138000')\nprint(result)  # 电话############\n\n# split 分割\nparts = re.split(r'[,;\\s]+', '苹果, 香蕉; 橘子  葡萄')\nprint(parts)  # ['苹果', '香蕉', '橘子', '葡萄']\n\n# 替换次数限制\nresult = re.sub(r'o', '0', 'hello world', count=1)\nprint(result)  # hell0 world"
+          },
+          {
+            "title": "10.5 常用正则模式",
+            "content": "一些常用的正则表达式模式，收藏备用：\n\n**邮箱：** `[\\w.+-]+@[\\w-]+\\.[\\w.]+`\n**手机号：** `1[3-9]\\d{9}`\n**网址：** `https?://[\\w./?=&%-]+`\n**IP地址：** `\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}`\n**身份证号：** `\\d{17}[\\dXx]`\n**邮政编码：** `\\d{6}`\n**QQ号：** `[1-9]\\d{4,10}`\n**中文字符：** `[\\u4e00-\\u9fa5]+`\n**整数：** `-?\\d+`\n**小数：** `-?\\d+\\.\\d+`\n\n注意：这些是简化版，实际项目可能需要更严格的校验。正则没有唯一正确答案，够用就行。\n\n技巧：复杂正则可以拆开写，用 re.VERBOSE 模式加注释，提高可读性。"
+          },
+          {
+            "title": "10.6 常用模式示例",
+            "type": "code",
+            "language": "python",
+            "code": "import re\n\n# 邮箱验证\nemail_pattern = r'^[\\w.+-]+@[\\w-]+\\.[\\w.]+$'\nemails = ['test@example.com', 'bad@email', 'hello@world.org', 'no@.com']\nfor email in emails:\n    print(f'{email}: {bool(re.match(email_pattern, email))}')\n# test@example.com: True\n# bad@email: False\n# hello@world.org: True\n# no@.com: False\n\n# 提取文本中的所有邮箱\ntext = '联系我：alice@qq.com 或 bob@gmail.com'\nemails = re.findall(r'[\\w.+-]+@[\\w-]+\\.[\\w.]+', text)\nprint(emails)  # ['alice@qq.com', 'bob@gmail.com']\n\n# 手机号验证\nphone_pattern = r'^1[3-9]\\d{9}$'\nprint(bool(re.match(phone_pattern, '13800138000')))  # True\nprint(bool(re.match(phone_pattern, '12345678901')))  # False\n\n# 提取中文字符\nmixed = 'Hello世界abc你好def'\nchinese = re.findall(r'[\\u4e00-\\u9fa5]+', mixed)\nprint(chinese)  # ['世界', '你好']\n\n# 提取网页中的链接\nhtml = '<a href=\"https://www.python.org\">Python</a> <a href=\"http://github.com\">GitHub</a>'\nlinks = re.findall(r'href=\"(https?://[^\"]+)\"', html)\nprint(links)  # ['https://www.python.org', 'http://github.com']\n\n# 强密码校验：至少8位，含大小写字母和数字\npassword_pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'\nfor pwd in ['Abc12345', 'weak', 'NoNumber', 'nonumber1']:\n    print(f'{pwd}: {bool(re.match(password_pattern, pwd))}')"
+          },
+          {
+            "title": "10.7 re模块进阶",
+            "content": "re模块还有一些进阶用法：\n\n**预编译正则：** `re.compile(pattern)` - 编译成正则对象，多次使用更高效\n\n**标志位（flags）：**\n- `re.IGNORECASE` (re.I) - 忽略大小写\n- `re.MULTILINE` (re.M) - 多行模式，^和$匹配每行\n- `re.DOTALL` (re.S) - . 匹配包括换行符\n- `re.VERBOSE` (re.X) - 详细模式，可加注释和换行\n\n**贪婪与非贪婪：**\n- 默认贪婪：`.*` 尽可能多匹配\n- 非贪婪：`.*?` 尽可能少匹配\n\n预编译适合循环里反复用同一个正则。非贪婪在提取HTML等场景很重要，避免匹配过多。"
+          },
+          {
+            "title": "10.8 进阶用法示例",
+            "type": "code",
+            "language": "python",
+            "code": "import re\n\n# 预编译（多次使用更高效）\nemail_re = re.compile(r'[\\w.+-]+@[\\w-]+\\.[\\w.]+')\ntext = '联系 alice@qq.com 或 bob@gmail.com'\nprint(email_re.findall(text))  # 直接用编译好的对象\n\n# 标志位\n# IGNORECASE 忽略大小写\nprint(re.findall(r'python', 'Python PYTHON python', re.IGNORECASE))\n# ['Python', 'PYTHON', 'python']\n\n# DOTALL 让 . 匹配换行\nhtml = '<div>\\nhello\\n</div>'\nprint(re.search(r'<div>(.*?)</div>', html, re.DOTALL).group(1))\n# \\nhello\\n\n\n# 贪婪 vs 非贪婪\ntext = '<a>1</a><a>2</a>'\n# 贪婪（默认）：匹配尽可能多\ngreedy = re.findall(r'<a>(.*)</a>', text)\nprint(greedy)  # ['1</a><a>2']（匹配太多了！）\n# 非贪婪：加?，匹配尽可能少\nlazy = re.findall(r'<a>(.*?)</a>', text)\nprint(lazy)  # ['1', '2']（正确！）\n\n# VERBOSE 模式：可加注释，提高可读性\npattern = re.compile(r'''\n    ^                   # 字符串开头\n    (?P<year>\\d{4})    # 年：4位数字\n    -                   # 分隔符\n    (?P<month>\\d{2})   # 月：2位数字\n    -                   # 分隔符\n    (?P<day>\\d{2})     # 日：2位数字\n    $                   # 字符串结尾\n''', re.VERBOSE)\n\nm = pattern.match('2024-01-15')\nif m:\n    print(m.groupdict())  # {'year': '2024', 'month': '01', 'day': '15'}"
+          },
+          {
+            "title": "10.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 写正则匹配并提取一段文字中的所有网址\n2. 写正则验证密码：8-20位，必须含大小写字母和数字\n3. 从 '张三:13800138000, 李四:13900139000' 提取所有姓名和手机号\n4. 用 re.sub 把文本中的敏感词替换成 ***\n5. 用正则提取HTML中所有图片的src地址\n6. 写正则验证日期格式 YYYY-MM-DD，并提取年月日\n7. 用 VERBOSE 模式写一个可读的邮箱正则\n\n正则是文本处理的利器，多练习多收藏常用模式！"
+          }
+        ],
+        "summary": "这节课我们学习了正则表达式：基本元字符和预定义字符集、re模块的match/search/findall/sub/split、分组和命名分组、贪婪与非贪婪、预编译和标志位、常用正则模式（邮箱手机号等）。正则是处理文本的强大工具，下节课学习日期时间处理！",
+        "quiz": {
+          "question": "正则表达式中，.*? 中的问号的作用是？",
+          "options": [
+            "让 . 可以匹配换行符",
+            "表示非贪婪匹配，尽可能少地匹配",
+            "表示匹配0次或1次",
+            "让匹配忽略大小写"
+          ],
+          "answer": 1,
+          "explanation": "*? 是非贪婪（懒惰）量词，匹配尽可能少的字符。默认的 * 是贪婪的，匹配尽可能多。在提取HTML等场景，非贪婪能避免匹配过多内容。"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "title": "日期时间处理",
+      "duration": "70分钟",
+      "content": {
+        "introduction": "处理日期时间是编程的常见需求：记录日志时间、计算时间差、定时任务、日期格式化等。Python的datetime模块提供了强大的日期时间处理能力。这节课学习datetime模块、日期格式化、时间差计算、时间戳转换，掌握日期时间处理的核心技能。",
+        "sections": [
+          {
+            "title": "11.1 datetime 模块",
+            "content": "datetime模块是Python处理日期时间的核心模块，包含几个重要类：\n\n- **date** - 日期（年月日）\n- **time** - 时间（时分秒）\n- **datetime** - 日期+时间（最常用）\n- **timedelta** - 时间差（两个时间的差）\n- **timezone** - 时区\n\n常用操作：\n- `datetime.now()` - 当前日期时间\n- `date.today()` - 今天日期\n- `datetime(year, month, day, ...)` - 创建指定日期\n\ndatetime模块是日常开发最常用的模块之一，必须熟练掌握。"
+          },
+          {
+            "title": "11.2 datetime 基础",
+            "type": "code",
+            "language": "python",
+            "code": "from datetime import datetime, date, time, timedelta\n\n# 当前时间\nnow = datetime.now()\nprint(now)  # 2024-01-15 10:30:45.123456\nprint(type(now))  # <class 'datetime.datetime'>\n\n# 今天日期\ntoday = date.today()\nprint(today)  # 2024-01-15\n\n# 当前时间\nnow_time = now.time()\nprint(now_time)  # 10:30:45.123456\n\n# 创建指定日期时间\ndt = datetime(2024, 1, 15, 10, 30, 0)\nprint(dt)  # 2024-01-15 10:30:00\n\n# 创建指定日期\nd = date(2024, 6, 1)\nprint(d)  # 2024-06-01\n\n# 获取各个部分\nprint(now.year)    # 年\nprint(now.month)   # 月\nprint(now.day)     # 日\nprint(now.hour)    # 时\nprint(now.minute)  # 分\nprint(now.second)  # 秒\nprint(now.weekday())  # 星期几（0=周一，6=周日）\n\n# date 和 time 组合成 datetime\nd = date(2024, 1, 15)\nt = time(14, 30, 0)\ndt = datetime.combine(d, t)\nprint(dt)  # 2024-01-15 14:30:00"
+          },
+          {
+            "title": "11.3 日期格式化",
+            "content": "日期格式化是把datetime对象和字符串互相转换，非常重要！\n\n**datetime转字符串** - `strftime(format)`（string format time）\n**字符串转datetime** - `strptime(string, format)`（string parse time）\n\n常用格式符：\n- `%Y` - 四位年，`%y` - 两位年\n- `%m` - 月，`%d` - 日\n- `%H` - 时(24小时)，`%I` - 时(12小时)，`%M` - 分，`%S` - 秒\n- `%A` - 星期全名，`%a` - 星期缩写\n- `%B` - 月全名，`%b` - 月缩写\n- `%p` - AM/PM\n- `%f` - 微秒\n\n记忆：strftime是'格式化输出'，strptime是'解析输入'。p可以理解为parse（解析）。"
+          },
+          {
+            "title": "11.4 格式化示例",
+            "type": "code",
+            "language": "python",
+            "code": "from datetime import datetime\n\nnow = datetime.now()\n\n# datetime -> 字符串（strftime）\nprint(now.strftime('%Y-%m-%d'))           # 2024-01-15\nprint(now.strftime('%Y/%m/%d %H:%M:%S'))  # 2024/01/15 10:30:45\nprint(now.strftime('%Y年%m月%d日'))        # 2024年01月15日\nprint(now.strftime('%A, %B %d, %Y'))      # Monday, January 15, 2024\nprint(now.strftime('%Y-%m-%d %H:%M:%S.%f'))  # 带微秒\n\n# 字符串 -> datetime（strptime）\ndate_str = '2024-06-15 14:30:00'\ndt = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')\nprint(dt)  # 2024-06-15 14:30:00\nprint(type(dt))  # <class 'datetime.datetime'>\n\n# 解析不同格式\nprint(datetime.strptime('2024/06/15', '%Y/%m/%d'))\nprint(datetime.strptime('15-06-2024', '%d-%m-%Y'))\nprint(datetime.strptime('June 15, 2024', '%B %d, %Y'))\n\n# 实用：日期格式转换\ndef reformat_date(date_str, old_fmt, new_fmt):\n    dt = datetime.strptime(date_str, old_fmt)\n    return dt.strftime(new_fmt)\n\nprint(reformat_date('2024-01-15', '%Y-%m-%d', '%d/%m/%Y'))  # 15/01/2024\nprint(reformat_date('01/15/2024', '%m/%d/%Y', '%Y年%m月%d日'))  # 2024年01月15日"
+          },
+          {
+            "title": "11.5 时间差 timedelta",
+            "content": "timedelta表示两个日期时间的差，可以用来做日期的加减运算。\n\n创建timedelta：\n`timedelta(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0)`\n\n支持运算：\n- datetime + timedelta = datetime（往后推）\n- datetime - timedelta = datetime（往前推）\n- datetime - datetime = timedelta（两个时间的差）\n- timedelta + timedelta = timedelta\n\ntimedelta的属性：days、seconds、total_seconds()。\n\n时间差计算在计算年龄、倒计时、过期判断等场景非常常用。"
+          },
+          {
+            "title": "11.6 时间差计算",
+            "type": "code",
+            "language": "python",
+            "code": "from datetime import datetime, date, timedelta\n\n# 日期加减\nnow = datetime.now()\ntomorrow = now + timedelta(days=1)\nlast_week = now - timedelta(weeks=1)\nin_3_hours = now + timedelta(hours=3)\nprint(f'明天：{tomorrow.strftime(\"%Y-%m-%d\")}')\nprint(f'上周：{last_week.strftime(\"%Y-%m-%d\")}')\n\n# 两个日期的差\nd1 = date(2024, 1, 15)\nd2 = date(2024, 6, 1)\ndiff = d2 - d1\nprint(f'相差 {diff.days} 天')  # 相差 138 天\n\n# 计算年龄\ndef calculate_age(birth_date):\n    today = date.today()\n    age = today.year - birth_date.year\n    # 如果生日还没到，减1\n    if (today.month, today.day) < (birth_date.month, birth_date.day):\n        age -= 1\n    return age\n\nprint(calculate_age(date(2000, 6, 15)))\n\n# 倒计时\ndef countdown(target_date):\n    today = date.today()\n    diff = target_date - today\n    if diff.days > 0:\n        return f'还有 {diff.days} 天'\n    elif diff.days == 0:\n        return '就是今天！'\n    else:\n        return f'已过 {abs(diff.days)} 天'\n\nnew_year = date(2025, 1, 1)\nprint(countdown(new_year))\n\n# timedelta 的属性\ntd = timedelta(days=2, hours=5, minutes=30)\nprint(td.days)              # 2\nprint(td.seconds)           # 19800（5小时30分的秒数）\nprint(td.total_seconds())  # 总秒数\n\n# 判断是否过期\ndef is_expired(create_time, hours=24):\n    return datetime.now() - create_time > timedelta(hours=hours)\n\nprint(is_expired(datetime(2024, 1, 1), hours=24))  # True（已过期）"
+          },
+          {
+            "title": "11.7 时间戳",
+            "content": "时间戳（Timestamp）是1970年1月1日0点到现在经过的秒数，是跨平台跨语言通用的时间表示方式。\n\n相关函数：\n- `time.time()` - 当前时间戳（浮点秒数）\n- `datetime.fromtimestamp(ts)` - 时间戳转datetime\n- `datetime.timestamp(dt)` - datetime转时间戳\n\n时间戳的用途：\n- 存储：数据库常用时间戳存时间\n- 计算：时间戳是数字，方便比较和计算\n- 跨时区：时间戳是全球统一的\n\n时间戳和datetime的互相转换是常见操作。注意时间戳是秒还是毫秒，不同系统可能不同（Python是秒，JavaScript是毫秒）。"
+          },
+          {
+            "title": "11.8 时间戳转换",
+            "type": "code",
+            "language": "python",
+            "code": "import time\nfrom datetime import datetime\n\n# 当前时间戳\nts = time.time()\nprint(f'当前时间戳：{ts}')  # 1705296xxx.xxx\n\n# 时间戳 -> datetime\ndt = datetime.fromtimestamp(ts)\nprint(f'datetime：{dt}')\n\n# datetime -> 时间戳\nts2 = dt.timestamp()\nprint(f'时间戳：{ts2}')\n\n# 时间戳 -> 格式化字符串\ndef timestamp_to_str(ts, fmt='%Y-%m-%d %H:%M:%S'):\n    return datetime.fromtimestamp(ts).strftime(fmt)\n\nprint(timestamp_to_str(ts))\n\n# 格式化字符串 -> 时间戳\ndef str_to_timestamp(date_str, fmt='%Y-%m-%d %H:%M:%S'):\n    return datetime.strptime(date_str, fmt).timestamp()\n\nprint(str_to_timestamp('2024-01-15 10:30:00'))\n\n# 程序计时\nstart = time.time()\n# 模拟耗时操作\ntotal = sum(range(1000000))\nend = time.time()\nprint(f'耗时：{end - start:.4f}秒')\n\n# 用 perf_counter 更精确\nstart = time.perf_counter()\ntotal = sum(range(1000000))\nend = time.perf_counter()\nprint(f'精确耗时：{end - start:.6f}秒')\n\n# 毫秒时间戳（JavaScript常用）\nms_ts = int(time.time() * 1000)\nprint(f'毫秒时间戳：{ms_ts}')"
+          },
+          {
+            "title": "11.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 获取当前时间，格式化输出为 'YYYY年MM月DD日 HH:MM:SS'\n2. 写一个函数，输入生日，计算年龄和距离下次生日还有多少天\n3. 写一个函数，输入开始日期和天数，计算结束日期\n4. 把时间戳 1700000000 转成可读的日期字符串\n5. 写一个函数，计算两个日期之间相差多少天、多少小时\n6. 写一个简单的倒计时程序，输入秒数，倒计时并显示剩余时间\n7. 写一个函数，判断某年某月有多少天（注意闰年）\n\n日期时间处理是实际开发高频需求，多练多用！"
+          }
+        ],
+        "summary": "这节课我们学习了日期时间处理：datetime模块的date/time/datetime/timedelta、strftime格式化输出、strptime解析输入、timedelta时间差计算、时间戳转换。日期时间处理在日志、定时任务、数据统计等场景必不可少。下节课我们用所学知识做一个实战项目！",
+        "quiz": {
+          "question": "把 datetime 对象格式化为字符串，用哪个方法？",
+          "options": [
+            "strptime",
+            "strftime",
+            "timestamp",
+            "fromtimestamp"
+          ],
+          "answer": 1,
+          "explanation": "strftime（string format time）把datetime格式化为字符串。strptime（string parse time）把字符串解析成datetime。timestamp和fromtimestamp用于时间戳转换。"
+        }
+      }
+    },
+    {
+      "id": 12,
+      "title": "实战项目：个人记账本",
+      "duration": "120分钟",
+      "content": {
+        "introduction": "前面我们学了面向对象、文件操作、异常处理等知识，现在是时候综合运用，做一个完整的实战项目了！这节课我们开发一个命令行个人记账本程序，支持记录收入支出、分类统计、数据保存到文件。通过这个项目，把所学知识融会贯通，体验从需求分析到代码实现的完整开发流程。",
+        "sections": [
+          {
+            "title": "12.1 需求分析",
+            "content": "我们要做一个命令行记账本，功能需求：\n\n1. **记录收支** - 添加一笔收入或支出，包含金额、类型、备注、日期\n2. **查看记录** - 列出所有收支记录\n3. **统计汇总** - 计算总收入、总支出、结余\n4. **分类统计** - 按类型分类统计\n5. **数据持久化** - 数据保存到JSON文件，下次启动能加载\n6. **删除记录** - 删除指定的某条记录\n\n涉及的知识点：\n- 面向对象：Record类、AccountBook类\n- 文件操作：JSON读写保存数据\n- 异常处理：金额输入校验、文件读写异常\n- datetime：记录日期\n\n好的需求分析是项目成功的一半，先想清楚再动手！"
+          },
+          {
+            "title": "12.2 类设计",
+            "content": "根据需求，设计两个核心类：\n\n**Record（记录）类：**\n- 属性：id、type（收入/支出）、amount、category、note、date\n- 方法：to_dict()转字典、from_dict()从字典创建\n- 实现__str__方便显示\n\n**AccountBook（账本）类：**\n- 属性：records列表、文件路径\n- 方法：add_record添加、list_records列出、delete_record删除、get_summary统计、save保存、load加载\n\n这样的设计：Record负责单条记录，AccountBook负责管理所有记录。职责分明，符合单一职责原则。用dataclass可以简化Record的定义。"
+          },
+          {
+            "title": "12.3 Record 类实现",
+            "type": "code",
+            "language": "python",
+            "code": "from dataclasses import dataclass, field\nfrom datetime import datetime\nimport itertools\n\n@dataclass\nclass Record:\n    \"\"\"一条收支记录\"\"\"\n    type: str          # 'income' 或 'expense'\n    amount: float      # 金额\n    category: str      # 分类，如'餐饮'、'工资'\n    note: str = ''     # 备注\n    date: str = ''     # 日期 YYYY-MM-DD\n    id: int = 0        # 记录ID\n\n    def __post_init__(self):\n        if not self.date:\n            self.date = datetime.now().strftime('%Y-%m-%d')\n\n    def to_dict(self):\n        \"\"\"转字典，用于JSON保存\"\"\"\n        return {\n            'id': self.id,\n            'type': self.type,\n            'amount': self.amount,\n            'category': self.category,\n            'note': self.note,\n            'date': self.date,\n        }\n\n    @classmethod\n    def from_dict(cls, data):\n        \"\"\"从字典创建记录\"\"\"\n        return cls(\n            type=data['type'],\n            amount=data['amount'],\n            category=data['category'],\n            note=data.get('note', ''),\n            date=data.get('date', ''),\n            id=data.get('id', 0),\n        )\n\n    def __str__(self):\n        icon = '💰' if self.type == 'income' else '💸'\n        return f'[{self.id}] {self.date} {icon} {self.category} {self.amount}元 {self.note}'\n\n# 测试\nr = Record(type='expense', amount=25.5, category='餐饮', note='午饭')\nprint(r)\nprint(r.to_dict())"
+          },
+          {
+            "title": "12.4 AccountBook 类实现",
+            "type": "code",
+            "language": "python",
+            "code": "import json\nimport os\nfrom typing import List\n\nclass AccountBook:\n    \"\"\"账本类，管理所有记录\"\"\"\n    def __init__(self, file_path='accountbook.json'):\n        self.file_path = file_path\n        self.records: List[Record] = []\n        self._next_id = 1\n        self.load()  # 启动时加载数据\n\n    def add_record(self, type_, amount, category, note=''):\n        \"\"\"添加记录\"\"\"\n        record = Record(\n            type=type_,\n            amount=amount,\n            category=category,\n            note=note,\n            id=self._next_id,\n        )\n        self._next_id += 1\n        self.records.append(record)\n        self.save()\n        return record\n\n    def list_records(self, type_filter=None):\n        \"\"\"列出记录，可按类型过滤\"\"\"\n        if type_filter:\n            return [r for r in self.records if r.type == type_filter]\n        return self.records\n\n    def delete_record(self, record_id):\n        \"\"\"删除记录\"\"\"\n        for i, r in enumerate(self.records):\n            if r.id == record_id:\n                self.records.pop(i)\n                self.save()\n                return True\n        return False\n\n    def get_summary(self):\n        \"\"\"统计汇总\"\"\"\n        total_income = sum(r.amount for r in self.records if r.type == 'income')\n        total_expense = sum(r.amount for r in self.records if r.type == 'expense')\n        return {\n            'total_income': total_income,\n            'total_expense': total_expense,\n            'balance': total_income - total_expense,\n        }\n\n    def get_category_summary(self):\n        \"\"\"按分类统计\"\"\"\n        result = {}\n        for r in self.records:\n            key = (r.type, r.category)\n            result[key] = result.get(key, 0) + r.amount\n        return result\n\n    def save(self):\n        \"\"\"保存到JSON文件\"\"\"\n        data = {\n            'next_id': self._next_id,\n            'records': [r.to_dict() for r in self.records],\n        }\n        with open(self.file_path, 'w', encoding='utf-8') as f:\n            json.dump(data, f, ensure_ascii=False, indent=2)\n\n    def load(self):\n        \"\"\"从JSON文件加载\"\"\"\n        try:\n            with open(self.file_path, 'r', encoding='utf-8') as f:\n                data = json.load(f)\n            self._next_id = data.get('next_id', 1)\n            self.records = [Record.from_dict(r) for r in data.get('records', [])]\n        except (FileNotFoundError, json.JSONDecodeError):\n            self.records = []\n            self._next_id = 1"
+          },
+          {
+            "title": "12.5 命令行主程序",
+            "type": "code",
+            "language": "python",
+            "code": "def main():\n    book = AccountBook()\n    while True:\n        print('\\n===== 个人记账本 =====')\n        print('1. 记一笔收入')\n        print('2. 记一笔支出')\n        print('3. 查看所有记录')\n        print('4. 统计汇总')\n        print('5. 分类统计')\n        print('6. 删除记录')\n        print('0. 退出')\n        choice = input('请选择：').strip()\n\n        if choice == '0':\n            print('再见！')\n            break\n        elif choice in ('1', '2'):\n            type_ = 'income' if choice == '1' else 'expense'\n            try:\n                amount = float(input('金额：'))\n                if amount <= 0:\n                    print('金额必须大于0')\n                    continue\n                category = input('分类（如餐饮/工资/交通）：').strip()\n                note = input('备注（可空）：').strip()\n                book.add_record(type_, amount, category, note)\n                print('记录成功！')\n            except ValueError:\n                print('金额输入无效！')\n        elif choice == '3':\n            print('\\n--- 所有记录 ---')\n            records = book.list_records()\n            if not records:\n                print('暂无记录')\n            for r in records:\n                print(r)\n        elif choice == '4':\n            s = book.get_summary()\n            print(f\"\\n总收入：{s['total_income']}元\")\n            print(f\"总支出：{s['total_expense']}元\")\n            print(f\"结余：{s['balance']}元\")\n        elif choice == '5':\n            print('\\n--- 分类统计 ---')\n            cat = book.get_category_summary()\n            for (type_, category), amount in cat.items():\n                icon = '💰' if type_ == 'income' else '💸'\n                print(f'{icon} {category}：{amount}元')\n        elif choice == '6':\n            try:\n                rid = int(input('输入要删除的记录ID：'))\n                if book.delete_record(rid):\n                    print('删除成功！')\n                else:\n                    print('未找到该ID的记录')\n            except ValueError:\n                print('ID必须为数字')\n        else:\n            print('无效选择，请重试')\n\nif __name__ == '__main__':\n    main()"
+          },
+          {
+            "title": "12.6 测试运行",
+            "content": "运行程序后，可以体验完整流程：\n\n1. 选择1记一笔收入：金额5000，分类'工资'，备注'一月工资'\n2. 选择2记一笔支出：金额25，分类'餐饮'，备注'午饭'\n3. 再记几笔支出：交通50、购物200\n4. 选择3查看所有记录，能看到所有收支\n5. 选择4统计汇总，看到总收入、总支出、结余\n6. 选择5分类统计，看到每个分类的金额\n7. 选择6删除一条记录\n8. 退出后再运行，数据还在（已保存到JSON文件）\n\n打开 accountbook.json 文件，能看到保存的数据。这就是数据持久化！\n\n这个项目虽然简单，但涵盖了OOP、文件操作、异常处理、用户交互，是一个完整的小项目。"
+          },
+          {
+            "title": "12.7 健壮性与异常处理",
+            "content": "回顾这个项目的异常处理：\n\n1. **金额输入** - 用try/except捕获ValueError，防止输入非数字崩溃\n2. **金额校验** - 检查金额是否大于0\n3. **文件加载** - 捕获FileNotFoundError和JSONDecodeError，文件不存在或损坏时不崩溃\n4. **ID删除** - 捕获ValueError，处理非数字输入\n5. **无效选择** - else分支处理无效菜单选项\n\n这些处理让程序更健壮，不会因为用户误操作而崩溃。在实际项目中，健壮性非常重要——用户可能会输入任何东西，程序都要能优雅应对。\n\n还可以改进的地方：金额精度用Decimal避免浮点误差、记录重复检查、数据备份等。"
+          },
+          {
+            "title": "12.8 功能扩展思路",
+            "content": "学有余力，可以给记账本添加更多功能：\n\n1. **按日期范围查询** - 输入开始和结束日期，查询这段时间的记录\n2. **按月统计** - 选择某年某月，统计当月收支\n3. **图表展示** - 用matplotlib画饼图、柱状图，可视化收支分布\n4. **预算管理** - 设置每月预算，超支提醒\n5. **数据导出** - 导出为CSV或Excel，方便Excel打开\n6. **多账户** - 支持多个账户（现金、银行卡、支付宝）\n7. **GUI界面** - 用tkinter或PyQt做图形界面\n8. **数据库存储** - 用sqlite3代替JSON，支持更大数据量\n\n这些扩展能帮你深入练习各种技能。做项目是最好的学习方式，从简单开始，逐步迭代完善！"
+          },
+          {
+            "title": "12.9 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 完整实现本节课的记账本程序，运行并测试所有功能\n2. 添加'按日期范围查询'功能，输入开始和结束日期查询记录\n3. 添加'按月统计'功能，统计某年某月的收支情况\n4. 把数据导出功能加上，能导出为CSV文件\n5. 给Record类添加 __eq__ 方法，支持记录比较\n6. 添加修改记录的功能（根据ID修改某条记录）\n7. 挑战：用matplotlib画一个支出分类饼图\n8. 挑战：改用sqlite3数据库存储数据\n\n做项目是检验学习成果的最好方式，把这个项目做扎实！恭喜你完成Python进阶课程！"
+          }
+        ],
+        "summary": "这节课我们综合运用面向对象、文件操作、异常处理、datetime等知识，完成了一个完整的命令行记账本项目。从需求分析、类设计、代码实现到异常处理，体验了完整的开发流程。做项目是把知识转化为能力的关键，希望你能继续完善这个项目，并尝试更多实战项目！",
+        "quiz": {
+          "question": "在这个记账本项目中，数据持久化用的是哪种方式？",
+          "options": [
+            "SQLite数据库",
+            "JSON文件",
+            "CSV文件",
+            "内存（不保存）"
+          ],
+          "answer": 1,
+          "explanation": "本项目用JSON文件保存数据，通过json.dump写入、json.load读取。JSON格式和Python字典结构相似，适合保存结构化数据，且人类可读。"
+        }
+      }
+    }
+  ]
+}

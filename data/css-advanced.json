@@ -1,0 +1,620 @@
+{
+  "id": "css-advanced",
+  "title": "CSS 进阶与动画",
+  "subtitle": "CSS动画、变换、过渡、高级选择器",
+  "icon": "🎨",
+  "color": "orange",
+  "description": "CSS不仅能写样式，还能做出炫酷的动画效果！从过渡动画、变换、关键帧动画到3D效果、CSS变量、高级选择器，全面掌握现代CSS的进阶技能，让你的网页动起来、酷起来！",
+  "duration": "10小时",
+  "lessons": 8,
+  "level": "中级",
+  "whatYouLearn": [
+    "CSS过渡动画transition",
+    "2D/3D变换transform",
+    "关键帧动画@keyframes",
+    "CSS变量与主题切换",
+    "高级选择器与伪元素",
+    "渐变、滤镜与毛玻璃效果",
+    "实战项目：动画landing page"
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title": "CSS过渡动画 Transition",
+      "duration": "70分钟",
+      "content": {
+        "introduction": "CSS过渡（transition）是最简单的动画方式，它能让CSS属性值的变化过程变得平滑，而不是瞬间跳变。比如鼠标悬停时颜色慢慢变深、按钮慢慢放大，这些都是transition的功劳。掌握transition是学习CSS动画的第一步，也是最实用的技能之一。",
+        "sections": [
+          {
+            "title": "1.1 什么是过渡",
+            "content": "过渡（transition）是CSS提供的一种动画机制，当一个元素的样式属性发生变化时（比如hover时颜色变化），transition可以让这个变化过程变得平滑，而不是瞬间完成。\n\n没有transition时，鼠标移上去颜色瞬间变化；有了transition，颜色会慢慢过渡，看起来更自然、更舒服。\n\ntransition的核心是：指定哪些属性要过渡、过渡多长时间、用什么速度曲线、延迟多久开始。\n\n适合用transition的属性很多：颜色、大小、位置、透明度、阴影等。注意：不是所有属性都能过渡，比如display就不能过渡。"
+          },
+          {
+            "title": "1.2 transition的四个属性",
+            "content": "transition实际上是四个属性的简写：\n\n1. **transition-property** - 要过渡的属性名（如color、width、all）\n2. **transition-duration** - 过渡时长（如0.3s、500ms）\n3. **transition-timing-function** - 速度曲线（如ease、linear、ease-in）\n4. **transition-delay** - 延迟时间（多久后开始过渡）\n\n简写形式：transition: 属性 时长 速度曲线 延迟;\n\n例如：transition: width 0.3s ease 0s;\n\n推荐用简写，更简洁。一般duration必填，其他可以省略。"
+          },
+          {
+            "title": "1.3 基础过渡示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 基础过渡 */\n.box {\n  width: 100px;\n  height: 100px;\n  background: #3498db;\n  /* 过渡：宽度变化，0.3秒，ease速度曲线 */\n  transition: width 0.3s ease;\n}\n\n.box:hover {\n  width: 200px; /* 鼠标悬停时宽度变200px，会有0.3秒的平滑过渡 */\n}\n\n/* 多属性分别过渡 */\n.card {\n  background: #fff;\n  color: #333;\n  transform: scale(1);\n  /* 多个属性用逗号分隔 */\n  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;\n}\n\n.card:hover {\n  background: #3498db;\n  color: #fff;\n  transform: scale(1.05);\n}\n\n/* all过渡所有属性（简单但性能差，不推荐） */\n.btn {\n  transition: all 0.3s ease;\n}"
+          },
+          {
+            "title": "1.4 速度曲线 timing-function",
+            "content": "transition-timing-function决定过渡的速度变化，也就是动画的节奏感。常用的有：\n\n- **linear** - 匀速（从头到尾速度一样）\n- **ease** - 默认值，先慢后快再慢（最自然）\n- **ease-in** - 先慢后快（加速）\n- **ease-out** - 先快后慢（减速）\n- **ease-in-out** - 慢-快-慢\n- **cubic-bezier(x1,y1,x2,y2)** - 自定义曲线（高级）\n- **steps(n)** - 分步跳变（不连续，做像素动画用）\n\n不同的速度曲线给人的感觉完全不同：linear显得机械，ease显得自然，ease-out显得有活力。"
+          },
+          {
+            "title": "1.5 cubic-bezier自定义曲线",
+            "type": "code",
+            "language": "css",
+            "code": "/* 不同速度曲线对比 */\n.linear  { transition: all 0.5s linear; }       /* 匀速 */\n.ease    { transition: all 0.5s ease; }         /* 默认 */\n.ease-in { transition: all 0.5s ease-in; }      /* 加速 */\n.ease-out { transition: all 0.5s ease-out; }    /* 减速 */\n.ease-in-out { transition: all 0.5s ease-in-out; } /* 先加速后减速 */\n\n/* cubic-bezier 自定义贝塞尔曲线 */\n/* 两个控制点 (x1,y1) (x2,y2)，x必须在0-1之间 */\n.bouncy {\n  /* 弹性效果：最后会超出一点再回来 */\n  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);\n}\n.bouncy:hover {\n  transform: scale(1.2);\n}\n\n/* 网站推荐：https://cubic-bezier.com/ 可视化调整曲线 */\n/* 常用预设：\n   easeInOutCubic: cubic-bezier(0.65, 0, 0.35, 1)\n   easeOutBack:    cubic-bezier(0.34, 1.56, 0.64, 1)\n*/"
+          },
+          {
+            "title": "1.6 transition-delay延迟",
+            "content": "transition-delay让过渡延迟一段时间再开始。这个属性用得不多，但在某些场景很有用：\n\n1. **菜单展开** - 子菜单依次出现，形成阶梯效果\n2. **卡片入场** - 多个卡片依次入场，更有节奏\n3. **鼠标移出反向** - hover时立即开始，移出时延迟，模拟悬停确认\n\n延迟可以和时长一起写在transition里：transition: width 0.3s ease 0.2s;（最后那个0.2s就是delay）"
+          },
+          {
+            "title": "1.7 延迟与多属性过渡示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 阶梯式延迟 - 多个元素依次出现 */\n.item:nth-child(1) { transition: all 0.3s ease 0s; }\n.item:nth-child(2) { transition: all 0.3s ease 0.1s; }\n.item:nth-child(3) { transition: all 0.3s ease 0.2s; }\n.item:nth-child(4) { transition: all 0.3s ease 0.3s; }\n\n.item {\n  opacity: 0;\n  transform: translateY(20px);\n}\n.container:hover .item {\n  opacity: 1;\n  transform: translateY(0);\n}\n\n/* 不同属性不同时长不同延迟 */\n.fancy {\n  background: #3498db;\n  transform: scale(1);\n  transition:\n    background 0.2s ease 0s,\n    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s;\n}\n.fancy:hover {\n  background: #e74c3c;\n  transform: scale(1.1);\n}"
+          },
+          {
+            "title": "1.8 过渡的注意事项",
+            "content": "使用transition要注意几点：\n\n1. **可过渡属性** - 不是所有属性都能过渡。颜色、尺寸、位置、透明度、阴影、transform都可以；display、position等不能。\n2. **性能问题** - 过渡width、height、top、left会触发布局重排，性能差；过渡transform、opacity不会重排，性能好，推荐用transform代替top/left做位移动画。\n3. **auto值不能过渡** - 比如 height: auto 不能直接过渡，要用具体值或max-height技巧。\n4. **过渡在状态变化时触发** - 比如hover、class切换、JS修改样式。\n5. **别滥用all** - transition: all 看起来方便，但会影响性能，最好明确指定属性。"
+          },
+          {
+            "title": "1.9 悬停按钮综合示例",
+            "type": "code",
+            "language": "html",
+            "code": "<style>\n  .btn {\n    display: inline-block;\n    padding: 12px 32px;\n    background: #3498db;\n    color: #fff;\n    border: none;\n    border-radius: 6px;\n    font-size: 16px;\n    cursor: pointer;\n    position: relative;\n    overflow: hidden;\n    /* 多属性过渡 */\n    transition:\n      background 0.3s ease,\n      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),\n      box-shadow 0.3s ease;\n  }\n  .btn:hover {\n    background: #2980b9;\n    transform: translateY(-3px);\n    box-shadow: 0 10px 20px rgba(0,0,0,0.2);\n  }\n  .btn:active {\n    transform: translateY(0);\n    box-shadow: 0 4px 8px rgba(0,0,0,0.2);\n  }\n</style>\n\n<button class=\"btn\">点我试试</button>"
+          },
+          {
+            "title": "1.10 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 做一个方块，hover时背景色平滑过渡0.5秒\n2. 做一个按钮，hover时上移3px并加上阴影，用cubic-bezier做弹性效果\n3. 做一个图片卡片，hover时图片放大1.1倍，过渡0.4秒\n4. 做4个方块，hover父容器时，4个方块依次（阶梯式）淡入显示\n5. 做一个导航栏，hover菜单项时下方出现一条线（用伪元素+transition）\n\n多动手，transition是CSS动画的基础，熟练掌握它，后面学关键帧动画会轻松很多！"
+          }
+        ],
+        "summary": "这节课我们学习了CSS过渡transition，包括它的四个属性（property、duration、timing-function、delay）、各种速度曲线、cubic-bezier自定义曲线、延迟和多属性过渡。transition是最简单实用的动画方式，掌握它能让你的网页交互瞬间提升一个档次。下节课学习transform变换！",
+        "quiz": {
+          "question": "下面哪个CSS属性的变化最适合用transition过渡，且性能最好？",
+          "options": [
+            "width和height",
+            "top和left",
+            "transform和opacity",
+            "display"
+          ],
+          "answer": 2,
+          "explanation": "transform和opacity的过渡不会触发布局重排（reflow），由GPU合成层处理，性能最好。width、height、top、left会触发重排，性能较差。display不能过渡。所以做动画优先用transform代替位置和尺寸变化。"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "CSS变换 Transform",
+      "duration": "80分钟",
+      "content": {
+        "introduction": "CSS变换（transform）是CSS动画的精髓之一，它能对元素进行平移、旋转、缩放、斜切等操作，而且不会影响其他元素的布局！transform配合transition，能做出各种炫酷的动效。这节课我们系统学习2D变换的各种用法，下节课再进阶到3D。",
+        "sections": [
+          {
+            "title": "2.1 transform是什么",
+            "content": "transform属性可以对元素进行变换，包括：\n\n- **translate** - 平移（移动位置）\n- **rotate** - 旋转\n- **scale** - 缩放\n- **skew** - 斜切（倾斜）\n- **matrix** - 矩阵变换（综合，少用）\n\ntransform最大的优点是：变换后不会影响其他元素的布局！比如你把一个元素放大，它周围的元素不会移动。这和用width/height/margin改变大小完全不同。\n\ntransform是做动画的利器，因为它由GPU加速，性能非常好，推荐用它做位移动画而不是top/left。"
+          },
+          {
+            "title": "2.2 translate平移",
+            "type": "code",
+            "language": "css",
+            "code": "/* translate 平移 */\n.box {\n  width: 100px;\n  height: 100px;\n  background: #3498db;\n  transition: transform 0.3s ease;\n}\n\n/* 向右移动50px，向下移动20px */\n.box.move1:hover { transform: translate(50px, 20px); }\n\n/* 只向右移动50px */\n.box.move2:hover { transform: translateX(50px); }\n\n/* 只向下移动50px */\n.box.move3:hover { transform: translateY(50px); }\n\n/* 居中技巧：配合绝对定位实现元素水平垂直居中 */\n.center {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%); /* 往左上移动自身一半 */\n}\n\n/* 百分比是相对自身大小的，不是父元素 */\n.box:hover { transform: translateX(50%); } /* 移动自身宽度的50% */"
+          },
+          {
+            "title": "2.3 rotate旋转",
+            "type": "code",
+            "language": "css",
+            "code": "/* rotate 旋转 */\n.icon {\n  transition: transform 0.3s ease;\n}\n\n/* 顺时针旋转45度 */\n.icon.r1:hover { transform: rotate(45deg); }\n\n/* 顺时针旋转180度 */\n.icon.r2:hover { transform: rotate(180deg); }\n\n/* 逆时针旋转90度 */\n.icon.r3:hover { transform: rotate(-90deg); }\n\n/* 持续旋转（用关键帧动画，下章学） */\n.spinner {\n  animation: spin 2s linear infinite;\n}\n@keyframes spin {\n  to { transform: rotate(360deg); }\n}\n\n/* 单位除了deg还有：turn（圈）、rad（弧度） */\n/* 1turn = 360deg, 2rad ≈ 114.6deg */\n.half-turn:hover { transform: rotate(0.5turn); } /* 旋转半圈 */"
+          },
+          {
+            "title": "2.4 scale缩放",
+            "type": "code",
+            "language": "css",
+            "code": "/* scale 缩放 */\n.card {\n  transition: transform 0.3s ease;\n}\n\n/* 放大到1.5倍 */\n.card.s1:hover { transform: scale(1.5); }\n\n/* 缩小到0.5倍 */\n.card.s2:hover { transform: scale(0.5); }\n\n/* 水平放大2倍，垂直不变 */\n.card.s3:hover { transform: scaleX(2); }\n\n/* 垂直放大2倍 */\n.card.s4:hover { transform: scaleY(2); }\n\n/* 分别指定水平和垂直缩放 */\n.card.s5:hover { transform: scale(1.2, 0.8); }\n\n/* 镜像翻转（负值） */\n.flip-x:hover { transform: scaleX(-1); } /* 水平镜像 */\n.flip-y:hover { transform: scaleY(-1); } /* 垂直镜像 */\n\n/* 注意：scale会让文字也缩放，可能模糊 */"
+          },
+          {
+            "title": "2.5 skew斜切",
+            "content": "skew让元素倾斜变形，像被推倒一样。\n\n- **skewX(角度)** - 沿X轴倾斜（左右倒）\n- **skewY(角度)** - 沿Y轴倾斜（前后倒）\n- **skew(x, y)** - 两个方向都倾斜\n\nskew用得相对少，但做特殊效果时很有用，比如平行四边形、斜切按钮、立体文字等。\n\n注意skew会让元素里的内容也变形，如果不想内容变形，可以用伪元素做背景斜切，内容正常显示。"
+          },
+          {
+            "title": "2.6 skew与组合变换示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* skew 斜切 */\n.parallel {\n  width: 200px;\n  height: 60px;\n  background: #e74c3c;\n  /* X轴倾斜20度，做成平行四边形 */\n  transform: skewX(-20deg);\n}\n\n/* 组合变换：多个变换写在一起，用空格分隔 */\n.combo {\n  transition: transform 0.4s ease;\n}\n.combo:hover {\n  /* 顺序很重要！先平移再旋转，和先旋转再平移，效果不同 */\n  transform: translate(50px, 0) rotate(45deg) scale(1.2);\n}\n\n/* 斜切按钮（背景斜切，文字不斜） */\n.skew-btn {\n  position: relative;\n  padding: 12px 32px;\n  border: none;\n  background: transparent;\n  color: #fff;\n  cursor: pointer;\n}\n.skew-btn::before {\n  content: '';\n  position: absolute;\n  top: 0; left: 0; right: 0; bottom: 0;\n  background: #3498db;\n  transform: skewX(-20deg);\n  z-index: -1;\n}"
+          },
+          {
+            "title": "2.7 transform-origin变换原点",
+            "content": "transform-origin决定变换的中心点，默认是元素中心（center center，即50% 50%）。\n\n改变transform-origin，同样的变换会有完全不同的效果：\n- rotate旋转，原点不同，旋转的轨迹不同\n- scale缩放，原点不同，缩放的方向不同\n- skew斜切，原点不同，变形的方向不同\n\n取值可以是：\n- 关键字：top、bottom、left、right、center\n- 百分比：50% 50%（默认）、0% 0%（左上角）\n- 像素：100px 200px\n\n第一个值是X轴，第二个值是Y轴，还可以加第三个值Z轴（3D用）。"
+          },
+          {
+            "title": "2.8 transform-origin示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 默认中心旋转 */\n.spin-center {\n  transform-origin: center center; /* 等同于 50% 50% */\n  transition: transform 0.5s ease;\n}\n.spin-center:hover { transform: rotate(180deg); }\n\n/* 左上角为原点旋转 */\n.spin-tl {\n  transform-origin: top left; /* 0% 0% */\n  transition: transform 0.5s ease;\n}\n.spin-tl:hover { transform: rotate(180deg); }\n\n/* 右下角为原点缩放 */\n.scale-br {\n  transform-origin: bottom right;\n  transition: transform 0.5s ease;\n}\n.scale-br:hover { transform: scale(1.5); }\n\n/* 摆动效果（用关键帧，原点在顶部中间） */\n.swing {\n  transform-origin: top center;\n  animation: swing 2s ease-in-out infinite;\n}\n@keyframes swing {\n  0%, 100% { transform: rotate(-15deg); }\n  50% { transform: rotate(15deg); }\n}"
+          },
+          {
+            "title": "2.9 常用transform动效",
+            "type": "code",
+            "language": "css",
+            "code": "/* 卡片悬浮效果 */\n.hover-card {\n  transition: transform 0.3s ease, box-shadow 0.3s ease;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n}\n.hover-card:hover {\n  transform: translateY(-8px); /* 上移8px */\n  box-shadow: 0 12px 24px rgba(0,0,0,0.15);\n}\n\n/* 图片放大遮罩 */\n.zoom-img {\n  overflow: hidden;\n}\n.zoom-img img {\n  transition: transform 0.5s ease;\n}\n.zoom-img:hover img {\n  transform: scale(1.1);\n}\n\n/* 按钮按压效果 */\n.press-btn {\n  transition: transform 0.1s ease;\n}\n.press-btn:active {\n  transform: scale(0.95); /* 按下时缩小 */\n}\n\n/* 翻转箭头（下拉菜单用） */\n.arrow {\n  transition: transform 0.3s ease;\n}\n.dropdown.open .arrow {\n  transform: rotate(180deg);\n}"
+          },
+          {
+            "title": "2.10 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 做一个方块，hover时向右下角平移并旋转45度\n2. 用translate(-50%,-50%)配合定位，实现一个元素在父容器中水平垂直居中\n3. 做一个图片，hover时放大1.2倍，且原点在左上角（观察和默认原点的区别）\n4. 做一个下拉菜单，点击时箭头旋转180度\n5. 做一个卡片，hover时上浮8px并加深阴影，按下时缩小0.95\n6. 用skewX做一个平行四边形按钮，文字不变形\n\ntransform是CSS动画的核心，多练习，下节课学关键帧动画时会大量用到！"
+          }
+        ],
+        "summary": "这节课我们学习了CSS变换transform，包括translate平移、rotate旋转、scale缩放、skew斜切，以及组合变换和transform-origin变换原点。transform不会影响布局、性能好，是做动画的首选。记住：能用transform做的位移动画，就别用top/left。下节课学习关键帧动画！",
+        "quiz": {
+          "question": "想要一个元素hover时向右平移50px并旋转45度，正确的写法是？",
+          "options": [
+            "transform: translateX(50px) rotate(45deg);",
+            "transform: rotate(45deg) translateX(50px);",
+            "transform: translate(50px) + rotate(45deg);",
+            "transform: translateX(50px); rotate(45deg);"
+          ],
+          "answer": 0,
+          "explanation": "多个变换用空格分隔写在同一个transform里。translate(50px) + rotate(45deg)的写法错误，不能用加号。选项A和B的区别在于顺序：先平移再旋转，元素会沿原方向平移后在平移后的位置旋转；先旋转再平移，平移方向会受旋转影响。一般先平移再旋转更符合直觉。"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "关键帧动画 Keyframes",
+      "duration": "90分钟",
+      "content": {
+        "introduction": "transition虽然好用，但它只能在两个状态间过渡。如果想要更复杂的动画——比如一个元素先变大再变小再旋转再消失，或者循环播放的动画，就需要关键帧动画（@keyframes）了。@keyframes能定义动画的多个关键节点，配合animation属性，能做出非常丰富的动画效果。这是CSS动画最强大的部分！",
+        "sections": [
+          {
+            "title": "3.1 @keyframes定义关键帧",
+            "content": "@keyframes用来定义动画的关键帧，也就是动画过程中各个时间点的状态。\n\n语法：\n```\n@keyframes 动画名 {\n  0% { 起始状态 }\n  50% { 中间状态 }\n  100% { 结束状态 }\n}\n```\n\n也可以用from（等同0%）和to（等同100%）：\n```\n@keyframes 动画名 {\n  from { 起始状态 }\n  to { 结束状态 }\n}\n```\n\n百分比代表动画进度的百分比，可以写任意百分比，比如25%、75%。可以定义任意多个关键帧。"
+          },
+          {
+            "title": "3.2 @keyframes基础示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 定义一个变色动画 */\n@keyframes colorChange {\n  0%   { background: red; }\n  50%  { background: yellow; }\n  100% { background: green; }\n}\n\n/* 定义一个弹跳动画 */\n@keyframes bounce {\n  0%, 100% { transform: translateY(0); }    /* 起始和结束在原位 */\n  50%      { transform: translateY(-50px); } /* 中间向上跳50px */\n}\n\n/* 用from和to简写（只有两个状态时） */\n@keyframes fadeIn {\n  from { opacity: 0; }    /* 透明 */\n  to   { opacity: 1; }    /* 不透明 */\n}\n\n/* 应用动画 */\n.box {\n  width: 100px;\n  height: 100px;\n  animation: colorChange 3s ease infinite;\n  /* 动画名 时长 速度曲线 播放次数 */\n}"
+          },
+          {
+            "title": "3.3 animation的属性",
+            "content": "animation是多个属性的简写，包括：\n\n1. **animation-name** - 动画名（@keyframes定义的）\n2. **animation-duration** - 时长（如2s）\n3. **animation-timing-function** - 速度曲线（ease、linear等）\n4. **animation-delay** - 延迟（多久后开始）\n5. **animation-iteration-count** - 播放次数（数字或infinite无限循环）\n6. **animation-direction** - 方向（normal正向、reverse反向、alternate来回）\n7. **animation-fill-mode** - 填充模式（动画前后保持哪个状态）\n8. **animation-play-state** - 播放状态（running播放、paused暂停）\n\n简写顺序：name duration timing-function delay iteration-count direction fill-mode play-state\n\n推荐用简写，但有些可以省略。"
+          },
+          {
+            "title": "3.4 animation完整示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 完整的animation写法 */\n.box {\n  /* name duration timing delay count direction fill play-state */\n  animation: bounce 2s ease 0s infinite alternate both running;\n}\n\n/* 拆开写 */\n.box2 {\n  animation-name: bounce;\n  animation-duration: 2s;\n  animation-timing-function: ease;\n  animation-delay: 0s;\n  animation-iteration-count: infinite; /* 无限循环 */\n  animation-direction: alternate;       /* 来回播放 */\n  animation-fill-mode: both;            /* 前后都保持动画状态 */\n  animation-play-state: running;        /* 播放中 */\n}\n\n/* animation-direction取值：\n   normal    - 每次都正向播放\n   reverse   - 每次都反向播放\n   alternate - 正向一次，反向一次，交替\n   alternate-reverse - 反向开始，交替\n*/\n\n/* animation-fill-mode取值：\n   none      - 默认，动画前后恢复原样\n   forwards  - 动画结束后保持最后一帧\n   backwards - 动画开始前保持第一帧（配合delay用）\n   both      - 前后都保持\n*/"
+          },
+          {
+            "title": "3.5 循环动画",
+            "content": "想让动画一直循环播放，设置animation-iteration-count: infinite。\n\n常见的循环动画：\n- 加载旋转（loading转圈）\n- 呼吸效果（放大缩小循环）\n- 摆动效果（左右晃动）\n- 闪烁效果（透明度变化）\n\n循环动画配合alternate方向，可以做出更自然的来回效果（比如呼吸：放大-缩小-放大，而不是放大-瞬间回原位-放大）。\n\n注意：循环动画会一直占用CPU/GPU，不要在一个页面上放太多，会影响性能。"
+          },
+          {
+            "title": "3.6 循环动画示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* loading旋转 */\n.loader {\n  width: 40px;\n  height: 40px;\n  border: 4px solid #f3f3f3;\n  border-top: 4px solid #3498db;\n  border-radius: 50%;\n  animation: spin 1s linear infinite; /* 匀速无限循环 */\n}\n@keyframes spin {\n  to { transform: rotate(360deg); }\n}\n\n/* 呼吸效果 */\n.breath {\n  animation: breath 2s ease-in-out infinite;\n}\n@keyframes breath {\n  0%, 100% { transform: scale(1); opacity: 0.8; }\n  50%      { transform: scale(1.1); opacity: 1; }\n}\n\n/* 摆动效果 */\n.swing {\n  transform-origin: top center;\n  animation: swing 2s ease-in-out infinite;\n}\n@keyframes swing {\n  0%, 100% { transform: rotate(-15deg); }\n  50%      { transform: rotate(15deg); }\n}\n\n/* 闪烁 */\n.blink {\n  animation: blink 1.5s ease infinite;\n}\n@keyframes blink {\n  0%, 100% { opacity: 1; }\n  50%      { opacity: 0.3; }\n}"
+          },
+          {
+            "title": "3.7 多动画组合",
+            "content": "一个元素可以同时应用多个动画，用逗号分隔。每个动画可以有不同的时长、延迟、次数等。\n\n比如一个元素同时旋转和变色：\n```\nanimation: rotate 2s linear infinite, colorChange 4s ease infinite;\n```\n\n多动画组合能做出很复杂的效果，但要注意时长的协调。如果两个动画时长是2s和4s，那么每4秒会同步一次。\n\n多动画时，每个动画的属性独立设置，用逗号分隔。"
+          },
+          {
+            "title": "3.8 多动画与入场动画示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 多动画组合：边旋转边变色 */\n.rainbow-spin {\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  animation:\n    spin 2s linear infinite,\n    colorChange 4s linear infinite;\n}\n@keyframes spin {\n  to { transform: rotate(360deg); }\n}\n@keyframes colorChange {\n  0%   { background: #e74c3c; }\n  33%  { background: #f1c40f; }\n  66%  { background: #2ecc71; }\n  100% { background: #e74c3c; }\n}\n\n/* 入场动画（页面加载时元素淡入上滑） */\n.fade-up {\n  opacity: 0;\n  animation: fadeUp 0.8s ease forwards;\n}\n@keyframes fadeUp {\n  from {\n    opacity: 0;\n    transform: translateY(30px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n\n/* 阶梯式入场（多个元素依次出现） */\n.item1 { animation: fadeUp 0.8s ease 0.1s both; }\n.item2 { animation: fadeUp 0.8s ease 0.3s both; }\n.item3 { animation: fadeUp 0.8s ease 0.5s both; }\n.item4 { animation: fadeUp 0.8s ease 0.7s both; }"
+          },
+          {
+            "title": "3.9 动画的暂停与播放",
+            "content": "animation-play-state可以控制动画的播放和暂停：\n- **running** - 播放中（默认）\n- **paused** - 暂停\n\n这个属性经常配合hover使用：\n- 鼠标悬停时暂停动画\n- 鼠标悬停时开始动画\n\n比如一个一直转的loading，鼠标放上去就暂停；或者一个静止的图，鼠标放上去才开始动。\n\nJS也可以通过修改这个属性来控制动画，比如点击按钮暂停/播放。"
+          },
+          {
+            "title": "3.10 综合示例与练习",
+            "type": "code",
+            "language": "css",
+            "code": "/* 鼠标悬停暂停 */\n.pause-hover {\n  animation: spin 2s linear infinite;\n}\n.pause-hover:hover {\n  animation-play-state: paused; /* 悬停暂停 */\n}\n\n/* 鼠标悬停开始 */\n.play-hover {\n  /* 初始不播放 */\n}\n.play-hover:hover {\n  animation: wiggle 0.5s ease;\n}\n@keyframes wiggle {\n  0%, 100% { transform: rotate(0); }\n  25%      { transform: rotate(-10deg); }\n  75%      { transform: rotate(10deg); }\n}\n\n/* 弹性入场 */\n.drop-in {\n  animation: dropIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;\n}\n@keyframes dropIn {\n  from {\n    opacity: 0;\n    transform: translateY(-100px) scale(0.5);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0) scale(1);\n  }\n}"
+          },
+          {
+            "title": "3.11 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 做一个loading转圈动画（圆圈，border-top不同色，匀速旋转）\n2. 做一个呼吸效果（元素循环放大缩小）\n3. 做一个文字闪烁动画（透明度循环变化）\n4. 做4个方块，页面加载时依次从下往上淡入（用delay实现阶梯效果）\n5. 做一个元素，同时旋转和变色（多动画组合）\n6. 做一个动画，鼠标悬停时暂停，移开继续\n7. 做一个弹性入场动画（从上方掉落，带弹性效果）\n\n关键帧动画是CSS动画的精华，多练习各种效果，你会发现CSS能做的事超乎想象！"
+          }
+        ],
+        "summary": "这节课我们学习了关键帧动画，包括@keyframes定义动画、animation的8个子属性、循环动画、多动画组合、动画的暂停与播放、入场动画等。@keyframes + animation 是CSS最强大的动画机制，能实现transition无法实现的复杂动画。下节课学习CSS变量！",
+        "quiz": {
+          "question": "想要动画结束后保持最后一帧的状态，应该设置什么？",
+          "options": [
+            "animation-fill-mode: none;",
+            "animation-fill-mode: forwards;",
+            "animation-iteration-count: infinite;",
+            "animation-direction: alternate;"
+          ],
+          "answer": 1,
+          "explanation": "animation-fill-mode: forwards 让元素在动画结束后保持最后一帧（100%）的状态。none是默认值，动画结束后恢复原样。infinite是无限循环播放，和保持状态无关。alternate是来回播放方向。"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "CSS变量与主题切换",
+      "duration": "70分钟",
+      "content": {
+        "introduction": "CSS变量（也叫自定义属性）是现代CSS的重要特性，它能让我们在CSS里定义变量，然后到处复用。配合calc()计算和JS动态修改，可以实现主题切换、深色模式等高级功能。CSS变量让CSS从写死变成可配置，大大提升了代码的灵活性和可维护性。",
+        "sections": [
+          {
+            "title": "4.1 什么是CSS变量",
+            "content": "CSS变量（Custom Properties）是开发者自己定义的CSS属性，以两个减号开头，比如 `--main-color`。\n\n定义语法：\n```\n--变量名: 值;\n```\n\n使用语法：\n```\nvar(--变量名, 默认值);\n```\n\nCSS变量的好处：\n1. **复用** - 一个颜色值定义一次，到处用\n2. **维护** - 改主题色只需改一处\n3. **动态** - 可以用JS动态修改\n4. **继承** - 遵循CSS的层叠继承规则\n5. **支持calc()** - 可以参与计算\n\n和Sass/Less的变量不同，CSS变量是浏览器原生支持的，运行时生效，可以被JS修改。"
+          },
+          {
+            "title": "4.2 CSS变量定义与使用",
+            "type": "code",
+            "language": "css",
+            "code": ":root {\n  /* 在:root定义全局变量，所有元素都能用 */\n  --primary-color: #3498db;\n  --secondary-color: #2ecc71;\n  --text-color: #333;\n  --bg-color: #fff;\n  --spacing: 16px;\n  --border-radius: 8px;\n  --font-size: 14px;\n}\n\n.button {\n  /* 使用变量：var(--变量名) */\n  background: var(--primary-color);\n  color: #fff;\n  padding: var(--spacing);\n  border-radius: var(--border-radius);\n  font-size: var(--font-size);\n}\n\n.card {\n  background: var(--bg-color);\n  color: var(--text-color);\n  padding: var(--spacing);\n  border-radius: var(--border-radius);\n  border: 2px solid var(--primary-color);\n}\n\n/* var()可以带默认值，变量不存在时用默认值 */\n.box {\n  color: var(--undefined-var, #666); /* 变量不存在，用#666 */\n}"
+          },
+          {
+            "title": "4.3 变量的作用域",
+            "content": "CSS变量遵循CSS的层叠和继承规则，作用域取决于定义的位置。\n\n- 在 `:root` 定义 - 全局变量，所有元素都能访问\n- 在某个选择器里定义 - 局部变量，只在该元素及其子元素内有效\n\n局部变量会覆盖同名的全局变量（层叠）。这个特性很有用：\n- 不同区域用不同主题色\n- 不同状态的元素用不同变量值\n- 组件化开发时，每个组件可以有自己的变量\n\n变量的值在使用的元素处解析，会沿着DOM树向上查找最近的定义。"
+          },
+          {
+            "title": "4.4 变量作用域示例",
+            "type": "code",
+            "language": "css",
+            "code": ":root {\n  --color: #3498db; /* 全局变量 */\n}\n\n.box {\n  color: var(--color); /* 蓝色，用全局变量 */\n}\n\n.sidebar {\n  --color: #e74c3c; /* 在sidebar定义局部变量，覆盖全局 */\n}\n.sidebar .box {\n  color: var(--color); /* 红色，用的是局部变量 */\n}\n\n/* 不同主题区域 */\n.theme-dark {\n  --bg: #1a1a1a;\n  --text: #fff;\n}\n.theme-light {\n  --bg: #fff;\n  --text: #333;\n}\n.theme-dark .content  { background: var(--bg); color: var(--text); }\n.theme-light .content { background: var(--bg); color: var(--text); }\n\n/* 局部变量只在定义的子树内有效 */\n.special {\n  --local: 20px;\n  padding: var(--local); /* 有效 */\n}\n.other {\n  padding: var(--local); /* 无效，--local不在作用域内 */\n}"
+          },
+          {
+            "title": "4.5 calc()计算函数",
+            "content": "calc()可以让CSS属性值进行计算，支持加减乘除。\n\n语法：\n```\ncalc(表达式);\n```\n\n注意：\n- 加减号两边必须有空格：`calc(100% - 20px)`\n- 乘除号不需要空格：`calc(20px * 2)`、`calc(100% / 3)`\n- 可以混用不同单位：`calc(100% - 50px)`、`calc(2em + 10px)`\n- 可以嵌套：`calc(calc(100% - 20px) / 2)`\n- 可以和变量一起用：`calc(var(--spacing) * 2)`\n\ncalc()非常实用，比如全屏布局、响应式尺寸、动态计算位置等。配合CSS变量，能做出非常灵活的布局。"
+          },
+          {
+            "title": "4.6 calc()与变量结合示例",
+            "type": "code",
+            "language": "css",
+            "code": ":root {\n  --spacing: 16px;\n  --sidebar-width: 250px;\n}\n\n/* calc()基础用法 */\n.full-width {\n  width: calc(100% - 40px);     /* 宽度减去40px */\n  height: calc(100vh - 60px);    /* 视口高度减60px（减去导航栏） */\n  padding: calc(var(--spacing) * 2); /* 变量参与计算 */\n}\n\n/* 经典布局：侧边栏+主内容 */\n.layout {\n  display: flex;\n}\n.sidebar {\n  width: var(--sidebar-width);\n}\n.main {\n  /* 主内容宽度 = 100% - 侧边栏宽度 */\n  width: calc(100% - var(--sidebar-width));\n  padding: var(--spacing);\n}\n\n/* 响应式字体 */\n.responsive-text {\n  /* 字体大小随视口变化 */\n  font-size: calc(16px + 2vw); /* 基础16px，每视口宽度增加2vw */\n}\n\n/* 三等分（注意除法） */\n.third {\n  width: calc(100% / 3);\n}\n\n/* 居中技巧 */\n.center {\n  position: absolute;\n  left: calc(50% - 100px);  /* 元素宽200px时，向左移100px实现居中 */\n  width: 200px;\n}"
+          },
+          {
+            "title": "4.7 JS动态修改变量",
+            "content": "CSS变量最大的优势之一是可以用JS动态修改！这是Sass/Less变量做不到的。\n\nJS操作CSS变量的方法：\n\n1. **读取**：`element.style.getPropertyValue('--var-name')`\n2. **设置**：`element.style.setProperty('--var-name', value)`\n3. **删除**：`element.style.removeProperty('--var-name')`\n\n通常我们修改 `:root` 的变量（用 `document.documentElement`），就能影响全局。\n\n应用场景：\n- 主题切换（深色/浅色模式）\n- 用户自定义颜色\n- 动态调整尺寸（滑块控制）\n- 实时预览"
+          },
+          {
+            "title": "4.8 JS修改变量示例",
+            "type": "code",
+            "language": "html",
+            "code": "<style>\n  :root {\n    --primary: #3498db;\n    --font-size: 16px;\n  }\n  .box {\n    background: var(--primary);\n    color: #fff;\n    font-size: var(--font-size);\n    padding: 20px;\n  }\n</style>\n\n<div class=\"box\" id=\"box\">我是变色盒子</div>\n<button onclick=\"changeColor('#e74c3c')\">红色</button>\n<button onclick=\"changeColor('#2ecc71')\">绿色</button>\n<button onclick=\"changeColor('#3498db')\">蓝色</button>\n<button onclick=\"biggerFont()\">字体变大</button>\n\n<script>\n  // 修改主题色\n  function changeColor(color) {\n    document.documentElement.style.setProperty('--primary', color);\n  }\n\n  // 字体变大\n  function biggerFont() {\n    // 读取当前值\n    let current = getComputedStyle(document.documentElement)\n      .getPropertyValue('--font-size');\n    let size = parseInt(current) + 2;\n    document.documentElement.style.setProperty('--font-size', size + 'px');\n  }\n</script>"
+          },
+          {
+            "title": "4.9 深色模式实现",
+            "type": "code",
+            "language": "css",
+            "code": "/* 定义浅色主题变量（默认） */\n:root {\n  --bg-color: #ffffff;\n  --text-color: #333333;\n  --card-bg: #f5f5f5;\n  --border-color: #dddddd;\n  --primary: #3498db;\n}\n\n/* 深色主题：覆盖变量 */\n[data-theme=\"dark\"] {\n  --bg-color: #1a1a1a;\n  --text-color: #f0f0f0;\n  --card-bg: #2a2a2a;\n  --border-color: #444444;\n  --primary: #5dade2;\n}\n\n/* 使用变量 */\nbody {\n  background: var(--bg-color);\n  color: var(--text-color);\n  transition: background 0.3s ease, color 0.3s ease;\n}\n.card {\n  background: var(--card-bg);\n  border: 1px solid var(--border-color);\n  padding: 20px;\n}\n\n/* 跟随系统深色模式 */\n@media (prefers-color-scheme: dark) {\n  :root {\n    --bg-color: #1a1a1a;\n    --text-color: #f0f0f0;\n    --card-bg: #2a2a2a;\n    --border-color: #444444;\n  }\n}\n\n/* JS切换：document.documentElement.setAttribute('data-theme', 'dark'); */"
+          },
+          {
+            "title": "4.10 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 用CSS变量定义主题色、字号、间距，做一个卡片，所有样式都用变量\n2. 用calc()做一个布局：左侧固定250px，右侧自适应剩余宽度\n3. 用JS写三个按钮，点击切换不同的主题色（修改:root的变量）\n4. 实现深色模式切换：一个按钮在深色/浅色间切换，所有颜色用变量\n5. 用滑块控制字体大小，实时显示效果（JS修改--font-size变量）\n6. 做3个不同主题区域（红、绿、蓝），用局部变量让每个区域颜色不同\n\nCSS变量是现代CSS的基石，掌握它，主题切换、响应式、组件化都会轻松很多！"
+          }
+        ],
+        "summary": "这节课我们学习了CSS变量（自定义属性），包括定义和使用、作用域、calc()计算、JS动态修改、深色模式实现。CSS变量让CSS变得可配置、可动态修改，是实现主题切换、深色模式的关键技术。下节课学习高级选择器！",
+        "quiz": {
+          "question": "用JS修改:root上的CSS变量--primary的值，正确的方法是？",
+          "options": [
+            "document.documentElement.setProperty('--primary', '#ff0000');",
+            "document.documentElement.style.setProperty('--primary', '#ff0000');",
+            "document.root.css('--primary', '#ff0000');",
+            "document.setStyle('--primary', '#ff0000');"
+          ],
+          "answer": 1,
+          "explanation": "修改CSS变量要用 style.setProperty(变量名, 值)。document.documentElement 指向 :root（html元素）。注意变量名要带 -- 前缀。读取用 style.getPropertyValue()，删除用 style.removeProperty()。"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "高级选择器",
+      "duration": "80分钟",
+      "content": {
+        "introduction": "CSS选择器是CSS的基础，但很多同学只会用class和id选择器。其实CSS有很多强大的高级选择器：结构伪类、伪元素、属性选择器，还有现代的:is()、:not()、:has()等。掌握这些选择器，能让你的CSS代码更简洁、更强大，少写很多class，少用很多JS。这节课我们系统学习这些高级选择器！",
+        "sections": [
+          {
+            "title": "5.1 结构伪类选择器",
+            "content": "结构伪类根据元素在父元素中的位置来选择，不用加class就能精准定位。\n\n常用结构伪类：\n- **:first-child** - 第一个子元素\n- **:last-child** - 最后一个子元素\n- **:nth-child(n)** - 第n个子元素\n- **:nth-last-child(n)** - 倒数第n个\n- **:only-child** - 唯一的子元素\n- **:first-of-type** - 同类型第一个\n- **:last-of-type** - 同类型最后一个\n- **:nth-of-type(n)** - 同类型第n个\n\nnth-child非常强大，可以用公式和关键字选择多个元素。"
+          },
+          {
+            "title": "5.2 nth-child详解",
+            "type": "code",
+            "language": "css",
+            "code": "/* nth-child 的用法 */\n\n/* 第3个li */\nli:nth-child(3) { color: red; }\n\n/* 偶数行（表格斑马纹） */\ntr:nth-child(even) { background: #f5f5f5; }\n/* 等同于 */\ntr:nth-child(2n) { background: #f5f5f5; }\n\n/* 奇数行 */\ntr:nth-child(odd) { background: #fff; }\n/* 等同于 */\ntr:nth-child(2n+1) { background: #fff; }\n\n/* 前3个 */\nli:nth-child(-n+3) { color: blue; }\n\n/* 从第3个开始的所有 */\nli:nth-child(n+3) { color: green; }\n\n/* 每3个选第1个（每行第一个） */\nli:nth-child(3n+1) { background: #eee; }\n\n/* 公式：an+b\n   n从0开始递增\n   2n+1 = 1,3,5,7... (奇数)\n   2n   = 2,4,6,8... (偶数)\n   3n+1 = 1,4,7,10...\n*/\n\n/* first-child 和 last-child */\nli:first-child { font-weight: bold; }\nli:last-child { border-bottom: none; }"
+          },
+          {
+            "title": "5.3 child与of-type的区别",
+            "content": ":nth-child 和 :nth-of-type 容易混淆，区别在于：\n\n- **:nth-child(n)** - 在所有兄弟元素中排第n个（不管类型）\n- **:nth-of-type(n)** - 在同类型元素中排第n个\n\n举例：如果父元素下有 `<h1>` 和3个 `<p>`，那么：\n- `p:nth-child(1)` 选不到任何元素（因为第1个是h1）\n- `p:nth-of-type(1)` 能选中第一个p（在p里面排第1）\n\n记忆技巧：of-type是「同类型中第几个」，child是「所有孩子中第几个」。当父元素下只有一种类型的子元素时，两者效果一样；有多种类型时才有区别。"
+          },
+          {
+            "title": "5.4 伪元素 ::before 和 ::after",
+            "type": "code",
+            "language": "css",
+            "code": "/* 伪元素：在元素内容前/后插入内容，不占用DOM */\n\n/* 必须有 content 属性，哪怕是空字符串 */\n.quote::before {\n  content: '\"';\n  color: #999;\n  font-size: 2em;\n}\n.quote::after {\n  content: '\"';\n  color: #999;\n  font-size: 2em;\n}\n\n/* 用伪元素做装饰 */\n.card::before {\n  content: '';\n  position: absolute;\n  top: 0; left: 0;\n  width: 100%;\n  height: 4px;\n  background: linear-gradient(90deg, #3498db, #e74c3c);\n}\n\n/* 清除浮动（经典用法） */\n.clearfix::after {\n  content: '';\n  display: block;\n  clear: both;\n}\n\n/* 用伪元素做下划线动画 */\n.link {\n  position: relative;\n  text-decoration: none;\n}\n.link::after {\n  content: '';\n  position: absolute;\n  bottom: -2px;\n  left: 0;\n  width: 0;\n  height: 2px;\n  background: #3498db;\n  transition: width 0.3s ease;\n}\n.link:hover::after {\n  width: 100%; /* 悬停时下划线展开 */\n}\n\n/* ::first-letter 首字母放大 */\np::first-letter {\n  font-size: 3em;\n  float: left;\n  line-height: 1;\n}"
+          },
+          {
+            "title": "5.5 属性选择器",
+            "content": "属性选择器根据元素的属性来选择，非常灵活。\n\n语法：\n- `[attr]` - 有该属性的元素\n- `[attr=val]` - 属性等于val\n- `[attr^=val]` - 属性以val开头\n- `[attr$=val]` - 属性以val结尾\n- `[attr*=val]` - 属性包含val\n- `[attr~=val]` - 属性是空格分隔的列表，包含val\n- `[attr|=val]` - 属性等于val或以val-开头\n\n属性选择器不用加class，直接根据属性就能精准选择，非常适合表单、链接等。"
+          },
+          {
+            "title": "5.6 属性选择器示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 有type属性的input */\ninput[type] { border: 1px solid #ccc; }\n\n/* type是text的input */\ninput[type=\"text\"] { padding: 8px; }\n\n/* type是password的input */\ninput[type=\"password\"] { letter-spacing: 2px; }\n\n/* 必填字段 */\ninput[required] { border-color: #e74c3c; }\n\n/* 链接以https开头（安全链接） */\na[href^=\"https\"] { color: green; }\n\n/* 链接以.pdf结尾 */\na[href$=\".pdf\"]::after {\n  content: ' 📄';\n}\n\n/* 链接包含某域名 */\na[href*=\"github\"] { color: #333; }\n\n/* class列表包含某个值 */\ndiv[class~=\"box\"] { padding: 20px; }\n\n/* 按钮disabled状态 */\nbutton[disabled] { opacity: 0.5; cursor: not-allowed; }\n\n/* 选中带有data-id属性的元素 */\n[data-id] { cursor: pointer; }"
+          },
+          {
+            "title": "5.7 :is() :not() :has() 现代选择器",
+            "type": "code",
+            "language": "css",
+            "code": "/* :is() 匹配多个选择器（类似或） */\n/* 以前要写 */\nh1, h2, h3 { color: #333; }\nh1 a, h2 a, h3 a { color: blue; }\n/* 现在用 :is() */\n:is(h1, h2, h3) { color: #333; }\n:is(h1, h2, h3) a { color: blue; }\n\n/* :not() 排除某些元素 */\n/* 所有li，除了第一个 */\nli:not(:first-child) { margin-top: 10px; }\n/* 所有button，除了disabled */\nbutton:not([disabled]) { cursor: pointer; }\n/* 所有input，除了submit类型 */\ninput:not([type=\"submit\"]):not([type=\"button\"]) {\n  padding: 8px;\n}\n\n/* :has() 选择包含某子元素的父元素（父选择器，2023+新特性） */\n/* 包含img的div */\ndiv:has(img) { padding: 10px; }\n/* 包含.active的直接子元素的ul */\nul:has(> .active) { background: #f5f5f5; }\n/* 没有p的section */\nsection:not(:has(p)) { display: none; }\n/* 卡片里有图片时改变样式 */\n.card:has(.card-image) { padding: 0; }\n\n/* 组合使用 */\n:is(.btn, .link):not([disabled]):hover {\n  opacity: 0.8;\n}"
+          },
+          {
+            "title": "5.8 其他实用伪类",
+            "content": "除了上面那些，还有一些实用的伪类：\n\n**状态伪类：**\n- `:hover` - 鼠标悬停\n- `:active` - 鼠标按下\n- `:focus` - 获得焦点\n- `:focus-within` - 自己或子元素获得焦点（很有用）\n- `:checked` - 表单选中（单选/复选）\n- `:disabled` - 禁用\n\n**表单伪类：**\n- `:required` - 必填字段\n- `:optional` - 可选字段\n- `:valid` / `:invalid` - 验证通过/失败\n- `:placeholder-shown` - 正在显示placeholder\n\n**其他：**\n- `:empty` - 没有子元素的元素\n- `:target` - 被锚点跳转的元素\n- `:root` - 根元素（html）\n\n这些伪类能让我们少写很多JS，纯CSS就能实现交互效果。"
+          },
+          {
+            "title": "5.9 实用选择器综合示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 表单验证状态样式 */\ninput:required { border-left: 3px solid #e74c3c; }\ninput:optional { border-left: 3px solid #ccc; }\ninput:valid { border-color: #2ecc71; }\ninput:invalid { border-color: #e74c3c; }\n\n/* 复选框选中时关联样式 */\ninput[type=\"checkbox\"]:checked + label {\n  color: #2ecc71;\n  font-weight: bold;\n}\n\n/* 空元素隐藏 */\ndiv:empty { display: none; }\n\n/* focus-within: 输入框或其父元素获焦时高亮 */\n.input-group:focus-within {\n  border-color: #3498db;\n  box-shadow: 0 0 0 3px rgba(52,152,219,0.1);\n}\n\n/* 表格斑马纹 + hover */\ntable tbody tr:nth-child(odd) { background: #f9f9f9; }\ntable tbody tr:hover { background: #e8f4fc; }\n\n/* 导航栏第一项不要左边距 */\n.nav li:not(:first-child) { margin-left: 20px; }\n\n/* 文章段落间距，最后一段不要下边距 */\n.article p { margin-bottom: 1em; }\n.article p:last-child { margin-bottom: 0; }\n\n/* 外部链接加图标 */\na[href^=\"http\"]:not([href*=\"mysite.com\"])::after {\n  content: ' ↗';\n  color: #999;\n}"
+          },
+          {
+            "title": "5.10 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 用nth-child给表格做斑马纹（奇偶行不同色）\n2. 用nth-child(3n+1)实现每行第一个元素的特殊样式（3列网格）\n3. 用::before和::after给引用文字加引号装饰\n4. 用伪元素做一个hover时从左展开的下划线动画\n5. 用属性选择器给不同类型的链接（pdf、https、外部链接）加不同图标\n6. 用:not()排除第一个元素，给后面的元素加间距\n7. 用:has()实现：当卡片包含图片时，去掉内边距\n8. 用:focus-within实现输入框获焦时整个表单项高亮\n\n高级选择器能让你的CSS代码量减少一半，多练习，少加class！"
+          }
+        ],
+        "summary": "这节课我们学习了CSS高级选择器，包括结构伪类（:nth-child等）、伪元素（::before/::after）、属性选择器、现代选择器（:is/:not/:has）和各种状态伪类。这些选择器能让我们少写很多class，代码更简洁优雅。下节课学习渐变和滤镜！",
+        "quiz": {
+          "question": "想要选择父元素中第3个li元素，且要求它是li类型（不受其他类型元素干扰），应该用？",
+          "options": [
+            "li:nth-child(3)",
+            "li:nth-of-type(3)",
+            "li:eq(3)",
+            "li:nth(3)"
+          ],
+          "answer": 1,
+          "explanation": ":nth-of-type(3) 在同类型元素中选第3个，不受其他类型元素影响，更精准。:nth-child(3)是所有子元素中第3个，如果前面有其他类型元素会选错。:eq()是jQuery的语法不是CSS。CSS没有单独的:nth()。"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "CSS渐变与滤镜",
+      "duration": "80分钟",
+      "content": {
+        "introduction": "渐变和滤镜是CSS里非常视觉化的特性。渐变能让我们不用图片就能做出丰富的色彩过渡（线性、径向、锥形），滤镜能对元素应用各种图像处理效果（模糊、灰度、亮度等），配合backdrop-filter还能做出毛玻璃效果。这节课我们学习这些让网页更炫酷的视觉效果！",
+        "sections": [
+          {
+            "title": "6.1 线性渐变 linear-gradient",
+            "content": "linear-gradient创建线性渐变，颜色沿一条直线过渡。\n\n语法：\n```\nlinear-gradient(方向, 颜色1, 颜色2, ...);\n```\n\n方向可以是：\n- 角度：`45deg`、`90deg`、`180deg`\n- 关键字：`to right`、`to left`、`to top`、`to bottom`\n- 组合：`to top right`（右上对角）\n\n颜色可以指定位置：`red 20%`表示红色到20%处。\n\n渐变可以作为background-image的值，而不是background-color。"
+          },
+          {
+            "title": "6.2 线性渐变示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 基础线性渐变 */\n.g1 {\n  background: linear-gradient(to right, #3498db, #e74c3c);\n}\n\n/* 指定角度 */\n.g2 {\n  background: linear-gradient(45deg, #3498db, #e74c3c);\n}\n\n/* 多色渐变 */\n.g3 {\n  background: linear-gradient(to right, red, yellow, green, blue);\n}\n\n/* 指定颜色位置 */\n.g4 {\n  background: linear-gradient(to right, red 0%, yellow 50%, green 100%);\n}\n\n/* 渐变文字 */\n.gradient-text {\n  background: linear-gradient(45deg, #3498db, #e74c3c);\n  -webkit-background-clip: text; /* 文字作为裁剪区域 */\n  background-clip: text;\n  color: transparent; /* 文字本身透明，露出背景 */\n}\n\n/* 渐变按钮 */\n.gradient-btn {\n  background: linear-gradient(135deg, #667eea, #764ba2);\n  color: #fff;\n  border: none;\n  padding: 12px 24px;\n  border-radius: 6px;\n}\n\n/* 重复渐变 */\n.stripes {\n  background: repeating-linear-gradient(\n    45deg,\n    #3498db 0px,\n    #3498db 10px,\n    #fff 10px,\n    #fff 20px\n  ); /* 斜条纹 */\n}"
+          },
+          {
+            "title": "6.3 径向渐变 radial-gradient",
+            "type": "code",
+            "language": "css",
+            "code": "/* radial-gradient 径向渐变（从中心向外） */\n\n/* 默认从中心向外圆形渐变 */\n.r1 {\n  background: radial-gradient(#3498db, #e74c3c);\n}\n\n/* 指定形状和大小 */\n.r2 {\n  background: radial-gradient(circle at top, #3498db, #e74c3c);\n}\n\n/* 椭圆渐变 */\n.r3 {\n  background: radial-gradient(ellipse, #3498db, #e74c3c);\n}\n\n/* 指定圆心位置和大小 */\n.r4 {\n  background: radial-gradient(circle at 30% 30%, #3498db, #e74c3c);\n}\n\n/* 多色径向渐变 */\n.r5 {\n  background: radial-gradient(circle, #fff 0%, #3498db 50%, #2c3e50 100%);\n}\n\n/* 做一个光晕效果 */\n.glow {\n  background: radial-gradient(\n    circle,\n    rgba(52,152,219,0.6) 0%,\n    rgba(52,152,219,0) 70%\n  );\n}\n\n/* 圆形头像（配合border-radius） */\n.avatar {\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  background: radial-gradient(circle at 30% 30%, #fff, #3498db);\n}"
+          },
+          {
+            "title": "6.4 锥形渐变 conic-gradient",
+            "content": "conic-gradient是锥形渐变，颜色围绕一个中心点旋转过渡。可以用来做饼图、色轮、加载动画等。\n\n语法：\n```\nconic-gradient(从角度 at 位置, 颜色1 角度, 颜色2 角度, ...);\n```\n\n锥形渐变相对少用，但在特定场景非常有用。比如做饼图就不需要SVG或JS了，纯CSS就能做。"
+          },
+          {
+            "title": "6.5 锥形渐变示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* conic-gradient 锥形渐变 */\n\n/* 基础锥形渐变（色轮效果） */\n.c1 {\n  background: conic-gradient(red, yellow, green, blue, red);\n  border-radius: 50%; /* 配合圆形做色轮 */\n}\n\n/* 指定起始角度和中心点 */\n.c2 {\n  background: conic-gradient(from 0deg at 50% 50%, red, yellow, green, blue, red);\n}\n\n/* 饼图效果 */\n.pie {\n  background: conic-gradient(\n    #e74c3c 0% 30%,    /* 红色占30% */\n    #3498db 30% 70%,   /* 蓝色占40%（从30%到70%）*/\n    #2ecc71 70% 100%   /* 绿色占30% */\n  );\n  border-radius: 50%;\n}\n\n/* 旋转加载动画 */\n.conic-loader {\n  border-radius: 50%;\n  background: conic-gradient(#3498db 0deg, transparent 360deg);\n  animation: spin 1s linear infinite;\n}\n@keyframes spin {\n  to { transform: rotate(360deg); }\n}\n\n/* 棋盘格背景 */\n.checker {\n  background:\n    conic-gradient(#000 25%, #fff 0 50%, #000 0 75%, #fff 0);\n  background-size: 50px 50px;\n}"
+          },
+          {
+            "title": "6.6 filter滤镜",
+            "content": "filter属性可以对元素应用图像处理效果，类似Photoshop的滤镜。\n\n常用滤镜函数：\n- **blur(px)** - 模糊\n- **brightness(%)** - 亮度（1=原图，>1变亮，<1变暗）\n- **contrast(%)** - 对比度\n- **grayscale(%)** - 灰度（0彩色，100全灰）\n- **sepia(%)** - 棕褐色（复古效果）\n- **saturate(%)** - 饱和度\n- **hue-rotate(deg)** - 色相旋转\n- **invert(%)** - 反色\n- **opacity(%)** - 透明度\n- **drop-shadow()** - 阴影（比box-shadow更好，跟随形状）\n\n多个滤镜用空格分隔，可以叠加使用。filter会作用于整个元素包括内容。"
+          },
+          {
+            "title": "6.7 filter滤镜示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 单个滤镜 */\n.blur { filter: blur(5px); }              /* 模糊5px */\n.bright { filter: brightness(1.5); }     /* 变亮1.5倍 */\n.dark { filter: brightness(0.5); }       /* 变暗 */\n.gray { filter: grayscale(100%); }       /* 全灰 */\n.sepia { filter: sepia(100%); }          /* 复古棕褐 */\n.invert { filter: invert(100%); }        /* 反色 */\n.hue { filter: hue-rotate(90deg); }      /* 色相旋转90度 */\n\n/* 多个滤镜叠加 */\n.combo {\n  filter: grayscale(50%) brightness(1.2) contrast(1.1);\n}\n\n/* hover时变彩色（默认灰，悬停彩色） */\n.img-card img {\n  filter: grayscale(100%);\n  transition: filter 0.5s ease;\n}\n.img-card:hover img {\n  filter: grayscale(0%);\n}\n\n/* drop-shadow 跟随形状的阴影（透明PNG也能正确阴影） */\n.logo {\n  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));\n}\n\n/* 毛玻璃前的模糊背景 */\n.bg-blur {\n  filter: blur(20px) brightness(0.7);\n}"
+          },
+          {
+            "title": "6.8 backdrop-filter毛玻璃",
+            "content": "backdrop-filter是filter的兄弟，但它作用于元素**背后的内容**，而不是元素本身。这就是毛玻璃效果的实现原理。\n\n区别：\n- `filter` - 作用于元素自身和内容\n- `backdrop-filter` - 作用于元素后面的背景内容\n\n毛玻璃效果需要：\n1. 元素有半透明背景（不能完全不透明，否则看不到背后内容）\n2. 元素背后有内容（图片、其他元素）\n3. 设置backdrop-filter: blur()\n\n兼容性：Safari需要加-webkit-前缀。老浏览器不支持，需要降级处理。"
+          },
+          {
+            "title": "6.9 毛玻璃效果示例",
+            "type": "code",
+            "language": "html",
+            "code": "<style>\n  .bg {\n    /* 背景图 */\n    background: url('scenery.jpg') center/cover;\n    height: 100vh;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n  \n  .glass-card {\n    width: 300px;\n    padding: 30px;\n    border-radius: 16px;\n    /* 半透明背景 */\n    background: rgba(255,255,255,0.2);\n    /* 毛玻璃核心：backdrop-filter */\n    backdrop-filter: blur(10px);\n    -webkit-backdrop-filter: blur(10px);\n    border: 1px solid rgba(255,255,255,0.3);\n    box-shadow: 0 8px 32px rgba(0,0,0,0.1);\n    color: #fff;\n  }\n  \n  /* 顶部导航毛玻璃 */\n  .nav-glass {\n    position: fixed;\n    top: 0; left: 0; right: 0;\n    background: rgba(255,255,255,0.7);\n    backdrop-filter: blur(20px) saturate(180%);\n    -webkit-backdrop-filter: blur(20px) saturate(180%);\n    border-bottom: 1px solid rgba(255,255,255,0.3);\n  }\n</style>\n\n<div class=\"bg\">\n  <div class=\"glass-card\">\n    <h2>毛玻璃效果</h2>\n    <p>我是毛玻璃卡片，背后的图片被模糊了！</p>\n  </div>\n</div>"
+          },
+          {
+            "title": "6.10 综合效果与练习",
+            "type": "code",
+            "language": "css",
+            "code": "/* 渐变+滤镜综合：炫光卡片 */\n.aurora-card {\n  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);\n  background-size: 200% 200%;\n  animation: aurora 5s ease infinite;\n  color: #fff;\n  padding: 40px;\n  border-radius: 20px;\n}\n@keyframes aurora {\n  0%, 100% { background-position: 0% 50%; }\n  50%      { background-position: 100% 50%; }\n}\n\n/* 图片hover滤镜动画 */\n.gallery-item {\n  overflow: hidden;\n}\n.gallery-item img {\n  filter: grayscale(80%) contrast(1.1);\n  transition: filter 0.5s ease, transform 0.5s ease;\n}\n.gallery-item:hover img {\n  filter: grayscale(0%) contrast(1);\n  transform: scale(1.05);\n}\n\n/* 玻璃拟态按钮 */\n.glass-btn {\n  background: rgba(255,255,255,0.1);\n  backdrop-filter: blur(10px);\n  border: 1px solid rgba(255,255,255,0.2);\n  color: #fff;\n  padding: 12px 32px;\n  border-radius: 30px;\n  transition: all 0.3s ease;\n}\n.glass-btn:hover {\n  background: rgba(255,255,255,0.2);\n  transform: translateY(-2px);\n}"
+          },
+          {
+            "title": "6.11 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 用linear-gradient做一个渐变按钮（两个颜色，135度）\n2. 用渐变文字效果做一个彩色标题（background-clip: text）\n3. 用repeating-linear-gradient做斜条纹背景\n4. 用radial-gradient做一个圆形头像的光晕背景\n5. 用conic-gradient做一个三色饼图\n6. 用filter让图片默认灰度，hover时变彩色\n7. 用drop-shadow给一个透明PNG加跟随形状的阴影\n8. 做一个毛玻璃卡片（backdrop-filter），背后放一张图片\n9. 用渐变+animation做一个流动的极光背景效果\n\n渐变和滤镜是CSS的视觉利器，能让网页瞬间高大上，多尝试各种组合！"
+          }
+        ],
+        "summary": "这节课我们学习了CSS渐变（linear/radial/conic）、filter滤镜（blur/grayscale等）、backdrop-filter毛玻璃效果。渐变让我们不用图片就能做丰富色彩，滤镜让我们能处理图像效果，毛玻璃是现代UI的流行效果。下节课学习3D变换！",
+        "quiz": {
+          "question": "实现毛玻璃效果（背景模糊）应该用哪个CSS属性？",
+          "options": [
+            "filter: blur(10px);",
+            "backdrop-filter: blur(10px);",
+            "background-blur: 10px;",
+            "opacity: 0.5;"
+          ],
+          "answer": 1,
+          "explanation": "backdrop-filter: blur() 作用于元素背后的内容，实现毛玻璃效果。filter: blur() 是模糊元素自身和内容，不是背景。CSS没有background-blur属性。opacity只是透明度，不会模糊。毛玻璃需要元素半透明 + backdrop-filter。"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "3D变换与透视",
+      "duration": "80分钟",
+      "content": {
+        "introduction": "前面学的transform都是2D变换，其实CSS还能做3D变换！配合perspective透视属性，能做出真正的3D效果：3D旋转、3D平移、卡片翻转等。3D变换是CSS动画的高级部分，掌握它能让你的网页效果立体起来，做出令人惊艳的3D交互效果。",
+        "sections": [
+          {
+            "title": "7.1 透视 perspective",
+            "content": "要看到3D效果，必须有透视。perspective定义了观察者到z=0平面的距离，距离越近，透视效果越强（近大远小越明显）。\n\nperspective有两种用法：\n1. **在父元素上** - `perspective: 1000px;`（影响所有子元素的3D变换）\n2. **在元素自身上** - `transform: perspective(1000px) rotateY(45deg);`（只影响自己）\n\n推荐在父元素上设置perspective，这样多个子元素的3D变换有一致的透视效果。\n\nperspective值越小，3D效果越夸张（像广角镜头）；值越大，越接近正交投影（3D感弱）。常用800-1500px。"
+          },
+          {
+            "title": "7.2 3D旋转 rotateX/Y/Z",
+            "type": "code",
+            "language": "css",
+            "code": "/* 父元素设置透视 */\n.scene {\n  perspective: 1000px;\n}\n\n/* 3D旋转 */\n.box {\n  width: 150px;\n  height: 150px;\n  background: #3498db;\n  transition: transform 0.5s ease;\n}\n\n/* rotateX 绕X轴旋转（前后翻转） */\n.box.x:hover { transform: rotateX(45deg); }\n\n/* rotateY 绕Y轴旋转（左右翻转） */\n.box.y:hover { transform: rotateY(45deg); }\n\n/* rotateZ 绕Z轴旋转（就是2D的rotate） */\n.box.z:hover { transform: rotateZ(45deg); }\n\n/* 组合3D旋转 */\n.box.combo:hover {\n  transform: rotateX(30deg) rotateY(45deg);\n}\n\n/* 没有perspective时，3D旋转看起来还是2D的 */\n/* 所以3D变换必须配合perspective！ */\n.no-perspective {\n  transform: rotateY(45deg); /* 看起来就是变窄了，没有3D感 */\n}"
+          },
+          {
+            "title": "7.3 3D平移 translateZ",
+            "content": "translateZ让元素沿Z轴（朝向观察者方向）移动。配合perspective，translateZ能让元素变大（靠近）或变小（远离）。\n\n- `translateZ(正值)` - 朝观察者移动，元素变大\n- `translateZ(负值)` - 远离观察者，元素变小\n\ntranslateZ必须配合perspective才有效果，否则没变化。\n\n3D平移可以和3D旋转组合：`transform: translateZ(100px) rotateY(45deg);`，做出元素飞向屏幕并旋转的效果。"
+          },
+          {
+            "title": "7.4 3D平移与scale3d示例",
+            "type": "code",
+            "language": "css",
+            "code": ".scene {\n  perspective: 800px;\n}\n\n.card {\n  width: 200px;\n  height: 200px;\n  background: linear-gradient(45deg, #3498db, #e74c3c);\n  transition: transform 0.5s ease;\n  margin: 50px auto;\n}\n\n/* 朝观察者移动（变大） */\n.card.z-out:hover {\n  transform: translateZ(100px);\n}\n\n/* 远离观察者（变小） */\n.card.z-in:hover {\n  transform: translateZ(-100px);\n}\n\n/* 3D平移+旋转 */\n.card.fly:hover {\n  transform: translateZ(150px) rotateY(180deg);\n}\n\n/* scale3d 三维缩放 */\n.card.scale3d:hover {\n  transform: scale3d(1.2, 1.2, 1.2);\n}\n\n/* 3D组合：做出卡片悬浮立体效果 */\n.card.tilt {\n  transform-style: preserve-3d;\n}\n.card.tilt:hover {\n  transform: rotateX(15deg) rotateY(-15deg) translateZ(30px);\n}\n\n/* 立体悬浮卡片（常用于产品展示） */\n.float-3d {\n  animation: float3d 3s ease-in-out infinite;\n  transform-style: preserve-3d;\n}\n@keyframes float3d {\n  0%, 100% { transform: translateY(0) rotateY(0); }\n  50%      { transform: translateY(-20px) rotateY(10deg); }\n}"
+          },
+          {
+            "title": "7.5 transform-style: preserve-3d",
+            "content": "transform-style决定子元素是否在3D空间中渲染：\n\n- **flat**（默认）- 子元素被压平到2D平面，没有3D效果\n- **preserve-3d** - 子元素保留3D位置，能呈现真正的3D结构\n\n做3D卡片翻转、立方体等效果时，父元素必须设置 `transform-style: preserve-3d`，否则子元素的3D变换会失效。\n\n这是3D变换的关键属性！没有它，多个3D面无法正确组合成3D物体。\n\n注意：preserve-3d的父元素有些CSS属性会破坏3D空间，比如overflow: hidden、filter等，要避免使用。"
+          },
+          {
+            "title": "7.6 3D卡片翻转效果",
+            "type": "code",
+            "language": "html",
+            "code": "<style>\n  .card-scene {\n    perspective: 1000px;\n    width: 300px;\n    height: 200px;\n  }\n  .card {\n    width: 100%;\n    height: 100%;\n    position: relative;\n    transform-style: preserve-3d; /* 关键！保留3D */\n    transition: transform 0.8s ease;\n  }\n  .card:hover {\n    transform: rotateY(180deg); /* 翻转180度 */\n  }\n  .card-face {\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    backface-visibility: hidden; /* 背面隐藏 */\n    border-radius: 10px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    color: #fff;\n    font-size: 24px;\n  }\n  .card-front {\n    background: linear-gradient(45deg, #3498db, #9b59b6);\n  }\n  .card-back {\n    background: linear-gradient(45deg, #e74c3c, #f39c12);\n    transform: rotateY(180deg); /* 背面预先翻转 */\n  }\n</style>\n\n<div class=\"card-scene\">\n  <div class=\"card\">\n    <div class=\"card-face card-front\">正面</div>\n    <div class=\"card-face card-back\">背面</div>\n  </div>\n</div>"
+          },
+          {
+            "title": "7.7 backface-visibility",
+            "content": "backface-visibility决定元素的背面是否可见：\n\n- **visible**（默认）- 背面可见\n- **hidden** - 背面隐藏\n\n做卡片翻转效果时，正面和背面都需要设置 `backface-visibility: hidden`，这样翻转时只显示当前朝向观察者的那一面。\n\n如果不设置，翻转180度后会看到正面内容的镜像（反向文字），很丑。\n\n注意：背面背面隐藏有时会导致一些渲染问题，需要配合preserve-3d使用。"
+          },
+          {
+            "title": "7.8 3D立方体",
+            "type": "code",
+            "language": "css",
+            "code": "/* 3D立方体 */\n.cube-scene {\n  perspective: 1000px;\n  width: 200px;\n  height: 200px;\n  margin: 100px auto;\n}\n.cube {\n  width: 200px;\n  height: 200px;\n  position: relative;\n  transform-style: preserve-3d;\n  animation: rotate3d 10s linear infinite;\n}\n@keyframes rotate3d {\n  from { transform: rotateX(0) rotateY(0); }\n  to   { transform: rotateX(360deg) rotateY(360deg); }\n}\n\n/* 立方体6个面 */\n.face {\n  position: absolute;\n  width: 200px;\n  height: 200px;\n  border: 2px solid #fff;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: #fff;\n  font-size: 32px;\n}\n.front  { background: rgba(231,76,60,0.7); transform: translateZ(100px); }\n.back   { background: rgba(241,196,15,0.7); transform: rotateY(180deg) translateZ(100px); }\n.right  { background: rgba(46,204,113,0.7); transform: rotateY(90deg) translateZ(100px); }\n.left   { background: rgba(52,152,219,0.7); transform: rotateY(-90deg) translateZ(100px); }\n.top    { background: rgba(155,89,182,0.7); transform: rotateX(90deg) translateZ(100px); }\n.bottom { background: rgba(52,73,94,0.7); transform: rotateX(-90deg) translateZ(100px); }\n\n/* translateZ(100px) = 立方体半边长，让面到正确位置 */"
+          },
+          {
+            "title": "7.9 3D悬浮卡片效果",
+            "type": "code",
+            "language": "css",
+            "code": "/* 鼠标跟随的3D倾斜卡片（JS辅助） */\n.tilt-card {\n  perspective: 1000px;\n}\n.tilt-inner {\n  transform-style: preserve-3d;\n  transition: transform 0.2s ease-out;\n  /* JS会动态设置 --rx 和 --ry 变量 */\n  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));\n}\n\n/* 卡片上的元素浮起（视差效果） */\n.tilt-content {\n  transform: translateZ(50px); /* 内容浮起 */\n}\n.tilt-badge {\n  transform: translateZ(80px); /* 徽章浮更高 */\n}\n\n/* HTML:\n<div class=\"tilt-card\">\n  <div class=\"tilt-inner\">\n    <div class=\"tilt-content\">内容</div>\n    <div class=\"tilt-badge\">NEW</div>\n  </div>\n</div>\n*/\n\n/* JS:\ndocument.querySelector('.tilt-card').addEventListener('mousemove', (e) => {\n  const rect = e.currentTarget.getBoundingClientRect();\n  const x = e.clientX - rect.left;\n  const y = e.clientY - rect.top;\n  const cx = rect.width / 2;\n  const cy = rect.height / 2;\n  const rx = (y - cy) / cy * -15;  // 上下倾斜\n  const ry = (x - cx) / cx * 15;   // 左右倾斜\n  e.currentTarget.querySelector('.tilt-inner').style.setProperty('--rx', rx + 'deg');\n  e.currentTarget.querySelector('.tilt-inner').style.setProperty('--ry', ry + 'deg');\n});\n*/"
+          },
+          {
+            "title": "7.10 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 给父元素设置perspective，让子元素rotateY(45deg)有3D效果\n2. 做一个3D卡片翻转效果：hover时正面翻转到背面（用rotateY + preserve-3d + backface-visibility）\n3. 用translateZ让元素hover时朝观察者飞出（变大）\n4. 做一个3D立方体，6个面不同颜色，自动旋转\n5. 做一个3D悬浮卡片，hover时卡片微微倾斜（rotateX+rotateY）\n6. 进阶：用JS监听mousemove，让卡片根据鼠标位置3D倾斜（鼠标跟随效果）\n7. 做3个元素，translateZ不同值，实现视差层次效果\n\n3D变换是CSS动画的高阶技能，做出立体效果会让你的网页非常有冲击力！"
+          }
+        ],
+        "summary": "这节课我们学习了CSS 3D变换，包括perspective透视、rotateX/Y/Z三维旋转、translateZ三维平移、transform-style: preserve-3d保留3D空间、backface-visibility背面隐藏，以及3D卡片翻转、3D立方体、3D悬浮卡片等实战效果。3D变换是CSS动画的高阶部分，能让网页效果立体起来。下节课做综合实战项目！",
+        "quiz": {
+          "question": "实现3D卡片翻转效果时，父元素必须设置哪个属性才能让正反两面都正确显示3D效果？",
+          "options": [
+            "perspective: 1000px;",
+            "transform-style: preserve-3d;",
+            "backface-visibility: hidden;",
+            "transform: rotateY(180deg);"
+          ],
+          "answer": 1,
+          "explanation": "transform-style: preserve-3d 让子元素保留3D空间位置，是3D卡片翻转的关键。没有它，正反两面会被压平到2D，无法正确组合。perspective提供透视（通常设在更外层）。backface-visibility隐藏背面，避免镜像文字。rotateY是翻转动作本身。"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "实战项目：动画 Landing Page",
+      "duration": "90分钟",
+      "content": {
+        "introduction": "前面7章我们学习了CSS动画的各种技术：过渡、变换、关键帧、变量、选择器、渐变滤镜、3D变换。这节课我们把它们综合起来，做一个炫酷的动画Landing Page（着陆页）！这是一个完整的项目，涵盖导航栏、Hero区域、特性卡片、动画背景等，把所学知识融会贯通。",
+        "sections": [
+          {
+            "title": "8.1 项目规划",
+            "content": "我们要做一个动画Landing Page，包含以下模块：\n\n1. **导航栏** - 毛玻璃效果，滚动时变化\n2. **Hero区域** - 大标题渐入、按钮悬浮、背景动画\n3. **特性卡片** - 入场动画、hover 3D倾斜\n4. **数字统计区** - 数字滚动入场\n5. **CTA行动号召** - 渐变背景、动画按钮\n6. **页脚** - 简洁布局\n\n技术要点：\n- CSS变量统一管理颜色、间距\n- @keyframes做入场动画\n- transition做交互反馈\n- transform做位移和缩放\n- 渐变做背景\n- backdrop-filter做毛玻璃\n- JS监听滚动触发动画\n\n我们会分模块讲解，最后组合成完整页面。"
+          },
+          {
+            "title": "8.2 基础样式与CSS变量",
+            "type": "code",
+            "language": "css",
+            "code": "/* 全局变量 */\n:root {\n  --primary: #667eea;\n  --secondary: #764ba2;\n  --accent: #f093fb;\n  --text: #2d3748;\n  --text-light: #718096;\n  --bg: #f7fafc;\n  --white: #ffffff;\n  --spacing-sm: 8px;\n  --spacing: 24px;\n  --spacing-lg: 64px;\n  --radius: 12px;\n  --shadow: 0 4px 20px rgba(0,0,0,0.08);\n  --shadow-hover: 0 12px 40px rgba(0,0,0,0.15);\n  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n/* 基础重置 */\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;\n  color: var(--text);\n  background: var(--bg);\n  line-height: 1.6;\n  overflow-x: hidden;\n}\n\n/* 通用入场动画类 */\n.fade-in {\n  opacity: 0;\n  transform: translateY(40px);\n  transition: opacity 0.8s ease, transform 0.8s ease;\n}\n.fade-in.visible {\n  opacity: 1;\n  transform: translateY(0);\n}\n\n/* 渐变文字 */\n.gradient-text {\n  background: linear-gradient(135deg, var(--primary), var(--secondary));\n  -webkit-background-clip: text;\n  background-clip: text;\n  color: transparent;\n}"
+          },
+          {
+            "title": "8.3 导航栏（毛玻璃+滚动效果）",
+            "type": "code",
+            "language": "html",
+            "code": "<style>\n  .navbar {\n    position: fixed;\n    top: 0; left: 0; right: 0;\n    z-index: 100;\n    padding: 20px 5%;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    /* 初始透明 */\n    background: transparent;\n    transition: all var(--transition);\n  }\n  /* 滚动后变毛玻璃 */\n  .navbar.scrolled {\n    background: rgba(255,255,255,0.8);\n    backdrop-filter: blur(20px) saturate(180%);\n    -webkit-backdrop-filter: blur(20px) saturate(180%);\n    box-shadow: 0 2px 20px rgba(0,0,0,0.05);\n    padding: 12px 5%;\n  }\n  .logo {\n    font-size: 24px;\n    font-weight: bold;\n    color: var(--primary);\n  }\n  .nav-links {\n    display: flex;\n    gap: 32px;\n    list-style: none;\n  }\n  .nav-links a {\n    color: var(--text);\n    text-decoration: none;\n    position: relative;\n    transition: color var(--transition);\n  }\n  /* hover下划线动画 */\n  .nav-links a::after {\n    content: '';\n    position: absolute;\n    bottom: -4px;\n    left: 0;\n    width: 0;\n    height: 2px;\n    background: var(--primary);\n    transition: width var(--transition);\n  }\n  .nav-links a:hover { color: var(--primary); }\n  .nav-links a:hover::after { width: 100%; }\n</style>\n\n<nav class=\"navbar\">\n  <div class=\"logo\">BrandName</div>\n  <ul class=\"nav-links\">\n    <li><a href=\"#\">首页</a></li>\n    <li><a href=\"#\">特性</a></li>\n    <li><a href=\"#\">价格</a></li>\n    <li><a href=\"#\">关于</a></li>\n  </ul>\n</nav>\n\n<script>\n  // 滚动时切换导航栏样式\n  window.addEventListener('scroll', () => {\n    const nav = document.querySelector('.navbar');\n    if (window.scrollY > 50) {\n      nav.classList.add('scrolled');\n    } else {\n      nav.classList.remove('scrolled');\n    }\n  });\n</script>"
+          },
+          {
+            "title": "8.4 Hero区域（渐入动画+动态背景）",
+            "type": "code",
+            "language": "html",
+            "code": "<style>\n  .hero {\n    min-height: 100vh;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-align: center;\n    position: relative;\n    overflow: hidden;\n    /* 渐变背景 */\n    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n    color: #fff;\n  }\n  /* 动态光球背景 */\n  .hero::before, .hero::after {\n    content: '';\n    position: absolute;\n    border-radius: 50%;\n    filter: blur(60px);\n    opacity: 0.5;\n  }\n  .hero::before {\n    width: 400px; height: 400px;\n    background: var(--accent);\n    top: -100px; left: -100px;\n    animation: float1 8s ease-in-out infinite;\n  }\n  .hero::after {\n    width: 500px; height: 500px;\n    background: #4facfe;\n    bottom: -150px; right: -150px;\n    animation: float2 10s ease-in-out infinite;\n  }\n  @keyframes float1 {\n    0%, 100% { transform: translate(0,0) scale(1); }\n    50%      { transform: translate(100px, 100px) scale(1.2); }\n  }\n  @keyframes float2 {\n    0%, 100% { transform: translate(0,0) scale(1); }\n    50%      { transform: translate(-100px, -50px) scale(1.1); }\n  }\n\n  .hero-content { position: relative; z-index: 1; }\n  .hero h1 {\n    font-size: clamp(40px, 8vw, 80px);\n    font-weight: 800;\n    margin-bottom: 24px;\n    /* 入场动画 */\n    animation: fadeUp 1s ease 0.2s both;\n  }\n  .hero p {\n    font-size: 20px;\n    margin-bottom: 40px;\n    opacity: 0.9;\n    animation: fadeUp 1s ease 0.5s both;\n  }\n  @keyframes fadeUp {\n    from { opacity: 0; transform: translateY(40px); }\n  }\n  /* CTA按钮 */\n  .cta-btn {\n    padding: 16px 40px;\n    font-size: 18px;\n    background: #fff;\n    color: var(--primary);\n    border: none;\n    border-radius: 30px;\n    cursor: pointer;\n    font-weight: 600;\n    animation: fadeUp 1s ease 0.8s both;\n    transition: transform var(--transition), box-shadow var(--transition);\n  }\n  .cta-btn:hover {\n    transform: translateY(-4px) scale(1.05);\n    box-shadow: 0 15px 30px rgba(0,0,0,0.2);\n  }\n</style>\n\n<section class=\"hero\">\n  <div class=\"hero-content\">\n    <h1>开启<span class=\"gradient-text\" style=\"background:linear-gradient(135deg,#fff,#f093fb);-webkit-background-clip:text;background-clip:text;color:transparent;\">无限</span>可能</h1>\n    <p>用最酷炫的动画，打造最惊艳的体验</p>\n    <button class=\"cta-btn\">立即开始 →</button>\n  </div>\n</section>"
+          },
+          {
+            "title": "8.5 特性卡片（滚动入场+hover效果）",
+            "type": "code",
+            "language": "html",
+            "code": "<style>\n  .features {\n    padding: 100px 5%;\n    max-width: 1200px;\n    margin: 0 auto;\n  }\n  .section-title {\n    text-align: center;\n    font-size: 40px;\n    margin-bottom: 60px;\n  }\n  .feature-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));\n    gap: 32px;\n  }\n  .feature-card {\n    background: var(--white);\n    padding: 40px 30px;\n    border-radius: var(--radius);\n    box-shadow: var(--shadow);\n    transition: transform var(--transition), box-shadow var(--transition);\n    /* 入场动画初始状态 */\n    opacity: 0;\n    transform: translateY(40px);\n  }\n  .feature-card.visible {\n    opacity: 1;\n    transform: translateY(0);\n  }\n  /* 阶梯式延迟 */\n  .feature-card:nth-child(1) { transition-delay: 0s; }\n  .feature-card:nth-child(2) { transition-delay: 0.15s; }\n  .feature-card:nth-child(3) { transition-delay: 0.3s; }\n  .feature-card:nth-child(4) { transition-delay: 0.45s; }\n  .feature-card:nth-child(5) { transition-delay: 0.6s; }\n  .feature-card:nth-child(6) { transition-delay: 0.75s; }\n  \n  .feature-card:hover {\n    transform: translateY(-10px);\n    box-shadow: var(--shadow-hover);\n  }\n  .feature-icon {\n    width: 70px;\n    height: 70px;\n    border-radius: 16px;\n    background: linear-gradient(135deg, var(--primary), var(--secondary));\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 32px;\n    margin-bottom: 24px;\n    transition: transform var(--transition);\n  }\n  .feature-card:hover .feature-icon {\n    transform: rotate(360deg) scale(1.1); /* hover时图标旋转 */\n  }\n  .feature-card h3 {\n    font-size: 22px;\n    margin-bottom: 12px;\n  }\n  .feature-card p {\n    color: var(--text-light);\n  }\n</style>\n\n<section class=\"features\">\n  <h2 class=\"section-title\">核心特性</h2>\n  <div class=\"feature-grid\">\n    <div class=\"feature-card\">\n      <div class=\"feature-icon\">🚀</div>\n      <h3>极速启动</h3>\n      <p>毫秒级响应，流畅体验</p>\n    </div>\n    <div class=\"feature-card\">\n      <div class=\"feature-icon\">🎨</div>\n      <h3>精美设计</h3>\n      <p>现代UI，赏心悦目</p>\n    </div>\n    <div class=\"feature-card\">\n      <div class=\"feature-icon\">🔒</div>\n      <h3>安全可靠</h3>\n      <p>数据加密，隐私保护</p>\n    </div>\n  </div>\n</section>"
+          },
+          {
+            "title": "8.6 滚动触发动画（JS）",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 滚动时触发入场动画\n// 用 IntersectionObserver 监听元素是否进入视口\n\nconst observer = new IntersectionObserver((entries) => {\n  entries.forEach(entry => {\n    if (entry.isIntersecting) {\n      // 进入视口，添加visible类触发动画\n      entry.target.classList.add('visible');\n      // 动画只播放一次，可选取消监听\n      observer.unobserve(entry.target);\n    }\n  });\n}, {\n  threshold: 0.15  // 元素15%进入视口就触发\n});\n\n// 监听所有需要入场动画的元素\ndocument.querySelectorAll('.feature-card, .fade-in').forEach(el => {\n  observer.observe(el);\n});\n\n// 数字滚动动画\nfunction animateNumber(element, target, duration = 2000) {\n  const start = 0;\n  const startTime = performance.now();\n  function update(now) {\n    const progress = Math.min((now - startTime) / duration, 1);\n    const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic\n    element.textContent = Math.floor(start + (target - start) * eased);\n    if (progress < 1) {\n      requestAnimationFrame(update);\n    } else {\n      element.textContent = target; // 确保最后是精确值\n    }\n  }\n  requestAnimationFrame(update);\n}\n\n// 数字统计区进入视口时触发\nconst statsObserver = new IntersectionObserver((entries) => {\n  entries.forEach(entry => {\n    if (entry.isIntersecting) {\n      document.querySelectorAll('.stat-number').forEach(el => {\n        const target = parseInt(el.dataset.target);\n        animateNumber(el, target);\n      });\n      statsObserver.disconnect();\n    }\n  });\n}, { threshold: 0.5 });\n\nstatsObserver.observe(document.querySelector('.stats'));\n\n/* HTML:\n<div class=\"stats\">\n  <div class=\"stat\">\n    <div class=\"stat-number\" data-target=\"10000\">0</div>\n    <div class=\"stat-label\">用户</div>\n  </div>\n</div>\n*/"
+          },
+          {
+            "title": "8.7 CTA区域（渐变背景+动画按钮）",
+            "type": "code",
+            "language": "css",
+            "code": ".cta-section {\n  padding: 100px 5%;\n  text-align: center;\n  position: relative;\n  overflow: hidden;\n  /* 动态渐变背景 */\n  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);\n  background-size: 200% 200%;\n  animation: gradientMove 8s ease infinite;\n  color: #fff;\n}\n@keyframes gradientMove {\n  0%, 100% { background-position: 0% 50%; }\n  50%      { background-position: 100% 50%; }\n}\n\n.cta-section h2 {\n  font-size: 48px;\n  margin-bottom: 20px;\n}\n.cta-section p {\n  font-size: 20px;\n  margin-bottom: 40px;\n  opacity: 0.9;\n}\n\n/* 发光动画按钮 */\n.glow-btn {\n  padding: 18px 48px;\n  font-size: 18px;\n  background: #fff;\n  color: var(--primary);\n  border: none;\n  border-radius: 30px;\n  cursor: pointer;\n  font-weight: 700;\n  position: relative;\n  transition: transform var(--transition);\n}\n/* 发光效果 */\n.glow-btn::before {\n  content: '';\n  position: absolute;\n  top: -2px; left: -2px; right: -2px; bottom: -2px;\n  background: linear-gradient(45deg, #fff, #f093fb, #fff);\n  border-radius: 32px;\n  z-index: -1;\n  opacity: 0;\n  filter: blur(10px);\n  transition: opacity var(--transition);\n}\n.glow-btn:hover {\n  transform: translateY(-3px) scale(1.05);\n}\n.glow-btn:hover::before {\n  opacity: 1;\n}\n\n/* 浮动装饰圆点 */\n.cta-section::before {\n  content: '';\n  position: absolute;\n  width: 200px; height: 200px;\n  border-radius: 50%;\n  background: rgba(255,255,255,0.1);\n  top: 20%; left: 10%;\n  animation: floatBubble 6s ease-in-out infinite;\n}\n@keyframes floatBubble {\n  0%, 100% { transform: translateY(0); }\n  50%      { transform: translateY(-30px); }\n}"
+          },
+          {
+            "title": "8.8 页脚与完整组合",
+            "type": "code",
+            "language": "html",
+            "code": "<style>\n  .footer {\n    background: #1a202c;\n    color: #cbd5e0;\n    padding: 60px 5% 30px;\n  }\n  .footer-content {\n    max-width: 1200px;\n    margin: 0 auto;\n    display: grid;\n    grid-template-columns: 2fr 1fr 1fr 1fr;\n    gap: 40px;\n    margin-bottom: 40px;\n  }\n  .footer h4 {\n    color: #fff;\n    margin-bottom: 16px;\n  }\n  .footer ul { list-style: none; }\n  .footer li { margin-bottom: 8px; }\n  .footer a {\n    color: #cbd5e0;\n    text-decoration: none;\n    transition: color var(--transition);\n  }\n  .footer a:hover { color: var(--accent); }\n  .footer-bottom {\n    text-align: center;\n    padding-top: 30px;\n    border-top: 1px solid #2d3748;\n    color: #718096;\n  }\n  /* 回到顶部按钮 */\n  .back-top {\n    position: fixed;\n    bottom: 30px; right: 30px;\n    width: 50px; height: 50px;\n    border-radius: 50%;\n    background: var(--primary);\n    color: #fff;\n    border: none;\n    cursor: pointer;\n    font-size: 20px;\n    opacity: 0;\n    transform: translateY(20px);\n    transition: all var(--transition);\n    z-index: 99;\n  }\n  .back-top.show {\n    opacity: 1;\n    transform: translateY(0);\n  }\n  .back-top:hover {\n    transform: translateY(-5px);\n    background: var(--secondary);\n  }\n</style>\n\n<footer class=\"footer\">\n  <div class=\"footer-content\">\n    <div>\n      <h4>BrandName</h4>\n      <p>用动画点亮网页，用技术创造可能。</p>\n    </div>\n    <div>\n      <h4>产品</h4>\n      <ul><li><a href=\"#\">功能</a></li><li><a href=\"#\">价格</a></li></ul>\n    </div>\n    <div>\n      <h4>公司</h4>\n      <ul><li><a href=\"#\">关于</a></li><li><a href=\"#\">招聘</a></li></ul>\n    </div>\n    <div>\n      <h4>联系</h4>\n      <ul><li><a href=\"#\">邮箱</a></li><li><a href=\"#\">电话</a></li></ul>\n    </div>\n  </div>\n  <div class=\"footer-bottom\">© 2024 BrandName. All rights reserved.</div>\n</footer>\n\n<button class=\"back-top\" onclick=\"window.scrollTo({top:0,behavior:'smooth'})\">↑</button>\n\n<script>\n  // 回到顶部按钮显示控制\n  window.addEventListener('scroll', () => {\n    const btn = document.querySelector('.back-top');\n    btn.classList.toggle('show', window.scrollY > 300);\n  });\n</script>"
+          },
+          {
+            "title": "8.9 性能优化建议",
+            "content": "做完动画页面，要注意性能优化：\n\n1. **优先用transform和opacity** - 这两个属性不触发重排，性能最好\n2. **避免动画width/height/top/left** - 会触发重排，卡顿\n3. **will-change提示浏览器** - 对将要做动画的元素加 `will-change: transform`，浏览器会提前优化（但别滥用）\n4. **减少同时动画的元素数量** - 太多元素同时动画会卡\n5. **用translateZ(0)开启GPU加速** - 强制元素独立合成层\n6. **动画时长别太长** - 0.3-0.5秒最舒服，超过1秒会让人等不及\n7. **入场动画用IntersectionObserver** - 滚动到才触发，省性能\n8. **移动端减少动画** - 移动设备性能弱，适当简化\n9. **尊重prefers-reduced-motion** - 用户设置了减少动画，就别动画\n\n```\n@media (prefers-reduced-motion: reduce) {\n  * { animation: none !important; transition: none !important; }\n}\n```"
+          },
+          {
+            "title": "8.10 项目总结与练习",
+            "type": "exercise",
+            "content": "项目练习：\n\n1. 按教程完整实现这个Landing Page，包含导航、Hero、特性、CTA、页脚\n2. 给特性卡片加上3D倾斜效果（hover时鼠标跟随倾斜）\n3. 在Hero区域加上粒子动画背景（用CSS或JS生成多个小圆点浮动）\n4. 做一个数字统计区，滚动到时数字从0滚动到目标值\n5. 加上深色模式切换（用CSS变量），所有动画在两种模式下都正常\n6. 优化性能：检查动画属性，确保用了transform而不是top/left\n7. 加上prefers-reduced-motion支持，尊重用户偏好\n8. 进阶：用JS做一个文字逐字打字效果的Hero标题\n9. 进阶：做一个滚动视差效果（不同元素滚动速度不同）\n\n这个项目综合了前面学的所有知识，做完它你就真正掌握了CSS动画！可以把它加到你的作品集里。"
+          }
+        ],
+        "summary": "这节课我们把前7章学的所有CSS动画技术综合起来，做了一个完整的动画Landing Page，包括毛玻璃导航栏、渐入Hero、3D倾斜卡片、动态渐变背景、数字滚动、回到顶部等。还学习了性能优化和可访问性。恭喜你完成CSS进阶课程！多练习、多创造，做出属于你自己的炫酷网页！",
+        "quiz": {
+          "question": "做滚动入场动画时，监听元素是否进入视口，推荐用哪个API？",
+          "options": [
+            "addEventListener('scroll') 配合 getBoundingClientRect()",
+            "IntersectionObserver",
+            "setInterval 定时检查",
+            "requestAnimationFrame 循环检查"
+          ],
+          "answer": 1,
+          "explanation": "IntersectionObserver 是浏览器原生提供的API，专门用于监听元素与视口（或容器）的交叉状态，性能好、用法简单，不会像scroll事件那样频繁触发导致卡顿。是做滚动入场动画的首选方案。scroll事件需要手动计算，性能差。"
+        }
+      }
+    }
+  ]
+}
