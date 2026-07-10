@@ -918,27 +918,48 @@ body {
   .nav-links.active { right: 0; }
   .nav-links li { width: 100%; }
   .nav-links a {
-    display: block;
+    display: flex;
     padding: 14px 16px;
     font-size: 16px;
     border-radius: var(--radius-md);
     min-height: 48px;
-    display: flex;
     align-items: center;
   }
   .nav-toggle { display: flex; }
-  .hero-stats { gap: 24px; }
-  .stat-number { font-size: 26px; }
-  .section { padding: 50px 0; }
-  .hero { padding: 50px 0 30px; }
+  
+  /* 精简 Hero */
+  .hero { padding: 32px 0 20px; }
+  .hero-badge { margin-bottom: 14px; font-size: 12px; padding: 6px 14px; }
+  .hero-subtitle { margin-bottom: 20px; font-size: 14px; }
+  .hero-stats { margin-top: 20px; gap: 24px; }
+  .stat-number { font-size: 24px; }
+  .stat-label { font-size: 12px; margin-top: 2px; }
+  
+  /* 精简板块 */
+  .section { padding: 30px 0; }
+  .section-header { margin-bottom: 24px; }
+  .section-title { font-size: 22px; margin-bottom: 8px; }
+  .section-desc { font-size: 14px; }
   .container { padding: 0 16px; }
   .nav-right { gap: 8px; }
   .back-main { padding: 6px 12px; font-size: 12px; }
   .back-main i { display: none; }
   
-  /* 课程卡片网格防止溢出 */
-  .courses-grid { grid-template-columns: 1fr !important; }
-  .featured-grid { grid-template-columns: 1fr !important; }
+  /* 精简课程卡片网格 */
+  .courses-grid { grid-template-columns: 1fr !important; gap: 16px; }
+  .featured-grid { grid-template-columns: 1fr !important; gap: 16px; }
+  
+  /* 精简课程卡片 */
+  .course-card { padding: 0; }
+  .course-image { height: 80px; font-size: 32px; }
+  .course-content { padding: 12px 16px; }
+  .course-title { font-size: 16px; margin-bottom: 4px; }
+  .course-desc { font-size: 13px; margin-bottom: 8px; min-height: 0; }
+  .course-meta { padding-top: 8px; font-size: 12px; }
+  
+  /* 精简难度标签 */
+  .level-tabs { margin-bottom: 20px; gap: 8px; }
+  .level-tab { padding: 6px 16px; font-size: 13px; }
   
   /* 课程详情适配 */
   .course-detail-title { flex-wrap: wrap; gap: 8px; }
@@ -965,34 +986,53 @@ body {
     height: 48px;
   }
   
-  /* 课程卡片适配 */
-  .course-card { padding: 20px; }
-  .course-card-title { font-size: 18px; }
-  .course-card-desc { font-size: 13px; }
+  /* 精简课程分类头部 */
+  .course-section-header { padding: 12px; gap: 12px; }
+  .course-section-icon { font-size: 28px; }
+  .course-section-title { font-size: 16px; }
+  .course-section-desc { font-size: 12px; }
+  
+  /* 精选卡片 */
+  .featured-card { padding: 14px; }
+  .featured-card-title { font-size: 15px; }
+  .featured-card-desc { font-size: 12px; }
+  
+  /* 精简分类间距 */
+  .course-section { margin-bottom: 20px; }
+  .course-section-header { margin-bottom: 12px; }
   
   /* footer 适配 */
-  .footer { padding: 30px 0; }
-  .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+  .footer { padding: 20px 0; }
+  .footer-content { flex-direction: column; gap: 12px; text-align: center; }
 }
 
 @media (max-width: 480px) {
-  .hero-title { font-size: 32px !important; }
-  .hero-subtitle { font-size: 14px; }
-  .hero-badge { font-size: 12px; padding: 6px 14px; }
-  .section-title { font-size: 22px; }
-  .stat-number { font-size: 22px; }
-  .stat-label { font-size: 12px; }
-  .hero-stats { gap: 16px; }
+  .hero-title { font-size: 28px !important; margin-bottom: 10px; }
+  .hero-subtitle { margin-bottom: 14px; }
+  .hero-badge { margin-bottom: 10px; }
+  .hero-stats { margin-top: 14px; gap: 12px; }
+  .stat-number { font-size: 20px; }
+  .stat-label { font-size: 11px; }
+  .section-title { font-size: 20px; }
   .container { padding: 0 12px; }
-  .course-card { padding: 16px; }
-  .course-card-title { font-size: 16px; }
+  .section { padding: 24px 0; }
+  .section-header { margin-bottom: 16px; }
+  .course-card { padding: 0; }
+  .course-image { height: 64px; font-size: 26px; }
+  .course-content { padding: 10px 14px; }
+  .course-title { font-size: 15px; }
+  .course-desc { font-size: 12px; margin-bottom: 6px; }
+  .course-meta { padding-top: 6px; font-size: 11px; }
+  .course-meta i { width: 12px; height: 12px; }
+  .level-tabs { margin-bottom: 14px; gap: 6px; }
+  .level-tab { padding: 5px 12px; font-size: 12px; }
   .lesson-content { padding: 16px; }
   .lesson-title { font-size: 20px; }
   .code-block pre { padding: 12px; font-size: 12px; }
   .nav-logo { font-size: 18px; }
   .back-main { font-size: 11px; padding: 5px 10px; }
-  .featured-card { padding: 16px; }
-  .featured-card-title { font-size: 15px; }
+  .featured-card { padding: 12px; }
+  .featured-card-title { font-size: 14px; }
   .featured-card-desc { font-size: 12px; }
   .quiz-box { padding: 16px; }
   .quiz-question { font-size: 15px; }
@@ -1000,6 +1040,13 @@ body {
   .chapter-item { padding: 10px 12px; }
   .chapter-item-title { font-size: 13px; }
   .chapter-sidebar { width: 260px; }
+  .course-section-header { padding: 8px; gap: 8px; }
+  .course-section-icon { font-size: 24px; }
+  .course-section-title { font-size: 15px; }
+  .course-section-desc { font-size: 11px; }
+  .course-section { margin-bottom: 14px; }
+  .course-section-header { margin-bottom: 8px; }
+  .footer { padding: 16px 0; font-size: 13px; }
 }
 
 /* 滚动条美化 */
