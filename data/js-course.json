@@ -1,0 +1,290 @@
+{
+  "id": "javascript",
+  "title": "JavaScript 入门到实战",
+  "subtitle": "网页交互必备，从基础到DOM操作",
+  "icon": "⚡",
+  "color": "yellow",
+  "description": "JavaScript是网页的灵魂，让网页动起来！从基础语法到DOM操作、事件处理、异步编程，全面掌握前端开发必备技能。",
+  "duration": "18小时",
+  "lessons": 15,
+  "level": "入门级",
+  "whatYouLearn": [
+    "JavaScript基础语法",
+    "函数和作用域",
+    "数组和对象操作",
+    "DOM操作和事件",
+    "异步编程基础",
+    "实战项目：计算器、待办清单"
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title": "JS入门：认识JavaScript",
+      "duration": "40分钟",
+      "content": {
+        "introduction": "欢迎来到JavaScript课程！JavaScript是世界上最流行的编程语言之一，它是网页的灵魂——有了它，网页才能有交互、有动画、有各种酷炫的效果。现在JavaScript不仅能写前端，还能写后端（Node.js）、写移动端、写桌面端，可以说是无处不在。",
+        "sections": [
+          {
+            "title": "1.1 什么是JavaScript",
+            "content": "JavaScript（简称JS）是一门轻量级的、解释型的编程语言，主要用于网页开发。它是由Brendan Eich在1995年只用了10天就发明出来的，最初叫LiveScript，后来改名叫JavaScript（蹭了Java的热度，但它和Java没有关系！）。\n\nJavaScript的作用：\n- 网页交互：点击按钮、表单验证、弹窗提示等\n- 动态效果：动画、轮播图、下拉菜单等\n- 数据处理：发送请求、处理数据\n- 游戏开发：网页小游戏\n- 后端开发：Node.js\n- 移动端开发：React Native、UniApp等\n- 桌面应用：Electron\n\n总之，JavaScript非常强大，学会了它，你能做的事情太多了！"
+          },
+          {
+            "title": "1.2 JS怎么引入",
+            "content": "JavaScript代码怎么写到HTML里呢？有三种方式：\n\n1. **行内JS** - 写在HTML标签的事件属性里（不推荐）\n2. **内部JS** - 写在`<script>`标签里\n3. **外部JS** - 写在单独的.js文件里，用src引入（推荐）\n\n`<script>`标签可以放在HTML的任何地方，一般放在`<head>`里或`<body>`的最后。推荐放在body最后，这样页面内容先加载出来，再执行JS，用户体验更好。"
+          },
+          {
+            "title": "1.3 引入方式代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- 1. 行内JS（不推荐） -->\n<button onclick=\"alert('你点我了！')\">点我</button>\n\n<!-- 2. 内部JS -->\n<script>\n  alert('这是内部JS');\n  console.log('控制台输出');\n</script>\n\n<!-- 3. 外部JS（推荐） -->\n<script src=\"script.js\"></script>\n\n<!-- script.js文件里写JS代码 -->\n// script.js\nalert('这是外部JS文件');"
+          },
+          {
+            "title": "1.4 第一个程序",
+            "content": "按照惯例，第一个程序就是输出Hello World。\n\nJavaScript中输出信息有几种方式：\n- `alert()` - 弹窗提示\n- `console.log()` - 控制台输出（开发者工具里看，最常用）\n- `document.write()` - 写入网页（用得少）\n- `prompt()` - 弹窗输入\n\n打开浏览器的开发者工具（按F12），找到Console（控制台）标签，就能看到console.log的输出了。调试代码的时候console.log是我们最好的朋友！"
+          },
+          {
+            "title": "1.5 Hello World代码",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 这是注释\n/* 这是多行注释 */\n\n// 弹窗输出\nalert('Hello, World!');\n\n// 控制台输出（推荐调试用）\nconsole.log('你好，世界！');\nconsole.log('我在学习JavaScript！');\n\n// 写入页面\ndocument.write('<h1>欢迎来到JS世界</h1>');\n\n// 输入框\nlet name = prompt('请输入你的名字：');\nalert('你好，' + name + '！');"
+          },
+          {
+            "title": "1.6 变量和数据类型",
+            "content": "JS中声明变量用`let`或`var`或`const`：\n\n- `let` - 声明变量，可修改（ES6新增，推荐用）\n- `const` - 声明常量，不可修改（ES6新增，推荐用）\n- `var` - 老的声明方式，有坑，不推荐\n\nJS的基本数据类型：\n- number - 数字（整数和小数都是number）\n- string - 字符串\n- boolean - 布尔值（true/false）\n- undefined - 未定义（声明了没赋值）\n- null - 空值\n- symbol - 符号（ES6新增，少用）\n- bigint - 大整数\n\n用`typeof`可以查看数据类型。"
+          },
+          {
+            "title": "1.7 变量代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 变量声明\nlet name = '小明';\nlet age = 14;\nconst PI = 3.14159; // 常量，不能改\n\n// 输出\nconsole.log('姓名：', name);\nconsole.log('年龄：', age);\n\n// 数据类型\nconsole.log(typeof 123);       // number\nconsole.log(typeof 'hello');   // string\nconsole.log(typeof true);      // boolean\nconsole.log(typeof undefined); // undefined\nconsole.log(typeof null);      // object（历史遗留bug）\n\n// 模板字符串（反引号，和Python的f-string类似）\nlet msg = `我叫${name}，今年${age}岁`;\nconsole.log(msg);"
+          },
+          {
+            "title": "1.8 运算符和条件判断",
+            "content": "JS的运算符和Python差不多：\n\n算术：+ - * / % ** \n比较：> < >= <= == != === !==\n逻辑：&& || !\n赋值：= += -= *= /= %= **=\n\n注意：JS有`==`和`===`两种等于！\n- `==` - 只比较值，会自动转换类型（坑多，不推荐）\n- `===` - 严格等于，值和类型都要相等才是true（推荐用）\n\n同理，`!=`和`!==`也有区别。推荐用===和!==，避免隐式类型转换的坑。\n\n条件判断if-else和Python一样，只是用大括号不用缩进。"
+          },
+          {
+            "title": "1.9 条件判断代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// == 和 === 的区别\nconsole.log(1 == '1');   // true（自动转类型了！坑！）\nconsole.log(1 === '1');  // false（类型不同，推荐用===）\n\n// 条件判断\nlet score = 85;\nif (score >= 90) {\n  console.log('优秀');\n} else if (score >= 80) {\n  console.log('良好');\n} else if (score >= 60) {\n  console.log('及格');\n} else {\n  console.log('不及格');\n}\n\n// 三目运算符（和Python类似）\nlet age = 20;\nlet status = age >= 18 ? '成年' : '未成年';\nconsole.log(status);\n\n// 获取用户输入\n// let num = prompt('请输入一个数字：');\n// num = parseInt(num); // 转成整数\n// console.log('你输入的是：', num);"
+          },
+          {
+            "title": "1.10 循环",
+            "content": "JS的循环主要有三种：\n\n1. **for循环** - 最常用，知道循环次数用\n2. **while循环** - 条件为真就循环\n3. **do-while循环** - 先执行一次再判断\n\nbreak和continue和Python一样的作用。\n\nfor循环还有专门的for...in（遍历对象属性）和for...of（遍历可迭代对象，比如数组）。"
+          },
+          {
+            "title": "1.11 循环代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// for循环\nfor (let i = 1; i <= 5; i++) {\n  console.log('第' + i + '次循环');\n}\n\n// 计算1到100的和\nlet sum = 0;\nfor (let i = 1; i <= 100; i++) {\n  sum += i;\n}\nconsole.log('1到100的和：', sum);\n\n// while循环\nlet i = 1;\nwhile (i <= 5) {\n  console.log('while: ' + i);\n  i++;\n}\n\n// for...of遍历数组\nlet fruits = ['苹果', '香蕉', '橘子'];\nfor (let fruit of fruits) {\n  console.log('我喜欢' + fruit);\n}\n\n// 九九乘法表\nfor (let i = 1; i <= 9; i++) {\n  let line = '';\n  for (let j = 1; j <= i; j++) {\n    line += `${j}x${i}=${i*j}\\t`;\n  }\n  console.log(line);\n}"
+          },
+          {
+            "title": "1.12 动手练习",
+            "type": "exercise",
+            "content": "完成下面的练习：\n\n1. 用JS写一个程序，输入年龄，判断是否成年\n2. 打印1-100中能被3整除的数\n3. 写一个程序，输入一个数，判断是不是素数\n4. 打印倒三角的星号图案\n5. 用prompt输入三个数，输出最大的那个\n\n打开浏览器控制台就能写代码啦，多练习！"
+          }
+        ],
+        "summary": "这节课我们认识了JavaScript，学习了怎么引入JS、变量、数据类型、运算符、条件判断和循环。JS的基础语法和Python很像，有Python基础学起来会很快。下节课我们学习函数！",
+        "quiz": {
+          "question": "JavaScript中，推荐用哪个比较运算符来避免类型转换的坑？",
+          "options": [
+            "==",
+            "===",
+            "=",
+            "!="
+          ],
+          "answer": 1,
+          "explanation": "===是严格等于，值和类型都要相等才返回true，不会自动转换类型，更安全。==会自动转换类型，容易出bug，不推荐。"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "函数和作用域",
+      "duration": "50分钟",
+      "content": {
+        "introduction": "函数是一段可以重复使用的代码块。学会函数，我们就能把复杂的程序拆分成一个个小模块，代码更清晰、更好维护。",
+        "sections": [
+          {
+            "title": "2.1 什么是函数",
+            "content": "函数就是把一段代码封装起来，给它起个名字，以后可以反复调用，不用重复写。\n\n函数的好处：\n- 代码复用 - 写一次，到处用\n- 模块化 - 把大程序拆成小函数，好维护\n- 抽象 - 不用管内部怎么实现，知道怎么用就行\n\nJS中定义函数有几种方式：\n1. 函数声明（function命令）\n2. 函数表达式\n3. 箭头函数（ES6）"
+          },
+          {
+            "title": "2.2 函数定义和调用",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 函数声明\nfunction sayHello(name) {\n  console.log('你好，' + name + '！');\n}\n\n// 调用函数\nsayHello('小明');\nsayHello('小红');\n\n// 带返回值的函数\nfunction add(a, b) {\n  return a + b;\n}\n\nlet result = add(3, 5);\nconsole.log('3 + 5 =', result);\n\n// 函数表达式\nconst multiply = function(a, b) {\n  return a * b;\n};\nconsole.log(multiply(4, 5));\n\n// 箭头函数（ES6，更简洁）\nconst subtract = (a, b) => a - b;\nconsole.log(subtract(10, 3));\n\n// 没有返回值的函数，默认返回undefined\nfunction noReturn() {\n  console.log('这个函数没有return');\n}\nconsole.log(noReturn()); // undefined"
+          },
+          {
+            "title": "2.3 函数参数",
+            "content": "JS的函数参数比较灵活：\n\n- 参数可以传也可以不传，没传的参数值是undefined\n- 可以设置默认参数（ES6）\n- 有arguments对象（类数组，存放所有实参）\n- 剩余参数...rest（ES6）\n\n默认参数在Python里也有，一样的用法。"
+          },
+          {
+            "title": "2.4 参数代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 默认参数\nfunction greet(name = '陌生人', greeting = '你好') {\n  console.log(greeting + '，' + name + '！');\n}\n\ngreet(); // 你好，陌生人！\ngreet('小明'); // 你好，小明！\ngreet('小红', '早上好'); // 早上好，小红！\n\n// 剩余参数 ...rest\nfunction sum(...nums) {\n  let total = 0;\n  for (let n of nums) {\n    total += n;\n  }\n  return total;\n}\n\nconsole.log(sum(1, 2, 3)); // 6\nconsole.log(sum(1, 2, 3, 4, 5)); // 15\n\n// arguments对象（老方式）\nfunction oldSum() {\n  let total = 0;\n  for (let i = 0; i < arguments.length; i++) {\n    total += arguments[i];\n  }\n  return total;\n}"
+          },
+          {
+            "title": "2.5 作用域",
+            "content": "作用域就是变量起作用的范围。JS中有几种作用域：\n\n1. **全局作用域** - 在任何地方都能访问\n2. **函数作用域** - 只在函数内部能访问\n3. **块级作用域** - 只在{}块内有效（let和const有，var没有！这就是为什么推荐用let不用var的原因之一）\n\n还有一个重要的概念：闭包（closure）。简单来说，内部函数可以访问外部函数的变量，即使外部函数已经执行完了。闭包是JS的重要特性，后面深入学习的时候再仔细讲。"
+          },
+          {
+            "title": "2.6 作用域代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 全局变量\nlet globalVar = '我是全局的';\n\nfunction test() {\n  // 函数内的变量，外面访问不到\n  let localVar = '我是局部的';\n  console.log(globalVar); // 能访问全局的\n  console.log(localVar);  // 能访问局部的\n  \n  if (true) {\n    let blockVar = '我是块级的';\n    var notBlockVar = '我是var，不是块级的'; // var没有块级作用域\n  }\n  // console.log(blockVar); // 报错，访问不到（let有块级作用域）\n  console.log(notBlockVar); // 能访问到（var没有块级作用域，坑！）\n}\n\ntest();\nconsole.log(globalVar); // 能访问\n// console.log(localVar); // 报错，访问不到函数内部的变量"
+          },
+          {
+            "title": "2.7 数组方法",
+            "content": "JS的数组和Python的列表很像，但有更多实用的方法。介绍几个最常用的：\n\n- push/pop - 末尾添加/删除\n- unshift/shift - 开头添加/删除\n- splice - 删除/插入/替换\n- slice - 切片\n- concat - 拼接\n- join - 转字符串\n- sort - 排序\n- reverse - 反转\n- indexOf/lastIndexOf - 找索引\n- includes - 是否包含\n- forEach - 遍历\n- map - 映射（每个元素处理一下）\n- filter - 过滤\n- reduce - 归并\n- find/findIndex - 查找\n\n这些方法非常实用，特别是后面几个高阶函数（forEach、map、filter、reduce），在前端开发中天天用！"
+          },
+          {
+            "title": "2.8 数组方法代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "let nums = [1, 2, 3, 4, 5];\n\n// push/pop\nnums.push(6); // 末尾加\nconsole.log(nums); // [1,2,3,4,5,6]\nnums.pop(); // 末尾删\nconsole.log(nums); // [1,2,3,4,5]\n\n// forEach 遍历\nnums.forEach((item, index) => {\n  console.log(`第${index}个：${item}`);\n});\n\n// map 映射 - 每个元素处理一下，返回新数组\nlet doubled = nums.map(n => n * 2);\nconsole.log(doubled); // [2,4,6,8,10]\n\n// filter 过滤 - 留下满足条件的\nlet evens = nums.filter(n => n % 2 === 0);\nconsole.log(evens); // [2,4]\n\n// reduce 归并 - 把所有元素归并成一个值\nlet sum = nums.reduce((acc, cur) => acc + cur, 0);\nconsole.log(sum); // 15\n\n// find 查找第一个满足条件的\nlet found = nums.find(n => n > 3);\nconsole.log(found); // 4\n\n// sort 排序（注意：默认是按字符串排的，数字要传函数）\nlet arr = [3, 1, 4, 1, 5, 9, 2, 6];\narr.sort((a, b) => a - b); // 升序\nconsole.log(arr); // [1,1,2,3,4,5,6,9]"
+          },
+          {
+            "title": "2.9 对象Object",
+            "content": "JS的对象和Python的字典很像，是键值对的集合。\n\n对象的创建：\n- 字面量：`{key: value}`（最常用）\n- new Object()\n\n访问属性：\n- 点语法：`obj.key`（推荐，简单）\n- 中括号：`obj['key']`（键名是变量或有特殊字符时用）\n\n对象的方法（函数）：\n- Object.keys(obj) - 获取所有key\n- Object.values(obj) - 获取所有value\n- Object.entries(obj) - 获取所有键值对\n- Object.assign(target, ...sources) - 合并对象"
+          },
+          {
+            "title": "2.10 对象代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 创建对象\nlet person = {\n  name: '小明',\n  age: 14,\n  gender: '男',\n  hobbies: ['编程', '游戏', '骑车'],\n  sayHi: function() {\n    console.log('大家好，我叫' + this.name);\n  }\n};\n\n// 访问属性\nconsole.log(person.name);   // 小明\nconsole.log(person.age);    // 14\nconsole.log(person['gender']); // 男\n\n// 修改属性\nperson.age = 15;\nperson.school = '汇文中学'; // 添加新属性\ndelete person.gender;       // 删除属性\n\n// 调用方法\nperson.sayHi();\n\n// 遍历对象\nfor (let key in person) {\n  console.log(key + ': ' + person[key]);\n}\n\n// Object.keys/values/entries\nconsole.log(Object.keys(person));   // 所有键\nconsole.log(Object.values(person)); // 所有值\nconsole.log(Object.entries(person)); // 所有键值对数组\n\n// 解构赋值（ES6特色，超好用！）\nlet { name, age } = person;\nconsole.log(name, age); // 小明 15\n\n// 展开运算符 ...\nlet obj1 = { a: 1, b: 2 };\nlet obj2 = { ...obj1, c: 3 }; // 复制并添加\nconsole.log(obj2); // {a:1, b:2, c:3}"
+          },
+          {
+            "title": "2.11 字符串方法",
+            "content": "字符串也有很多实用的方法：\n\n- length - 长度\n- toUpperCase/toLowerCase - 大小写\n- trim - 去两端空格\n- slice/substring - 切片\n- split - 分割成数组\n- join的反操作\n- indexOf/lastIndexOf - 查找\n- includes - 是否包含\n- startsWith/endsWith - 开头/结尾\n- replace - 替换\n- repeat - 重复\n- padStart/padEnd - 填充\n- 模板字符串 - 反引号${}"
+          },
+          {
+            "title": "2.12 字符串方法代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "let str = 'Hello, JavaScript!';\n\nconsole.log(str.length);          // 18\nconsole.log(str.toUpperCase());   // HELLO, JAVASCRIPT!\nconsole.log(str.toLowerCase());   // hello, javascript!\nconsole.log(str.slice(0, 5));     // Hello\nconsole.log(str.indexOf('Java')); // 7\nconsole.log(str.includes('JS'));  // false\nconsole.log(str.startsWith('He')); // true\nconsole.log(str.endsWith('!'));   // true\nconsole.log(str.replace('Hello', 'Hi')); // Hi, JavaScript!\nconsole.log('哈'.repeat(5));      // 哈哈哈哈哈\n\n// 分割成数组\nlet dateStr = '2024-01-15';\nlet parts = dateStr.split('-');\nconsole.log(parts); // ['2024', '01', '15']\n\n// 模板字符串（反引号）\nlet name = '小明';\nlet age = 14;\nlet greeting = `大家好，我叫${name}，今年${age}岁。`;\nconsole.log(greeting);\n\n// 模板字符串还能换行\nlet poem = `床前明月光，\n疑是地上霜。\n举头望明月，\n低头思故乡。`;\nconsole.log(poem);"
+          },
+          {
+            "title": "2.13 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 写一个函数，判断一个数是不是素数\n2. 写一个函数，输入数组，返回数组中最大的数\n3. 写一个函数，输入字符串，返回反转后的字符串\n4. 写一个函数，输入年份，判断是不是闰年\n5. 用数组的map和filter方法，筛选出1-20中的奇数，然后求它们的平方\n\n多写函数，养成封装代码的好习惯！"
+          }
+        ],
+        "summary": "这节课我们学习了函数、作用域、数组方法、对象、字符串方法。这些都是JS中非常实用的内容，特别是数组的高阶方法（map、filter、reduce等）和对象的解构赋值，在前端开发中天天用。下节课我们学习DOM操作，让JS真正和网页互动起来！",
+        "quiz": {
+          "question": "以下哪个数组方法会返回一个新数组，每个元素都被处理过？",
+          "options": [
+            "forEach",
+            "map",
+            "filter",
+            "reduce"
+          ],
+          "answer": 1,
+          "explanation": "map是映射，对数组每个元素做处理，返回新数组。forEach只遍历不返回。filter是过滤满足条件的。reduce是归并成一个值。"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "DOM操作和事件",
+      "duration": "60分钟",
+      "content": {
+        "introduction": "DOM（Document Object Model，文档对象模型）是JS操作网页的接口。通过DOM，我们可以获取网页上的元素、修改内容、改变样式、添加删除元素……一句话，DOM让JS真正能控制网页！",
+        "sections": [
+          {
+            "title": "3.1 什么是DOM",
+            "content": "DOM把HTML文档看成一棵树，每个标签、文本、属性都是树上的一个节点。JS通过操作这些节点来改变网页。\n\nDOM树大概长这样：\n- document（整个文档，根节点）\n  - html\n    - head\n      - title、meta、style、script等\n    - body\n      - div、p、a、img等各种元素\n\n我们主要就是通过document对象来操作DOM的。"
+          },
+          {
+            "title": "3.2 获取元素",
+            "content": "操作DOM的第一步是获取元素。有好几种方法：\n\n- `document.getElementById(id)` - 按id找，返回一个元素（最快）\n- `document.getElementsByClassName(class)` - 按class找，返回类数组集合\n- `document.getElementsByTagName(tag)` - 按标签名找，返回类数组集合\n- `document.querySelector(选择器)` - 按CSS选择器找，返回匹配的第一个（最常用！）\n- `document.querySelectorAll(选择器)` - 按CSS选择器找，返回所有匹配的（常用！）\n\n推荐用querySelector和querySelectorAll，因为CSS选择器太灵活了，想找什么都行！"
+          },
+          {
+            "title": "3.3 获取元素代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 按id找\nlet title = document.getElementById('title');\n\n// 按选择器找（第一个匹配的）\nlet box = document.querySelector('.box'); // 按class\nlet nav = document.querySelector('#nav'); // 按id\nlet firstLi = document.querySelector('ul li'); // 按标签+层级\nlet btn = document.querySelector('button[type=\"submit\"]'); // 属性选择器\n\n// 找所有匹配的\nlet allItems = document.querySelectorAll('.item');\nlet allLi = document.querySelectorAll('ul li');\n\n// querySelectorAll返回的是NodeList，可以用forEach遍历\nallItems.forEach(item => {\n  console.log(item);\n});\n\n// 注意：getElementsBy系列返回的是HTMLCollection（动态集合），\n// querySelectorAll返回的是NodeList（静态集合），\n// 一般用querySelectorAll就够了"
+          },
+          {
+            "title": "3.4 操作内容和属性",
+            "content": "拿到元素之后，我们可以操作它的内容和属性：\n\n**内容：**\n- `element.innerHTML` - 获取/设置HTML内容（会解析标签）\n- `element.innerText` - 获取/设置文本内容（只取文字）\n- `element.textContent` - 和innerText类似，略有区别\n\n**属性：**\n- `element.属性名` - 直接读写（比如id、className、src、href等）\n- `element.getAttribute(attr)` - 获取属性\n- `element.setAttribute(attr, value)` - 设置属性\n- `element.removeAttribute(attr)` - 删除属性\n- `element.hasAttribute(attr)` - 是否有某个属性\n\n**class操作：**\n- `element.className` - 类名字符串\n- `element.classList` - 类的集合，有add/remove/toggle/contains方法（推荐用！）"
+          },
+          {
+            "title": "3.5 内容和属性代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "let title = document.querySelector('#title');\n\n// 操作内容\ntitle.innerText = '新的标题'; // 设置文本\nconsole.log(title.innerText);  // 获取文本\n\ntitle.innerHTML = '<em>带样式的</em>标题'; // 会解析HTML标签\n\n// 操作属性\nlet img = document.querySelector('img');\nimg.src = 'new-pic.jpg';      // 修改图片地址\nimg.alt = '新的描述';\n\nconsole.log(img.getAttribute('src')); // 也可以这样获取\nimg.setAttribute('title', '鼠标悬停提示'); // 设置属性\n\n// class操作（推荐用classList）\nlet box = document.querySelector('.box');\nbox.classList.add('active');   // 添加类\nbox.classList.remove('old');   // 删除类\nbox.classList.toggle('show');  // 切换（有就删，没有就加）\nconsole.log(box.classList.contains('active')); // 是否有某个类"
+          },
+          {
+            "title": "3.6 操作样式",
+            "content": "操作CSS样式也很简单：\n\n- `element.style.属性名` - 行内样式（驼峰命名，比如backgroundColor）\n- `getComputedStyle(element)` - 获取计算后的样式（最终生效的样式）\n\n注意：\n1. JS中CSS属性名要改成驼峰命名，比如`background-color`变成`backgroundColor`，`font-size`变成`fontSize`\n2. style属性操作的是行内样式，优先级很高\n3. 如果有多个样式要改，推荐直接添加/移除一个CSS类，而不是一个个改style属性"
+          },
+          {
+            "title": "3.7 样式操作代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "let box = document.querySelector('.box');\n\n// 设置行内样式\nbox.style.width = '200px';\nbox.style.height = '100px';\nbox.style.backgroundColor = '#6366f1';\nbox.style.color = 'white';\nbox.style.fontSize = '20px';\nbox.style.borderRadius = '10px';\n\n// 获取样式（行内的才能用style取到）\nconsole.log(box.style.width); // 200px\n\n// 获取计算后的样式（最终生效的，包括CSS文件里的）\nlet style = getComputedStyle(box);\nconsole.log(style.padding); // 即使没在行内写，也能取到\n\n// 推荐：改样式用CSS类，JS只加/减类\nbox.classList.add('big-red'); // 这样样式都在CSS里，好维护"
+          },
+          {
+            "title": "3.8 事件基础",
+            "content": "事件就是用户和网页交互时发生的事情，比如点击、鼠标移动、键盘按下、表单提交等等。JS可以监听这些事件，事件发生时就执行相应的代码。\n\n绑定事件的三种方式：\n1. 行内事件：HTML标签的onclick等属性（不推荐，结构和行为混在一起）\n2. DOM0级：`element.onclick = function(){}`（简单，但只能绑定一个处理函数）\n3. DOM2级：`element.addEventListener('click', 函数)`（推荐，强大，可以绑多个）\n\n事件类型有很多：\n- 鼠标事件：click、dblclick、mouseover、mouseout、mousedown、mouseup、mousemove\n- 键盘事件：keydown、keyup、keypress\n- 表单事件：submit、change、focus、blur、input\n- 窗口事件：load、resize、scroll\n- 等等"
+          },
+          {
+            "title": "3.9 事件绑定代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 获取元素\nlet btn = document.querySelector('#myBtn');\nlet box = document.querySelector('.box');\n\n// 方式1：DOM0级（简单，但一个事件只能绑一个函数）\nbtn.onclick = function() {\n  alert('你点击了按钮！');\n};\n\n// 方式2：addEventListener（推荐！）\nbtn.addEventListener('click', function() {\n  console.log('点击了按钮');\n  box.style.backgroundColor = 'red';\n});\n\n// 可以绑定多个处理函数\nbtn.addEventListener('click', function() {\n  console.log('第二个处理函数也执行了');\n});\n\n// 鼠标移入移出\nbox.addEventListener('mouseover', function() {\n  box.style.transform = 'scale(1.1)';\n});\nbox.addEventListener('mouseout', function() {\n  box.style.transform = 'scale(1)';\n});\n\n// 移除事件监听（注意：必须是同一个函数引用）\nfunction handleClick() {\n  console.log('click');\n}\nbtn.addEventListener('click', handleClick);\n// btn.removeEventListener('click', handleClick); // 移除"
+          },
+          {
+            "title": "3.10 事件对象",
+            "content": "事件处理函数会自动接收到一个参数——事件对象event，里面包含了事件的所有信息，比如鼠标位置、哪个键被按了、目标元素等等。\n\n常用的事件对象属性/方法：\n- `event.target` - 触发事件的元素（最常用！）\n- `event.type` - 事件类型（click、keydown等）\n- `event.clientX / event.clientY` - 鼠标相对于窗口的位置\n- `event.pageX / event.pageY` - 鼠标相对于页面的位置\n- `event.key` - 按下的键（键盘事件）\n- `event.keyCode` - 键码（数字）\n- `event.preventDefault()` - 阻止默认行为（比如阻止链接跳转、表单提交）\n- `event.stopPropagation()` - 阻止事件冒泡"
+          },
+          {
+            "title": "3.11 事件对象代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 点击页面任意位置，显示鼠标坐标\ndocument.addEventListener('click', function(e) {\n  console.log(`鼠标位置：(${e.clientX}, ${e.clientY})`);\n  console.log('点击的元素是：', e.target);\n});\n\n// 键盘事件\ndocument.addEventListener('keydown', function(e) {\n  console.log('按下了：', e.key);\n  console.log('键码：', e.keyCode);\n  if (e.key === 'Escape') {\n    console.log('你按了ESC键');\n  }\n});\n\n// 阻止默认行为\nlet link = document.querySelector('a');\nlink.addEventListener('click', function(e) {\n  e.preventDefault(); // 阻止链接跳转\n  alert('链接被拦截了！');\n});\n\n// 表单提交时阻止默认跳转\nlet form = document.querySelector('form');\nform.addEventListener('submit', function(e) {\n  e.preventDefault();\n  console.log('表单被提交了，但不会跳转页面');\n  // 这里可以用AJAX发送数据\n});"
+          },
+          {
+            "title": "3.11 创建和删除元素",
+            "content": "DOM不仅能改已有的元素，还能创建新元素、删除元素。\n\n常用方法：\n- `document.createElement('标签名')` - 创建新元素\n- `parent.appendChild(child)` - 把子元素添加到父元素末尾\n- `parent.insertBefore(new, ref)` - 在某个子元素前面插入\n- `element.remove()` - 删除元素本身\n- `parent.removeChild(child)` - 删除子元素\n- `element.cloneNode(true/false)` - 克隆元素\n\n现在一般直接用innerHTML写入HTML字符串，简单直接，但是要注意XSS安全问题。"
+          },
+          {
+            "title": "3.12 创建删除元素代码示例",
+            "type": "code",
+            "language": "javascript",
+            "code": "// 创建新元素\nlet newDiv = document.createElement('div');\nnewDiv.className = 'new-box';\nnewDiv.innerText = '我是新创建的div';\nnewDiv.style.color = 'red';\n\n// 添加到页面中\ndocument.body.appendChild(newDiv); // 加到body最后\n\n// 在某个元素前面插入\nlet ref = document.querySelector('#reference');\nlet newP = document.createElement('p');\nnewP.innerText = '插入的段落';\nref.parentNode.insertBefore(newP, ref);\n\n// 删除元素\n// 方式1：自己删自己\nnewDiv.remove();\n\n// 方式2：父元素删子元素\n// ref.parentNode.removeChild(ref);\n\n// 更简单的方式：直接用innerHTML（字符串拼接）\nlet list = document.querySelector('#list');\nlet html = '';\nfor (let i = 1; i <= 5; i++) {\n  html += `<li>第${i}项</li>`;\n}\nlist.innerHTML = html; // 一次性写入，性能好，代码简洁"
+          },
+          {
+            "title": "3.13 小项目：待办清单",
+            "content": "学了DOM操作和事件，我们来做一个经典的小项目——待办清单（Todo List）！\n\n功能：\n1. 输入框输入内容，点添加按钮，添加一条待办\n2. 点击待办项，可以标记为已完成（划线）\n3. 点击删除按钮，删除这条待办\n4. 显示待办的数量\n\n这是前端经典入门项目，动手写一写吧！"
+          },
+          {
+            "title": "3.14 待办清单代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- HTML -->\n<div class=\"todo-app\">\n  <h2>待办清单</h2>\n  <div class=\"input-area\">\n    <input type=\"text\" id=\"todoInput\" placeholder=\"输入待办事项...\">\n    <button id=\"addBtn\">添加</button>\n  </div>\n  <ul id=\"todoList\"></ul>\n  <p id=\"count\">还剩 0 项待办</p>\n</div>\n\n<script>\n// JS\nconst input = document.getElementById('todoInput');\nconst addBtn = document.getElementById('addBtn');\nconst list = document.getElementById('todoList');\nconst countEl = document.getElementById('count');\n\n// 更新计数\nfunction updateCount() {\n  const items = list.querySelectorAll('li:not(.done)');\n  countEl.textContent = `还剩 ${items.length} 项待办`;\n}\n\n// 添加待办\nfunction addTodo() {\n  const text = input.value.trim();\n  if (!text) {\n    alert('请输入内容！');\n    return;\n  }\n  \n  const li = document.createElement('li');\n  li.innerHTML = `\n    <span class=\"text\">${text}</span>\n    <button class=\"delete\">删除</button>\n  `;\n  \n  // 点击切换完成状态\n  li.addEventListener('click', function(e) {\n    if (e.target.classList.contains('delete')) return;\n    li.classList.toggle('done');\n    updateCount();\n  });\n  \n  // 删除按钮\n  li.querySelector('.delete').addEventListener('click', function() {\n    li.remove();\n    updateCount();\n  });\n  \n  list.appendChild(li);\n  input.value = ''; // 清空输入框\n  input.focus();   // 重新聚焦\n  updateCount();\n}\n\n// 点击按钮添加\naddBtn.addEventListener('click', addTodo);\n\n// 按回车也能添加\ninput.addEventListener('keydown', function(e) {\n  if (e.key === 'Enter') addTodo();\n});\n</script>\n\n<style>\n/* 简单加点样式 */\n.todo-app { max-width: 400px; margin: 50px auto; font-family: sans-serif; }\n#todoInput { padding: 8px 12px; width: 70%; }\n#addBtn { padding: 8px 16px; background: #6366f1; color: white; border: none; border-radius: 4px; cursor: pointer; }\nul { list-style: none; padding: 0; }\nli { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }\nli.done .text { text-decoration: line-through; color: #999; }\n.delete { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; }\n</style>"
+          },
+          {
+            "title": "3.15 动手练习",
+            "type": "exercise",
+            "content": "练习：\n\n1. 做一个点击按钮切换显示/隐藏的div\n2. 做一个图片轮播图（至少3张图自动切换）\n3. 做一个简易计算器（加减乘除）\n4. 做一个表格，点击表头可以排序\n5. 做一个倒计时功能（输入分钟数，开始倒计时）\n\nDOM操作是前端开发的核心，一定要多练！"
+          }
+        ],
+        "summary": "这节课我们学习了DOM操作和事件：获取元素、修改内容和样式、创建删除元素、事件绑定、事件对象等。掌握了DOM，你就能做出各种有交互效果的网页了。多做项目，熟能生巧！下节课我们学习异步编程和AJAX。",
+        "quiz": {
+          "question": "获取DOM元素，以下哪个方法最灵活，可以用CSS选择器查找？",
+          "options": [
+            "getElementById",
+            "getElementsByClassName",
+            "querySelector",
+            "getElementsByName"
+          ],
+          "answer": 2,
+          "explanation": "querySelector和querySelectorAll支持CSS选择器，最灵活最强大，也是日常开发最常用的。"
+        }
+      }
+    }
+  ]
+}

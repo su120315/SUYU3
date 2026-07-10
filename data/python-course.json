@@ -1,0 +1,615 @@
+{
+  "id": "python",
+  "title": "Python 从入门到实践",
+  "subtitle": "最适合初学者的编程语言，简单又强大",
+  "icon": "🐍",
+  "color": "green",
+  "description": "Python是世界上最流行的编程语言之一，语法简洁优雅，容易上手，却又功能强大。从Web开发、数据分析、人工智能到自动化脚本，Python无所不能。本课程从零基础开始，带你一步步走进Python的世界。",
+  "duration": "20小时",
+  "lessons": 16,
+  "level": "入门级",
+  "whatYouLearn": [
+    "Python基础语法和数据类型",
+    "条件判断和循环",
+    "函数和模块",
+    "列表、字典、元组、集合",
+    "面向对象编程",
+    "文件操作和异常处理",
+    "三个实战项目"
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Python入门：环境搭建和第一个程序",
+      "duration": "45分钟",
+      "content": {
+        "introduction": "欢迎来到Python课程！Python是一门非常适合初学者的编程语言——它的语法简单、可读性强，就像写英语一样自然。但简单不代表弱，Python在人工智能、数据分析、Web开发、自动化等领域都是顶流。让我们从安装环境开始，一起踏上Python之旅吧！",
+        "sections": [
+          {
+            "title": "1.1 什么是Python？",
+            "content": "Python是由荷兰人吉多·范罗苏姆（Guido van Rossum）在1989年圣诞节期间发明的一门编程语言，第一个版本发布于1991年。\n\nPython的设计哲学是\"优雅\"、\"明确\"、\"简单\"，它的语法非常接近自然语言，读Python代码就像读英语一样，这也是为什么它这么适合初学者的原因。\n\nPython的特点：\n- 语法简洁，用缩进代替大括号，代码可读性强\n- 免费开源，跨平台（Windows、Mac、Linux都能跑）\n- 丰富的标准库和第三方库，轮子超多\n- 应用领域广泛：Web开发、数据分析、机器学习、人工智能、自动化、爬虫、游戏……\n\n现在Python已经是世界上最流行的编程语言之一，很多大公司比如Google、Meta、Netflix、Dropbox都在用Python。国内的字节、阿里、腾讯也大量使用Python。学Python不愁找不到工作～"
+          },
+          {
+            "title": "1.2 安装Python",
+            "content": "在开始写代码之前，我们需要先安装Python环境。\n\n**Windows用户：**\n1. 打开Python官网：https://www.python.org/\n2. 鼠标移到Downloads上，点击下载最新版本（3.x）\n3. 下载完成后运行安装程序\n4. **重要**：一定要勾选\"Add Python to PATH\"（把Python添加到环境变量），不然后面用不了\n5. 点击Install Now，等待安装完成\n\n**Mac用户：**\nMac一般自带Python 2.x，但我们需要Python 3.x。推荐用Homebrew安装：\n1. 打开终端\n2. 输入 `brew install python3`\n3. 等待安装完成\n\n**在线编辑器（推荐新手）：**\n如果你暂时不想装软件，可以先用在线编辑器：\n- Python官方在线编辑器：https://www.python.org/shell/\n- Repl.it：https://replit.com/\n- 菜鸟工具：https://c.runoob.com/compile/6\n\n这些在线网站可以直接在浏览器里写Python代码，不用安装任何东西，非常适合刚开始学习的时候用。"
+          },
+          {
+            "title": "1.3 验证安装成功",
+            "content": "安装完成后，我们来验证一下Python是否安装成功。\n\n**Windows用户：**\n按Win+R，输入cmd，打开命令提示符。输入 `python --version` 或 `python -V`，然后回车。\n\n如果显示类似 `Python 3.11.4` 这样的版本号，说明安装成功了！\n\n如果提示\"不是内部或外部命令\"，说明你安装的时候没有勾选Add Python to PATH，或者安装失败了。可以重新运行安装程序，一定要记得勾选PATH选项。\n\n**Mac/Linux用户：**\n打开终端，输入 `python3 --version`，看到版本号就是成功了。\n\n输入 `python3` 进入Python交互模式（也就是Python Shell），你会看到 `>>>` 提示符，在这里可以直接输入Python代码，回车就会运行。\n\n输入 `exit()` 或按Ctrl+D退出交互模式。"
+          },
+          {
+            "title": "1.4 第一个程序：Hello World",
+            "content": "按照编程界的传统，我们第一个程序就是输出\"Hello, World!\"。\n\n在Python中，输出用 `print()` 函数。对，就这么简单！"
+          },
+          {
+            "title": "1.5 Hello World代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 这是我的第一个Python程序\nprint(\"Hello, World!\")\nprint(\"你好，世界！\")\nprint(\"我在学习Python！\")"
+          },
+          {
+            "title": "1.6 代码解释",
+            "content": "我们来逐行看一下：\n\n`# 这是我的第一个Python程序` - 这是注释。Python中用#表示单行注释，#后面的内容都是注释，Python会忽略它们。注释是给人看的，用来解释代码的意思，写注释是个好习惯。\n\n`print(\"Hello, World!\")` - 这就是输出语句。print是函数名，后面的括号里是参数，也就是你要输出的内容。双引号包裹的是字符串（一串文字）。\n\n注意：\n- Python中用英文括号，不要写成中文括号\n- 字符串要用引号（单引号或双引号都可以，要配对）\n- Python对大小写敏感，Print和print是不一样的\n- 语句后面不需要分号（和C、Java不一样）\n\n就是这么简单！Python的哲学就是简单，用最少的代码做最多的事情。"
+          },
+          {
+            "title": "1.7 运行Python程序",
+            "content": "怎么运行Python程序呢？有几种方式：\n\n**方式一：交互模式**\n打开终端，输入 `python`（或python3）进入Python Shell，直接输入代码，回车就运行。适合测试一些简单的代码。\n\n**方式二：文件方式**\n1. 新建一个文本文件，后缀名改成 `.py`，比如 `hello.py`\n2. 用编辑器（推荐VS Code）打开，写入代码\n3. 保存文件\n4. 打开终端，cd到文件所在的目录\n5. 输入 `python hello.py`（或python3 hello.py）运行\n\n**方式三：IDE**\n用专门的Python IDE，比如PyCharm、VS Code（装Python插件），写完直接点运行按钮就行。\n\n推荐新手先用在线编辑器或者交互模式熟悉语法，之后再装VS Code写大一点的程序。"
+          },
+          {
+            "title": "1.8 print函数详解",
+            "content": "print函数是我们最常用的函数之一，它的功能比你想象的要多。\n\n**1. 输出多个内容**\nprint可以一次输出多个内容，用逗号隔开，默认会用空格分隔。\n\n**2. 设置分隔符**\n用 `sep` 参数可以设置分隔符，默认是空格。\n\n**3. 设置结尾**\n用 `end` 参数可以设置输出结尾是什么，默认是换行符\\n。设置end=''就不会换行了。"
+          },
+          {
+            "title": "1.9 print更多用法代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 输出多个内容\nprint(\"我叫\", \"小明\", \"今年\", 14, \"岁\")\n# 输出：我叫 小明 今年 14 岁\n\n# 设置分隔符\nprint(\"a\", \"b\", \"c\", sep=\"-\")  # 用-分隔\n# 输出：a-b-c\nprint(\"2024\", \"01\", \"01\", sep=\"/\")\n# 输出：2024/01/01\n\n# 设置结尾\nprint(\"第一行\", end=\" \")  # 结尾是空格，不换行\nprint(\"第二行\")\n# 输出：第一行 第二行\n\n# 输出空行\nprint()  # 空的print就是输出一个换行"
+          },
+          {
+            "title": "1.10 什么是IDE？",
+            "content": "IDE是Integrated Development Environment（集成开发环境）的缩写，就是专门用来写代码的软件。它通常有代码高亮、自动补全、语法检查、调试等功能，比记事本好用多了。\n\n推荐的Python IDE：\n\n1. **VS Code**（最推荐） - 微软出的免费编辑器，轻量但功能强大，装个Python插件就能用。界面好看，插件多，什么语言都能写。\n\n2. **PyCharm** - 专门做Python的IDE，功能非常强大，智能提示和调试功能一流。有免费的社区版，初学者够用了。\n\n3. **IDLE** - Python自带的编辑器，功能比较简单，刚安装Python的时候可以先用用。\n\n4. **Jupyter Notebook** - 交互式的，特别适合数据分析和机器学习，可以一段一段运行代码，还能写文字说明。\n\n初学者推荐用VS Code，或者直接用在线编辑器，等熟悉了再换PyCharm。"
+          },
+          {
+            "title": "1.11 写代码的注意事项",
+            "content": "刚开始学编程，有些新手常犯的错误要注意：\n\n1. **标点符号要用英文的** - 括号、引号、逗号、冒号这些都要用英文的，不能用中文的。这是新手最最最常犯的错误！\n\n2. **缩进要正确** - Python是靠缩进来区分代码块的（其他语言用大括号），所以缩进非常重要。同一个代码块的缩进要一样，一般用4个空格或者一个Tab（推荐用4个空格）。\n\n3. **大小写** - Python对大小写敏感，`Print`和`print`是不一样的。\n\n4. **变量名不要乱取** - 变量名要有意义，不要a、b、c随便取，过几天你自己都看不懂。\n\n5. **多写注释** - 复杂的地方要写注释，方便自己以后看，也方便别人看。\n\n6. **遇到错误不要慌** - 报错是正常的，哪怕是大神也天天报错。仔细看错误信息，一般都能找到问题所在。\n\n编程是一门手艺，熟能生巧，多写多练就会越来越好的！"
+          },
+          {
+            "title": "1.12 动手练习",
+            "type": "exercise",
+            "content": "试试完成下面的练习：\n\n1. 打印出你的姓名、年龄、爱好，每个占一行\n2. 用print画一个简单的图案（比如用*号画一个三角形）\n3. 打印一首你喜欢的诗，标题居中，作者右对齐\n4. 用print打印一个乘法口诀的第一行：1x1=1 1x2=2 ... 1x9=9\n5. 试试用print输出emoji表情（比如😀🐍🎉，直接复制进去就行）\n\n动手试一试，探索一下print还能做什么！"
+          }
+        ],
+        "summary": "这节课我们了解了Python是什么，安装了Python环境，写出了第一个Hello World程序，还学习了print函数的各种用法。下节课我们学习变量和数据类型，这是编程的基础！",
+        "quiz": {
+          "question": "Python中，下面哪个是正确的注释写法？",
+          "options": [
+            "// 这是注释",
+            "/* 这是注释 */",
+            "# 这是注释",
+            "<!-- 这是注释 -->"
+          ],
+          "answer": 2,
+          "explanation": "Python中用#表示单行注释。//是C/Java/JavaScript的注释，/* */是多行注释，<!-- -->是HTML的注释。"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "变量和数据类型",
+      "duration": "50分钟",
+      "content": {
+        "introduction": "上节课我们写出了第一个Python程序。这节课我们学习变量和数据类型，这是编程最基础的概念——变量用来存数据，数据类型决定了数据是什么样的。",
+        "sections": [
+          {
+            "title": "2.1 什么是变量？",
+            "content": "变量，顾名思义，就是可以变化的量。你可以把它想象成一个贴了标签的盒子，盒子里面可以放东西（数据），标签上写着变量名，你通过变量名就能找到里面的数据。\n\n比如你可以创建一个叫`age`的变量，里面放数字`14`；创建一个叫`name`的变量，里面放字符串`\"小明\"`。\n\n变量的好处：\n1. 可以重复使用 - 存一次，到处用\n2. 方便修改 - 要改数据，只改变量的值就行，不用到处改代码\n3. 有意义的名字让代码更好读 - `age`比直接写`14`更清楚是什么意思\n\nPython中创建变量很简单，用等号`=`赋值就行：\n`变量名 = 值`"
+          },
+          {
+            "title": "2.2 变量基本用法代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 创建变量\nname = \"小明\"\nage = 14\nheight = 1.65\nis_student = True\n\n# 使用变量（打印出来看看）\nprint(\"姓名：\", name)\nprint(\"年龄：\", age)\nprint(\"身高：\", height)\nprint(\"是学生吗：\", is_student)\n\n# 变量的值可以改变\nage = age + 1  # 年龄加1岁\nprint(\"过了一年，年龄变成：\", age)\n\n# 也可以把一个变量的值赋给另一个变量\nmy_name = name\nprint(\"我的名字是：\", my_name)"
+          },
+          {
+            "title": "2.3 变量命名规则",
+            "content": "变量名不是随便取的，有一些规则要遵守：\n\n**必须遵守的规则（不遵守会报错）：**\n1. 变量名可以包含字母、数字、下划线，但不能以数字开头\n2. 不能用Python的关键字（比如if、for、while、class等）\n3. 大小写敏感，`age`和`Age`是两个不同的变量\n\n**命名规范（推荐遵守，让代码更专业）：**\n1. 见名知意 - 变量名要能体现它存的是什么，比如`age`比`a`好\n2. 多个单词用下划线连接 - `student_name`、`is_good`（这叫蛇形命名法，Python的风格）\n3. 全大写表示常量 - `PI = 3.14159`（约定俗成，其实Python没有真正的常量）\n4. 一般用小写字母开头\n\n一些错误的变量名示例：\n- `123abc` - 不能以数字开头\n- `my-name` - 不能有减号\n- `if` - 不能是关键字\n- `my name` - 不能有空格"
+          },
+          {
+            "title": "2.4 同时赋值多个变量",
+            "content": "Python有一个很方便的特性：可以同时给多个变量赋值。\n\n有几种写法：\n\n1. 一行给多个变量赋不同的值\n2. 一行给多个变量赋相同的值\n3. 交换两个变量的值（超方便！）"
+          },
+          {
+            "title": "2.5 多变量赋值代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 同时赋值多个变量\nname, age, gender = \"小明\", 14, \"男\"\nprint(name, age, gender)\n\n# 同时赋相同的值\na = b = c = 0\nprint(a, b, c)  # 都是0\n\n# 交换两个变量的值（Python特色，超简单！）\nx = 10\ny = 20\nprint(\"交换前：x =\", x, \"y =\", y)\n\nx, y = y, x  # 一句话搞定！不用中间变量\nprint(\"交换后：x =\", x, \"y =\", y)"
+          },
+          {
+            "title": "2.6 Python的基本数据类型",
+            "content": "Python有很多数据类型，最基础的有这几个：\n\n1. **整数（int）** - 整数，比如1、0、-5、100\n2. **浮点数（float）** - 小数，比如3.14、-0.5、1.0\n3. **布尔值（bool）** - 只有两个值：True（真）和False（假）\n4. **字符串（str）** - 文字，用引号包裹，比如\"hello\"、'你好'\n5. **列表（list）** - 一组东西\n6. **字典（dict）** - 键值对\n7. **元组（tuple）** - 不可变的一组东西\n8. **集合（set）** - 不重复的一组东西\n9. **NoneType** - 空值，只有None一个值\n\n我们这节课先学前四个基础类型，后面的复杂类型后面会专门学。\n\n用`type()`函数可以查看一个变量的类型。"
+          },
+          {
+            "title": "2.7 数据类型代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 整数 int\nage = 14\nprint(type(age))  # <class 'int'>\n\n# 浮点数 float\nheight = 1.65\npi = 3.14159\nprint(type(height))  # <class 'float'>\n\n# 布尔值 bool\nis_student = True\nis_adult = False\nprint(type(is_student))  # <class 'bool'>\n\n# 字符串 str\nname = \"小明\"\naddress = '北京市朝阳区'\nprint(type(name))  # <class 'str'>\n\n# None\nnothing = None\nprint(type(nothing))  # <class 'NoneType'>"
+          },
+          {
+            "title": "2.8 数字类型详解",
+            "content": "Python中的数字主要是int和float。\n\n**整数（int）**\n整数就是没有小数点的数字，可以是正的、负的、零。\nPython的整数可以很大很大，不像其他语言有范围限制，多大都可以，不会溢出。\n\n**浮点数（float）**\n浮点数就是小数。之所以叫浮点数，是因为小数点的位置是可以浮动的（科学计数法）。\n\n注意：\n- 浮点数的计算可能会有微小的误差，比如0.1 + 0.2 = 0.30000000000000004，这是浮点数的存储方式决定的，所有语言都有这个问题。一般情况下不用太在意，精度要求高的时候可以用decimal模块。\n- 整数和浮点数运算，结果自动变成浮点数。\n\n数字还可以写得更易读：比如`1_000_000`就是1000000，下划线不影响值，只是看起来清楚。"
+          },
+          {
+            "title": "2.9 数字运算代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "a = 10\nb = 3\n\nprint(\"加法：\", a + b)     # 13\nprint(\"减法：\", a - b)     # 7\nprint(\"乘法：\", a * b)     # 30\nprint(\"除法：\", a / b)     # 3.333... （结果是浮点数）\nprint(\"整除：\", a // b)    # 3 （取商的整数部分）\nprint(\"取余：\", a % b)     # 1 （取余数）\nprint(\"幂运算：\", a ** b)  # 1000 （10的3次方）\n\n# 整数和浮点数运算，结果是浮点数\nprint(10 + 3.0)  # 13.0\n\n# 浮点数的精度问题\nprint(0.1 + 0.2)  # 0.30000000000000004，很神奇吧😂\n\n# 大数字（可以用下划线分隔，更易读）\nbig_num = 1_000_000_000\nprint(big_num)  # 1000000000"
+          },
+          {
+            "title": "2.10 字符串详解",
+            "content": "字符串就是一串字符，也就是文字。Python中字符串用引号包裹，可以是单引号、双引号、三引号。\n\n**单引号和双引号**\n单引号和双引号效果是一样的，都可以。为什么要有两种呢？因为如果字符串里面有引号，用另一种就不用转义了。比如：`\"I'm fine\"` 里面有单引号，外面用双引号就不用转义。\n\n**三引号**\n三个单引号或三个双引号，用来写多行字符串，会保留换行和空格。也常用作文档注释。\n\n**转义字符**\n用反斜杠`\\`开头的特殊字符叫转义字符。常用的：\n- `\\n` - 换行\n- `\\t` - 制表符（Tab，相当于按一下Tab键）\n- `\\\\` - 反斜杠本身\n- `\\'` - 单引号\n- `\\\"` - 双引号"
+          },
+          {
+            "title": "2.11 字符串代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 单引号和双引号都可以\nname1 = '小明'\nname2 = \"小红\"\n\n# 字符串里有引号的情况\nprint(\"I'm fine, thank you.\")  # 里面有单引号，外面用双引号\nprint('他说：\"你好！\"')        # 里面有双引号，外面用单引号\n\n# 三引号 - 多行字符串\npoem = '''床前明月光，\n疑是地上霜。\n举头望明月，\n低头思故乡。'''\nprint(poem)\n\n# 转义字符\nprint(\"第一行\\n第二行\")  # \\n换行\nprint(\"姓名\\t年龄\\t性别\")  # \\t制表符，对齐用\nprint(\"C:\\\\Users\\\\Desktop\")  # 两个\\\\表示一个\\\nprint(\"他说：\\\"你好！\\\"\")    # \\\"表示双引号"
+          },
+          {
+            "title": "2.12 字符串拼接和重复",
+            "content": "字符串可以做一些运算：\n\n- **加法 +** - 拼接两个字符串\n- **乘法 *数字** - 重复字符串多次\n\n注意：字符串和数字不能直接相加，要先把数字转成字符串（用str()），或者用其他方式。"
+          },
+          {
+            "title": "2.13 字符串运算代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 字符串拼接\ngreeting = \"你好，\" + \"小明\" + \"！\"\nprint(greeting)  # 你好，小明！\n\n# 字符串重复\nprint(\"哈\" * 5)  # 哈哈哈哈哈\nprint(\"-\" * 30)  # 打印一条分割线\n\n# 字符串和数字不能直接相加！\n# print(\"我\" + 14 + \"岁\")  # 这行会报错！\n\n# 要先把数字转成字符串\nprint(\"我\" + str(14) + \"岁\")  # 这样就对了"
+          },
+          {
+            "title": "2.14 字符串格式化",
+            "content": "我们经常需要把变量的值插到字符串里面。Python有好几种字符串格式化的方式：\n\n**方式一：用 + 拼接**（最简单，但麻烦）\n\n**方式二：%格式化**（老方法，类似C语言）\n用`%s`表示字符串，`%d`表示整数，`%f`表示浮点数。\n\n**方式三：format()方法**（Python 2.6+引入）\n用`{}`当占位符。\n\n**方式四：f-string**（最推荐，Python 3.6+）\n在字符串前面加f，直接在`{}`里写变量名或表达式。最直观最好用！\n\n推荐用f-string，简洁又好读。"
+          },
+          {
+            "title": "2.15 字符串格式化代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "name = \"小明\"\nage = 14\nscore = 95.5\n\n# 方式1：+ 拼接（麻烦，不推荐）\nprint(\"我叫\" + name + \"，今年\" + str(age) + \"岁，考试\" + str(score) + \"分。\")\n\n# 方式2：% 格式化（老方法）\nprint(\"我叫%s，今年%d岁，考试%.1f分。\" % (name, age, score))\n\n# 方式3：format() 方法\nprint(\"我叫{}，今年{}岁，考试{}分。\".format(name, age, score))\nprint(\"{0}今年{1}岁，{0}喜欢编程。\".format(name, age))  # 可以用序号\n\n# 方式4：f-string（最推荐！）\nprint(f\"我叫{name}，今年{age}岁，考试{score}分。\")\nprint(f\"明年我就{age + 1}岁了！\")  # 里面还能写表达式\n\n# f-string还能格式化数字\npi = 3.1415926\nprint(f\"π保留两位小数：{pi:.2f}\")  # 3.14\nprint(f\"百分比：{0.85:.1%}\")       # 85.0%"
+          },
+          {
+            "title": "2.16 布尔值和比较运算",
+            "content": "布尔值只有两个：True（真）和False（假）。注意首字母大写！\n\n布尔值通常是比较运算的结果。Python的比较运算符：\n\n- `==` - 等于（两个等号！一个等号是赋值）\n- `!=` - 不等于\n- `>` - 大于\n- `<` - 小于\n- `>=` - 大于等于\n- `<=` - 小于等于\n\n比较运算的结果是True或False。"
+          },
+          {
+            "title": "2.17 布尔值代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "a = 10\nb = 20\n\nprint(a == b)    # False，等于\nprint(a != b)    # True，不等于\nprint(a > b)     # False，大于\nprint(a < b)     # True，小于\nprint(a >= 10)   # True，大于等于\nprint(b <= 15)   # False，小于等于\n\n# 字符串也能比较\nprint(\"abc\" == \"abc\")  # True\nprint(\"abc\" != \"abd\")  # True\n\n# 布尔值可以存到变量里\nis_adult = age >= 18\nprint(\"成年了吗？\", is_adult)"
+          },
+          {
+            "title": "2.18 类型转换",
+            "content": "不同数据类型之间是可以互相转换的，用对应的函数就行：\n\n- `int()` - 转成整数\n- `float()` - 转成浮点数\n- `str()` - 转成字符串\n- `bool()` - 转成布尔值\n\n不是什么都能转的，比如`int(\"abc\")`就会报错，因为\"abc\"不能转成数字。\n\n转布尔值的规律：空的、零的都是False，其他都是True。比如0、0.0、\"\"、None、空列表都是False。"
+          },
+          {
+            "title": "2.19 类型转换代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 转整数\nprint(int(\"123\"))      # 123，字符串转整数\nprint(int(3.14))       # 3，浮点数转整数（直接丢掉小数部分）\n\n# 转浮点数\nprint(float(\"3.14\"))   # 3.14\nprint(float(10))       # 10.0\n\n# 转字符串\nprint(str(123))        # \"123\"\nprint(str(3.14))       # \"3.14\"\nprint(str(True))       # \"True\"\n\n# 转布尔值\nprint(bool(0))         # False\nprint(bool(1))         # True\nprint(bool(\"\"))        # False（空字符串）\nprint(bool(\"hello\"))   # True\nprint(bool(None))      # False"
+          },
+          {
+            "title": "2.20 input函数：获取用户输入",
+            "content": "我们的程序终于可以和用户交互了！用`input()`函数可以获取用户从键盘输入的内容。\n\ninput()执行的时候，程序会暂停，等待用户输入，用户输入完按回车，input()就会把用户输入的内容作为字符串返回。\n\n注意：input()返回的永远是字符串！即使用户输入的是数字，返回的也是字符串类型的数字。如果要当数字用，记得用int()或float()转换。"
+          },
+          {
+            "title": "2.21 input代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 获取用户输入\nname = input(\"请输入你的名字：\")\nprint(\"你好，\" + name + \"！\")\n\n# input返回的是字符串，如果要数字需要转换\nage_str = input(\"请输入你的年龄：\")\nage = int(age_str)  # 转成整数\nprint(\"你明年就\" + str(age + 1) + \"岁了！\")\n\n# 更简洁的写法\nheight = float(input(\"请输入你的身高（米）：\"))\nprint(f\"你的身高是{height}米\")"
+          },
+          {
+            "title": "2.22 小项目：自我介绍程序",
+            "content": "学了这么多，我们来做一个小练习：写一个程序，让用户输入姓名、年龄、爱好，然后输出一段自我介绍。\n\n动手写一写吧！写完再看参考答案～"
+          },
+          {
+            "title": "2.23 小项目参考答案",
+            "type": "code",
+            "language": "python",
+            "code": "# 自我介绍程序\nprint(\"=\" * 30)\nprint(\"    自我介绍生成器\")\nprint(\"=\" * 30)\n\n# 获取用户输入\nname = input(\"请输入你的名字：\")\nage = int(input(\"请输入你的年龄：\"))\nhobby = input(\"请输入你的爱好：\")\nschool = input(\"请输入你的学校：\")\n\n# 输出自我介绍\nprint(\"\\n--- 你的自我介绍 ---\")\nprint(f\"大家好，我叫{name}，今年{age}岁。\")\nprint(f\"我在{school}上学。\")\nprint(f\"我的爱好是{hobby}。\")\nprint(f\"很高兴认识大家！\")\nprint(\"-\" * 30)"
+          },
+          {
+            "title": "2.24 动手练习",
+            "type": "exercise",
+            "content": "完成下面的练习：\n\n1. 写一个程序，输入圆的半径，计算并输出圆的周长和面积（π用3.14）\n2. 写一个程序，输入两个数，输出它们的和、差、积、商\n3. 写一个程序，输入摄氏度，转换成华氏度输出（华氏度 = 摄氏度 × 9/5 + 32）\n4. 写一个程序，输入你的出生年份，计算你今年多少岁\n5. 用f-string格式化输出一个购物小票，有商品名、价格、数量、总价\n\n试着自己写，写完再运行看看对不对！"
+          }
+        ],
+        "summary": "这节课我们学习了变量、Python的基本数据类型（int、float、bool、str）、字符串格式化、类型转换和input输入。这些都是编程的基础中的基础，一定要掌握好。下节课我们学习运算符和条件判断，让我们的程序能做判断！",
+        "quiz": {
+          "question": "Python中，以下哪个是最推荐的字符串格式化方式？",
+          "options": [
+            "用 + 拼接",
+            "% 格式化",
+            "format() 方法",
+            "f-string"
+          ],
+          "answer": 3,
+          "explanation": "f-string是Python 3.6引入的，语法简洁直观，性能也好，是最推荐的字符串格式化方式。"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "运算符和条件判断",
+      "duration": "50分钟",
+      "content": {
+        "introduction": "上节课我们学习了变量和数据类型，这节课我们学习运算符和条件判断。有了条件判断，我们的程序就能根据不同的情况做不同的事情，变得更聪明！",
+        "sections": [
+          {
+            "title": "3.1 运算符总览",
+            "content": "Python的运算符有很多种，我们已经见过一些了。现在系统地整理一下：\n\n1. **算术运算符** - 加减乘除这些\n2. **比较运算符** - 大于小于等于这些\n3. **逻辑运算符** - 与或非\n4. **赋值运算符** - 赋值相关\n5. **成员运算符** - in / not in\n6. **身份运算符** - is / is not\n7. **位运算符** - 按位运算（用得少，了解就行）\n\n我们一个个来看。"
+          },
+          {
+            "title": "3.2 算术运算符",
+            "content": "算术运算符我们上节课学过了，复习一下：\n\n- `+` 加\n- `-` 减\n- `*` 乘\n- `/` 除（结果是浮点数）\n- `//` 整除（取商的整数部分）\n- `%` 取余（取余数）\n- `**` 幂运算\n- `-` 负号\n\n运算优先级和数学里一样：先乘除后加减，括号优先。幂运算优先级比乘除还高。"
+          },
+          {
+            "title": "3.3 赋值运算符",
+            "content": "最基本的赋值运算符是`=`，就是把右边的值赋给左边的变量。\n\n还有一些复合赋值运算符，就是算术运算符和等号结合起来：\n\n- `+=` - a += b 等价于 a = a + b\n- `-=` - a -= b 等价于 a = a - b\n- `*=` - a *= b 等价于 a = a * b\n- `/=` - a /= b 等价于 a = a / b\n- `//=` - 整除赋值\n- `%=` - 取余赋值\n- `**=` - 幂赋值\n\n这些运算符可以让代码更简洁。"
+          },
+          {
+            "title": "3.4 赋值运算符代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "a = 10\nprint(\"初始：a =\", a)\n\na += 5  # 等价于 a = a + 5\nprint(\"加5后：a =\", a)  # 15\n\na -= 3  # 等价于 a = a - 3\nprint(\"减3后：a =\", a)  # 12\n\na *= 2  # 等价于 a = a * 2\nprint(\"乘2后：a =\", a)  # 24\n\na /= 4  # 等价于 a = a / 4\nprint(\"除4后：a =\", a)  # 6.0\n\na //= 2\nprint(\"整除2后：a =\", a)  # 3.0\n\na **= 3\nprint(\"3次方后：a =\", a)  # 27.0"
+          },
+          {
+            "title": "3.5 比较运算符",
+            "content": "比较运算符用来比较两个值，结果是布尔值True或False。\n\n- `==` 等于（注意是两个等号！）\n- `!=` 不等于\n- `>` 大于\n- `<` 小于\n- `>=` 大于等于\n- `<=` 小于等于\n\nPython还支持连续比较，比如 `1 < a < 10`，这是Python的特色，其他语言一般不支持。"
+          },
+          {
+            "title": "3.6 比较运算符代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "x = 5\n\nprint(x == 5)   # True\nprint(x != 5)   # False\nprint(x > 10)   # False\nprint(x < 10)   # True\nprint(x >= 5)   # True\nprint(x <= 4)   # False\n\n# Python特色：连续比较！\nage = 14\nprint(10 < age < 20)  # True，年龄在10到20之间\nprint(0 <= age <= 100) # True\n\n# 字符串也能比较（按字典序）\nprint(\"apple\" < \"banana\")  # True，a在b前面"
+          },
+          {
+            "title": "3.7 逻辑运算符",
+            "content": "逻辑运算符用来组合多个条件，有三个：\n\n- `and` - 与（并且），两边都是True结果才是True，只要有一个False就是False\n- `or` - 或（或者），只要有一个True结果就是True，两边都是False才是False\n- `not` - 非（不是），取反，True变False，False变True\n\n优先级：not > and > or\n\n逻辑运算符在条件判断中超级常用，一定要掌握！"
+          },
+          {
+            "title": "3.8 逻辑运算符代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "age = 14\ngender = \"男\"\n\n# and - 并且\nprint(age > 10 and age < 20)  # True，年龄大于10并且小于20\nprint(age > 20 and gender == \"男\")  # False，第一个条件不满足\n\n# or - 或者\nprint(age > 20 or gender == \"男\")  # True，第二个满足\nprint(age < 10 or age > 20)  # False，两个都不满足\n\n# not - 取反\nprint(not age > 10)  # False，age>10是True，取反就是False\nprint(not age < 10)  # True\n\n# 组合使用\nscore = 85\nprint(score >= 60 and score < 90)  # True，及格但不是优秀\nprint(score < 60 or score > 100)   # False\n\n# 优先级 not > and > or\nprint(True or False and False)  # True，先算and，再算or\nprint((True or False) and False)  # False，用括号改变优先级"
+          },
+          {
+            "title": "3.9 成员运算符",
+            "content": "成员运算符用来判断一个东西是否在另一个东西里面，有两个：\n\n- `in` - 在里面，返回True\n- `not in` - 不在里面，返回True\n\n可以用在字符串、列表、字典、元组等很多地方。"
+          },
+          {
+            "title": "3.10 成员运算符代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 字符串中判断是否包含某个字符\nprint(\"a\" in \"apple\")  # True\nprint(\"z\" in \"apple\")  # False\nprint(\"app\" in \"apple\")  # True，也可以判断子串\n\n# 列表中判断是否包含\nfruits = [\"苹果\", \"香蕉\", \"橘子\"]\nprint(\"苹果\" in fruits)    # True\nprint(\"葡萄\" not in fruits)  # True\n\n# 字典中判断key是否存在\nperson = {\"name\": \"小明\", \"age\": 14}\nprint(\"name\" in person)  # True，判断的是key\nprint(\"小明\" in person)  # False，默认判断key不是value"
+          },
+          {
+            "title": "3.11 身份运算符",
+            "content": "身份运算符有两个：\n\n- `is` - 两个变量引用的是同一个对象（内存地址相同），返回True\n- `is not` - 不是同一个对象，返回True\n\n注意：`==`和`is`是不一样的！\n- `==` 比较的是值是否相等\n- `is` 比较的是身份（是否是同一个对象，内存地址是否相同）\n\n值相等的两个对象，不一定是同一个对象。小整数和字符串因为有缓存，可能会是同一个，但一般不要依赖这个。判断值相等用==，判断None的时候常用is None。"
+          },
+          {
+            "title": "3.12 身份运算符代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "a = [1, 2, 3]\nb = [1, 2, 3]\nc = a\n\nprint(a == b)  # True，值相等\nprint(a is b)  # False，不是同一个对象（两个不同的列表）\nprint(a is c)  # True，c和a指向同一个列表\n\n# id()函数可以查看对象的内存地址\nprint(id(a))  # 比如 14023456789\nprint(id(b))  # 不一样的地址\nprint(id(c))  # 和a一样\n\n# 判断None常用is\nx = None\nprint(x is None)  # True，推荐这样写\nprint(x == None)  # 也可以，但不推荐"
+          },
+          {
+            "title": "3.13 条件判断：if语句",
+            "content": "好了，运算符学完了，现在进入重头戏：条件判断。\n\nif语句就是\"如果...就...\"的意思。如果条件成立，就执行某段代码；不成立就不执行。\n\nPython中if语句的基本格式：\n\n```python\nif 条件:\n    条件成立时执行的代码\n    注意缩进！\n```\n\n注意：\n1. if后面的条件可以是任意表达式，结果会被转成布尔值\n2. 条件后面要有冒号`:`（英文冒号！）\n3. 满足条件时执行的代码要缩进（一般4个空格），缩进的代码叫代码块\n4. 同一个代码块的缩进要一致\n\nPython是用缩进来区分代码块的，这和其他语言用大括号不一样。缩进是Python的特色，也是新手最容易踩的坑。"
+          },
+          {
+            "title": "3.14 if语句代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "age = 14\n\n# 简单的if\nif age >= 18:\n    print(\"你是成年人了\")\n    print(\"可以自己做决定\")\n\nprint(\"程序结束\")  # 注意缩进，这句不管条件如何都会执行\n\n# 判断数字正负\nnum = int(input(\"请输入一个数字：\"))\nif num > 0:\n    print(\"这是一个正数\")\nif num < 0:\n    print(\"这是一个负数\")\nif num == 0:\n    print(\"这是零\")"
+          },
+          {
+            "title": "3.15 if-else语句",
+            "content": "if只处理了条件成立的情况，那条件不成立的时候呢？用else！\n\n格式：\n```python\nif 条件:\n    条件成立时执行\nelse:\n    条件不成立时执行\n```\n\nelse就是\"否则\"的意思。if和else的代码块只会执行其中一个，不会都执行，也不会都不执行。"
+          },
+          {
+            "title": "3.16 if-else代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "age = int(input(\"请输入你的年龄：\"))\n\nif age >= 18:\n    print(\"你是成年人\")\n    print(\"需要对自己负责哦\")\nelse:\n    print(\"你是未成年人\")\n    print(\"要好好学习，天天向上！\")\n\nprint(\"---\")\n\n# 判断奇偶\nnum = int(input(\"输入一个整数：\"))\nif num % 2 == 0:\n    print(num, \"是偶数\")\nelse:\n    print(num, \"是奇数\")"
+          },
+          {
+            "title": "3.17 if-elif-else语句",
+            "content": "如果有多个条件要判断呢？用elif（else if的缩写）。\n\n格式：\n```python\nif 条件1:\n    条件1成立执行\nelif 条件2:\n    条件2成立执行\nelif 条件3:\n    条件3成立执行\n...\nelse:\n    都不成立执行\n```\n\nelif可以有多个。程序会从上往下依次判断，哪个条件先成立，就执行哪个的代码块，后面的就不看了。\n\nelse是可选的，可以没有。"
+          },
+          {
+            "title": "3.18 if-elif-else代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 成绩评级\nscore = int(input(\"请输入你的考试分数：\"))\n\nif score >= 90:\n    print(\"优秀！太棒了！\")\nelif score >= 80:\n    print(\"良好，继续加油！\")\nelif score >= 70:\n    print(\"中等，还可以更好\")\nelif score >= 60:\n    print(\"刚好及格，要努力了\")\nelse:\n    print(\"不及格！下次要加油哦\")\n\nprint(\"---\")\n\n# 判断是一年中的第几个季节\nmonth = int(input(\"输入月份（1-12）：\"))\n\nif month in [3, 4, 5]:\n    print(\"春天\")\nelif month in [6, 7, 8]:\n    print(\"夏天\")\nelif month in [9, 10, 11]:\n    print(\"秋天\")\nelif month in [12, 1, 2]:\n    print(\"冬天\")\nelse:\n    print(\"输入错误！月份应该是1-12\")"
+          },
+          {
+            "title": "3.19 嵌套if",
+            "content": "if语句里面还可以再写if，这叫嵌套if。外层的if条件成立了，才会判断内层的if。\n\n嵌套不要太多层，不然代码会很难读，一般不超过3层。"
+          },
+          {
+            "title": "3.20 嵌套if代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 判断是否可以考驾照\nage = int(input(\"你的年龄：\"))\nhas_eyesight = input(\"视力正常吗？(yes/no): \")\n\nif age >= 18:\n    if has_eyesight == \"yes\":\n        print(\"你可以考驾照！\")\n    else:\n        print(\"视力不合格，不能考驾照\")\nelse:\n    print(\"年龄不够，还不能考驾照\")\n\nprint(\"---\")\n\n# 登录验证\nusername = input(\"用户名：\")\npassword = input(\"密码：\")\n\nif username == \"admin\":\n    if password == \"123456\":\n        print(\"登录成功！欢迎管理员\")\n    else:\n        print(\"密码错误\")\nelse:\n    print(\"用户名不存在\")"
+          },
+          {
+            "title": "3.21 三目运算符",
+            "content": "如果if-else的代码块很简单，只有一条赋值语句，可以用三目运算符（也叫三元运算符）来简化。\n\n格式：\n`变量 = 值1 if 条件 else 值2`\n\n意思是：如果条件成立，变量就等于值1；否则等于值2。\n\n写起来很简洁，但不要用在太复杂的情况，不然可读性会变差。"
+          },
+          {
+            "title": "3.22 三目运算符代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "age = 14\n\n# 普通写法\nif age >= 18:\n    status = \"成年\"\nelse:\n    status = \"未成年\"\n\n# 三目运算符写法（一行搞定）\nstatus = \"成年\" if age >= 18 else \"未成年\"\nprint(status)  # 未成年\n\n# 求两个数的最大值\na = 10\nb = 20\nmax_num = a if a > b else b\nprint(\"最大值是：\", max_num)  # 20\n\n# 判断奇偶\nnum = 7\nresult = \"偶数\" if num % 2 == 0 else \"奇数\"\nprint(f\"{num}是{result}\")"
+          },
+          {
+            "title": "3.23 小项目：猜数字游戏（初级版）",
+            "content": "学了条件判断，我们来做一个简单的猜数字游戏吧！\n\n游戏规则：\n1. 程序设定一个1-100之间的随机数（先固定一个数也行）\n2. 用户输入猜测的数字\n3. 程序告诉用户猜大了、猜小了，还是猜对了\n\n因为我们还没学循环，所以现在只能猜一次。等学了循环我们再做完整版～"
+          },
+          {
+            "title": "3.24 猜数字代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 猜数字游戏 - 初级版\nimport random\n\n# 生成一个1-100之间的随机数\nanswer = random.randint(1, 100)\n\nprint(\"=\" * 30)\nprint(\"   猜数字游戏 v0.1\")\nprint(\"=\" * 30)\nprint(\"我想了一个1到100之间的数字，你来猜猜看吧！\")\n\n# 获取用户输入\nguess = int(input(\"请输入你猜的数字：\"))\n\n# 判断\nif guess == answer:\n    print(f\"恭喜你猜对了！答案就是{answer}！\")\nelif guess > answer:\n    print(f\"猜大了！答案比{guess}小。\")\nelse:\n    print(f\"猜小了！答案比{guess}大。\")\n\nprint(f\"游戏结束，答案是{answer}。\")"
+          },
+          {
+            "title": "3.25 动手练习",
+            "type": "exercise",
+            "content": "完成下面的练习：\n\n1. 写一个程序，输入三个数，输出最大的那个数\n2. 写一个程序，输入年份，判断是不是闰年（能被4整除但不能被100整除，或者能被400整除）\n3. 写一个程序，输入一个三位数，判断是不是水仙花数（水仙花数：各位数字的立方和等于它本身，比如153 = 1³+5³+3³）\n4. 写一个BMI计算器：输入身高（米）和体重（公斤），计算BMI = 体重 / 身高²，然后判断：偏瘦（<18.5）、正常（18.5-24）、偏胖（24-28）、肥胖（>=28）\n5. 写一个简单的计算器：输入两个数和运算符（+、-、*、/），输出结果。如果除数为0要提示错误。\n\n先自己想，想不出来再查资料，多动手写代码！"
+          }
+        ],
+        "summary": "这节课我们学习了各种运算符（算术、比较、逻辑、赋值、成员、身份），还有if-elif-else条件判断。有了条件判断，程序就能根据不同情况做不同的事了。下节课我们学习循环，让程序能重复做一件事情！",
+        "quiz": {
+          "question": "Python中，判断值相等应该用哪个运算符？",
+          "options": [
+            "=",
+            "==",
+            "===",
+            "is"
+          ],
+          "answer": 1,
+          "explanation": "==是比较运算符，判断值是否相等。=是赋值运算符。Python没有===。is是判断是否是同一个对象（身份相等）。"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "循环：for和while",
+      "duration": "55分钟",
+      "content": {
+        "introduction": "上节课我们学习了条件判断，程序会做选择了。这节课我们学习循环，让程序能重复执行一段代码。循环是编程中非常重要的概念，很多事情都需要重复做，有了循环就不用写很多遍相同的代码了。",
+        "sections": [
+          {
+            "title": "4.1 什么是循环？",
+            "content": "循环就是让一段代码重复执行多次。比如你要打印1到100，如果没有循环，你得写100个print，有了循环一句话就搞定了。\n\nPython中有两种循环：\n\n1. **for循环** - 用来遍历（迭代）一个序列（列表、字符串、range等），适合知道循环次数的情况\n2. **while循环** - 只要条件为True就一直循环，适合不知道循环次数的情况\n\n我们先学for循环。"
+          },
+          {
+            "title": "4.2 for循环基本用法",
+            "content": "for循环的基本格式：\n\n```python\nfor 变量 in 序列:\n    循环体（每次循环执行的代码）\n```\n\n意思是：依次把序列中的每一个元素取出来，赋值给变量，然后执行循环体。序列中有多少个元素，就循环多少次。\n\n这个\"序列\"可以是字符串、列表、元组、字典、range对象等等。只要是可迭代的对象都可以。"
+          },
+          {
+            "title": "4.3 for循环代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 遍历字符串\nname = \"Python\"\nfor char in name:\n    print(char)\n    # 会依次打印 P y t h o n，每个一行\n\n# 遍历列表（列表下节课会详细学）\nfruits = [\"苹果\", \"香蕉\", \"橘子\", \"葡萄\"]\nfor fruit in fruits:\n    print(\"我喜欢吃\", fruit)\n\n# 计算1到5的和\ntotal = 0\nfor i in [1, 2, 3, 4, 5]:\n    total += i\nprint(\"1到5的和是：\", total)  # 15"
+          },
+          {
+            "title": "4.4 range函数",
+            "content": "如果你想循环指定次数，或者遍历一串数字，可以用`range()`函数。\n\nrange函数用来生成一个整数序列，有三种用法：\n\n1. `range(stop)` - 生成从0到stop-1的整数，比如range(5)就是0,1,2,3,4\n2. `range(start, stop)` - 生成从start到stop-1的整数，比如range(2, 6)就是2,3,4,5\n3. `range(start, stop, step)` - 从start到stop-1，步长是step，比如range(0, 10, 2)就是0,2,4,6,8\n\nrange生成的不是列表，是一个range对象（可迭代的），你可以把它转成列表看看：list(range(5))\n\nrange在for循环中超级常用！"
+          },
+          {
+            "title": "4.5 range代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 打印0到4\nfor i in range(5):\n    print(i)  # 0 1 2 3 4\n\nprint(\"---\")\n\n# 打印2到5\nfor i in range(2, 6):\n    print(i)  # 2 3 4 5\n\nprint(\"---\")\n\n# 打印0到10的偶数\nfor i in range(0, 11, 2):\n    print(i)  # 0 2 4 6 8 10\n\nprint(\"---\")\n\n# 倒着数：10, 9, 8... 1\nfor i in range(10, 0, -1):\n    print(i)\n\nprint(\"---\")\n\n# 打印10次\"hello\"\nfor i in range(10):\n    print(\"hello\")"
+          },
+          {
+            "title": "4.6 while循环",
+            "content": "while循环只要条件为True，就会一直循环执行循环体。\n\n格式：\n```python\nwhile 条件:\n    循环体\n```\n\n执行过程：\n1. 判断条件是否为True\n2. 如果是，执行循环体\n3. 执行完再判断条件\n4. 重复，直到条件为False，循环结束\n\n注意：一定要确保循环最后能结束，不然就成了死循环（无限循环），程序会一直跑停不下来！\n\nwhile循环适合不知道要循环多少次的情况。"
+          },
+          {
+            "title": "4.7 while循环代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 打印1到5\ni = 1\nwhile i <= 5:\n    print(i)\n    i += 1  # 一定要有让i增加的代码，不然会死循环！\n\nprint(\"---\")\n\n# 计算1到100的和\ntotal = 0\ni = 1\nwhile i <= 100:\n    total += i\n    i += 1\nprint(\"1到100的和是：\", total)  # 5050\n\nprint(\"---\")\n\n# 猜数字：直到猜对才结束（但这是无限循环，后面我们学break来跳出）\n# answer = 42\n# while True:\n#     guess = int(input(\"猜数字：\"))\n#     if guess == answer:\n#         print(\"猜对了！\")\n#         break\n#     elif guess > answer:\n#         print(\"大了\")\n#     else:\n#         print(\"小了\")"
+          },
+          {
+            "title": "4.8 break和continue",
+            "content": "循环里有两个很重要的控制语句：\n\n- **break** - 跳出整个循环，循环直接结束，不再执行后面的循环了\n- **continue** - 跳过本次循环，直接开始下一次循环\n\n这两个语句在for和while循环里都能用。\n\n注意：break和continue只对最近的那一层循环有效，如果是嵌套循环，只跳出/跳过内层的。"
+          },
+          {
+            "title": "4.9 break和continue代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# break - 提前结束循环\n# 找1-10中第一个能被3整除的数\nfor i in range(1, 11):\n    if i % 3 == 0:\n        print(\"找到第一个能被3整除的数：\", i)\n        break  # 找到就结束循环\nprint(\"循环结束\")\n\nprint(\"---\")\n\n# continue - 跳过本次循环\n# 打印1-10中的奇数（遇到偶数就跳过）\nfor i in range(1, 11):\n    if i % 2 == 0:\n        continue  # 偶数就跳过，不执行下面的print\n    print(i)\n\nprint(\"---\")\n\n# 用while+break做猜数字游戏\nimport random\nanswer = random.randint(1, 100)\nprint(\"猜数字游戏！我想了一个1-100的数\")\n\nwhile True:  # 无限循环\n    guess = int(input(\"你猜：\"))\n    if guess == answer:\n        print(\"恭喜猜对了！\")\n        break  # 猜对了才跳出循环\n    elif guess > answer:\n        print(\"大了\")\n    else:\n        print(\"小了\")\n\nprint(\"游戏结束\")"
+          },
+          {
+            "title": "4.10 嵌套循环",
+            "content": "循环里面还可以再写循环，这叫嵌套循环。外层循环执行一次，内层循环执行一遍。\n\n比如外层循环3次，内层循环5次，那内层的代码总共会执行3×5=15次。\n\n嵌套循环很常用，比如打印九九乘法表、遍历二维列表等。\n\n注意：嵌套循环不要嵌套太多层，效率会低，代码也难读。"
+          },
+          {
+            "title": "4.11 嵌套循环代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 打印一个5x5的星号矩形\nfor i in range(5):  # 外层循环：控制行数\n    for j in range(5):  # 内层循环：控制每行的个数\n        print(\"*\", end=\"\")  # 不换行打印\n    print()  # 一行结束，换行\n\nprint(\"---\")\n\n# 打印直角三角形\nfor i in range(1, 6):\n    print(\"*\" * i)\n\nprint(\"---\")\n\n# 九九乘法表\nfor i in range(1, 10):  # 外层：行（被乘数）\n    for j in range(1, i+1):  # 内层：列（乘数），到i为止\n        print(f\"{j}x{i}={i*j}\", end=\"\\t\")  # \\t制表符对齐\n    print()  # 换行"
+          },
+          {
+            "title": "4.12 for...else和while...else",
+            "content": "Python的循环还有一个独特的语法：else子句。\n\n- 如果循环是正常结束的（没有被break打断），就会执行else里的代码\n- 如果循环是被break终止的，else里的代码就不会执行\n\n这个语法有点特别，用得不多，但在某些场景下很好用，比如找东西——找到了break，没找到就执行else里的（提示没找到）。"
+          },
+          {
+            "title": "4.13 循环else代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 找一个数是否在列表里\nnums = [2, 4, 6, 8, 10]\ntarget = 7\n\nfor num in nums:\n    if num == target:\n        print(\"找到了！\")\n        break\nelse:  # 注意这个else是和for对齐的，不是和if！\n    # 如果循环没有break（也就是没找到），就会执行这里\n    print(\"没找到这个数\")\n\nprint(\"---\")\n\n# 判断素数（质数）\nn = int(input(\"输入一个正整数：\"))\n\nif n < 2:\n    print(\"不是素数\")\nelse:\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            print(n, \"不是素数\")\n            break\n    else:\n        print(n, \"是素数\")"
+          },
+          {
+            "title": "4.14 小项目：猜数字游戏（完整版）",
+            "content": "学了循环，我们来把上节课的猜数字游戏升级成完整版吧！\n\n完整版功能：\n1. 随机生成1-100的数字\n2. 用户可以一直猜，直到猜对为止\n3. 每次猜错告诉用户大了还是小了\n4. 记录猜了几次，最后公布答案和次数\n5. 用户输入错误（比如输入了字母）要有提示，不能崩溃\n\n动手写一写吧！"
+          },
+          {
+            "title": "4.15 猜数字完整版代码",
+            "type": "code",
+            "language": "python",
+            "code": "# 猜数字游戏 - 完整版\nimport random\n\nprint(\"=\" * 40)\nprint(\"       猜数字游戏 v1.0\")\nprint(\"=\" * 40)\nprint(\"规则：我想一个1到100之间的数字，你有无限次机会猜\")\nprint(\"每次我会告诉你猜大了还是猜小了\")\nprint(\"输入 q 可以退出游戏\")\nprint(\"-\" * 40)\n\n# 生成随机数\nanswer = random.randint(1, 100)\ncount = 0  # 记录猜的次数\n\nwhile True:\n    guess_str = input(\"\\n请输入你猜的数字（1-100）：\")\n    \n    # 输入q退出\n    if guess_str.lower() == 'q':\n        print(f\"游戏结束！答案是{answer}，你猜了{count}次。\")\n        break\n    \n    # 验证输入是不是数字\n    if not guess_str.isdigit():\n        print(\"请输入有效的数字！\")\n        continue\n    \n    guess = int(guess_str)\n    \n    # 验证范围\n    if guess < 1 or guess > 100:\n        print(\"数字要在1到100之间！\")\n        continue\n    \n    count += 1  # 猜的次数加1\n    \n    # 判断结果\n    if guess == answer:\n        print(f\"🎉 恭喜你猜对了！答案就是{answer}！\")\n        print(f\"你一共猜了{count}次。\")\n        if count <= 5:\n            print(\"太厉害了，你是天才吗！\")\n        elif count <= 10:\n            print(\"不错哦，挺厉害的！\")\n        else:\n            print(\"再接再厉，下次争取更少的次数！\")\n        break\n    elif guess > answer:\n        print(\"猜大了！再小一点～\")\n    else:\n        print(\"猜小了！再大一点～\")\n\nprint(\"\\n感谢游玩！\")"
+          },
+          {
+            "title": "4.16 小项目2：九九乘法表",
+            "content": "用嵌套循环打印九九乘法表，这是经典的循环练习题。\n\n提示：\n- 外层循环控制行，从1到9\n- 内层循环控制列，从1到当前行数\n- 每一行结束后换行\n- 用\\t对齐"
+          },
+          {
+            "title": "4.17 动手练习",
+            "type": "exercise",
+            "content": "完成下面的练习：\n\n1. 用for循环计算1到100的和、1到100的奇数和、1到100的偶数和\n2. 打印一个等腰三角形的星号图案（高度自己定）\n3. 写一个程序，输入一个正整数n，打印n!（n的阶乘，n! = 1×2×3×...×n）\n4. 用while循环实现：输入一个正整数，把它的各位数字倒过来输出（比如输入123，输出321）\n5. 找出100以内所有的素数（质数），并输出\n6. 写一个程序，让用户输入密码，最多输错3次，输错3次就锁定。正确密码是\"123456\"\n7. （挑战题）写一个斐波那契数列：前两个数是1、1，后面每个数是前两个数的和，输出前20个数\n\n多练习循环，这是编程的基本功！"
+          }
+        ],
+        "summary": "这节课我们学习了两种循环（for和while）、循环控制语句（break和continue）、嵌套循环，还有循环的else子句。循环是编程的核心概念之一，一定要多练习，熟练掌握。下节课我们学习列表，这是Python中非常重要的数据结构！",
+        "quiz": {
+          "question": "在循环中，想要跳过本次循环直接开始下一次，用哪个关键字？",
+          "options": [
+            "break",
+            "continue",
+            "pass",
+            "return"
+          ],
+          "answer": 1,
+          "explanation": "continue是跳过本次循环，继续下一次。break是跳出整个循环。pass是空语句，什么都不做。return是函数返回。"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "列表list：一组数据的集合",
+      "duration": "60分钟",
+      "content": {
+        "introduction": "前面我们学的变量都是存一个值的，那如果我要存100个学生的成绩怎么办？定义100个变量吗？太麻烦了！这时候就需要列表（list）了——一个变量就能存一堆数据。列表是Python中最常用的数据结构之一，一定要好好学！",
+        "sections": [
+          {
+            "title": "5.1 什么是列表？",
+            "content": "列表（list）是一组有序的数据集合。你可以把它想象成一排盒子，每个盒子里可以放东西（数据），盒子是有顺序的，从0开始编号（这个编号叫索引/下标）。\n\n列表的特点：\n- **有序** - 元素有顺序，可以通过索引访问\n- **可变** - 可以添加、删除、修改元素\n- **可以放不同类型的数据** - 一个列表里可以同时有数字、字符串、布尔值，甚至另一个列表\n- **用方括号[]表示**，元素之间用逗号分隔\n\n列表的用处非常非常多，以后写代码几乎天天要用到。"
+          },
+          {
+            "title": "5.2 列表的创建",
+            "type": "code",
+            "language": "python",
+            "code": "# 创建一个空列表\nempty_list = []\nprint(empty_list)  # []\nprint(type(empty_list))  # <class 'list'>\n\n# 创建有元素的列表\nnums = [1, 2, 3, 4, 5]\nprint(nums)\n\n# 列表里可以放不同类型的数据\nmixed = [1, \"hello\", 3.14, True, None]\nprint(mixed)\n\n# 列表里也可以放列表（二维列表/嵌套列表）\nmatrix = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\nprint(matrix)\n\n# 用list()函数创建（把其他可迭代对象转成列表）\nprint(list(range(10)))  # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\nprint(list(\"hello\"))    # ['h', 'e', 'l', 'l', 'o']"
+          },
+          {
+            "title": "5.3 访问列表元素",
+            "content": "列表中的元素是有顺序的，可以通过索引（下标）来访问。\n\n注意：索引从0开始！不是从1开始！这是新手常犯的错误。\n\n比如列表`['a', 'b', 'c']`：\n- 'a' 的索引是 0\n- 'b' 的索引是 1\n- 'c' 的索引是 2\n\n你还可以用负数索引，表示从后往前数：\n- 最后一个元素索引是 -1\n- 倒数第二个是 -2\n- 以此类推\n\n如果索引超出了范围（比如列表只有3个元素，你访问索引5），会报错IndexError。"
+          },
+          {
+            "title": "5.4 访问元素代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "fruits = [\"苹果\", \"香蕉\", \"橘子\", \"葡萄\", \"西瓜\"]\n\n# 通过索引访问\nprint(fruits[0])   # 苹果（第一个元素）\nprint(fruits[2])   # 橘子\nprint(fruits[4])   # 西瓜（最后一个）\n\n# 负数索引：从后往前数\nprint(fruits[-1])  # 西瓜（最后一个）\nprint(fruits[-2])  # 葡萄（倒数第二个）\nprint(fruits[-5])  # 苹果（第一个）\n\n# 修改元素\nfruits[0] = \"红苹果\"\nprint(fruits)  # ['红苹果', '香蕉', '橘子', '葡萄', '西瓜']\n\n# 二维列表的访问\nmatrix = [[1,2,3], [4,5,6], [7,8,9]]\nprint(matrix[0][0])   # 1，第0行第0列\nprint(matrix[1][2])   # 6，第1行第2列"
+          },
+          {
+            "title": "5.5 列表切片",
+            "content": "除了访问单个元素，你还可以访问列表的一部分，这叫切片（slice）。\n\n语法：`列表[起始索引:结束索引:步长]`\n\n- 起始索引：从哪里开始（包含），不写默认从头开始\n- 结束索引：到哪里结束（不包含！），不写默认到最后\n- 步长：每隔几个取一个，不写默认是1\n\n切片不会修改原列表，会返回一个新列表。"
+          },
+          {
+            "title": "5.6 切片代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]\n\n# 取索引1到4（不包含4）\nprint(nums[1:4])   # [1, 2, 3]\n\n# 从头取到索引5（不包含5）\nprint(nums[:5])    # [0, 1, 2, 3, 4]\n\n# 从索引5取到最后\nprint(nums[5:])    # [5, 6, 7, 8, 9]\n\n# 全部复制（创建一个一模一样的新列表）\nprint(nums[:])     # [0, 1, 2, ..., 9]\n\n# 步长为2，隔一个取一个\nprint(nums[::2])   # [0, 2, 4, 6, 8]\n\n# 步长为负数 - 倒过来！\nprint(nums[::-1])  # [9, 8, 7, 6, 5, 4, 3, 2, 1, 0]\n\n# 从1到8，步长3\nprint(nums[1:8:3]) # [1, 4, 7]\n\n# 负数切片\nprint(nums[-4:-1]) # [6, 7, 8]"
+          },
+          {
+            "title": "5.7 列表的常用操作",
+            "content": "列表有很多实用的方法和操作，我们一个个来看：\n\n**1. 求长度 len()**\n用len()函数获取列表有多少个元素。\n\n**2. 拼接 + 和重复 ***\n两个列表可以用+拼在一起，用*重复多少次。\n\n**3. 判断元素是否存在 in / not in**\n用in判断某个元素在不在列表里。\n\n**4. 最大值、最小值、求和**\nmax()、min()、sum() 这三个内置函数，对纯数字列表很好用。"
+          },
+          {
+            "title": "5.8 列表基本操作代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "nums = [10, 20, 30, 40, 50]\n\n# 长度\nprint(len(nums))  # 5\n\n# 拼接\nlist1 = [1, 2, 3]\nlist2 = [4, 5, 6]\nprint(list1 + list2)  # [1, 2, 3, 4, 5, 6]\n\n# 重复\nprint([\"哈\"] * 5)  # ['哈', '哈', '哈', '哈', '哈']\n\n# 判断是否存在\nfruits = [\"苹果\", \"香蕉\", \"橘子\"]\nprint(\"苹果\" in fruits)     # True\nprint(\"葡萄\" not in fruits) # True\n\n# max, min, sum\nnums = [10, 5, 25, 15, 30]\nprint(max(nums))  # 30，最大值\nprint(min(nums))  # 5，最小值\nprint(sum(nums))  # 85，所有数的和"
+          },
+          {
+            "title": "5.9 列表方法：增删改查",
+            "content": "列表是可变的，所以有很多增删改的方法。注意：这些方法都是直接修改原列表的！\n\n**增加元素：**\n- `append(x)` - 在末尾添加一个元素\n- `insert(i, x)` - 在索引i的位置插入元素x\n- `extend(iterable)` - 把另一个列表的所有元素都加进来（扩展）\n\n**删除元素：**\n- `remove(x)` - 删除第一个值为x的元素，如果没有会报错\n- `pop(i)` - 删除并返回索引i的元素，不传参数就删最后一个\n- `clear()` - 清空列表\n- `del 列表[i]` - 用del语句删除，也可以删切片"
+          },
+          {
+            "title": "5.10 增删改代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# ===== 增加 =====\nfruits = [\"苹果\", \"香蕉\"]\n\n# append - 末尾添加\nfruits.append(\"橘子\")\nprint(fruits)  # ['苹果', '香蕉', '橘子']\n\n# insert - 指定位置插入\nfruits.insert(1, \"葡萄\")  # 在索引1的位置插入\nprint(fruits)  # ['苹果', '葡萄', '香蕉', '橘子']\n\n# extend - 扩展（添加一整个列表）\nfruits.extend([\"西瓜\", \"草莓\"])\nprint(fruits)  # ['苹果', '葡萄', '香蕉', '橘子', '西瓜', '草莓']\n\n# ===== 删除 =====\n# remove - 删除第一个匹配的元素\nfruits.remove(\"香蕉\")\nprint(fruits)  # ['苹果', '葡萄', '橘子', '西瓜', '草莓']\n\n# pop - 删除并返回某个位置的元素\nlast = fruits.pop()  # 不传参数，删除最后一个\nprint(\"删除的元素：\", last)  # 草莓\nprint(fruits)  # ['苹果', '葡萄', '橘子', '西瓜']\n\nsecond = fruits.pop(1)  # 删除索引1的元素\nprint(\"删除的元素：\", second)  # 葡萄\nprint(fruits)  # ['苹果', '橘子', '西瓜']\n\n# del 语句\ndel fruits[0]  # 删除第一个\nprint(fruits)  # ['橘子', '西瓜']\n\n# clear - 清空\nfruits.clear()\nprint(fruits)  # []"
+          },
+          {
+            "title": "5.11 列表方法：查找和排序",
+            "content": "**查找：**\n- `index(x)` - 查找元素x第一次出现的索引，找不到会报错\n- `count(x)` - 统计x在列表中出现了多少次\n\n**排序：**\n- `sort()` - 对列表进行排序（直接修改原列表），默认升序\n- `reverse()` - 反转列表\n\nsort有两个常用参数：\n- `reverse=True` - 降序排列\n- `key=函数` - 按什么规则排序（比如按长度排序）\n\n如果不想修改原列表，想要一个排好序的新列表，用内置函数`sorted()`。"
+          },
+          {
+            "title": "5.12 查找和排序代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# index 和 count\nnums = [1, 3, 5, 3, 7, 9, 3]\nprint(nums.index(3))    # 1，第一个3的索引\nprint(nums.count(3))    # 3，3出现了3次\n# print(nums.index(10)) # 找不到会报错 ValueError\n\n# sort 排序 - 直接修改原列表\nnums = [5, 2, 8, 1, 9, 3]\nnums.sort()\nprint(nums)  # [1, 2, 3, 5, 8, 9] 升序\n\n# 降序排序\nnums.sort(reverse=True)\nprint(nums)  # [9, 8, 5, 3, 2, 1]\n\n# 按字符串长度排序\nwords = [\"apple\", \"banana\", \"kiwi\", \"orange\", \"pear\"]\nwords.sort(key=len)  # 按长度排\nprint(words)  # ['kiwi', 'pear', 'apple', 'banana', 'orange']\n\n# reverse - 反转\nnums = [1, 2, 3, 4, 5]\nnums.reverse()\nprint(nums)  # [5, 4, 3, 2, 1]\n\n# sorted() - 返回新列表，不修改原列表\nnums = [5, 2, 8, 1]\nsorted_nums = sorted(nums)\nprint(nums)         # [5, 2, 8, 1] 原列表没变\nprint(sorted_nums)  # [1, 2, 5, 8] 新列表排好序了"
+          },
+          {
+            "title": "5.13 列表的复制",
+            "content": "如果你想复制一个列表，要注意：直接赋值（b = a）只是给同一个列表起了个别名，两个变量指向同一个列表，改一个另一个也会变！\n\n要真正复制一个列表，有几种方法：\n1. 切片：`b = a[:]`\n2. copy()方法：`b = a.copy()`\n3. list()函数：`b = list(a)`\n\n但这三种都是浅拷贝——如果列表里有子列表，子列表还是共享的。如果需要完全复制（深拷贝），要用到copy模块的deepcopy函数。一般情况下浅拷贝就够用了。"
+          },
+          {
+            "title": "5.14 列表复制代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 错误的方式：直接赋值（同一个列表）\na = [1, 2, 3]\nb = a  # b和a指向同一个列表！\nb[0] = 100\nprint(\"a =\", a)  # [100, 2, 3]，a也变了！\nprint(\"b =\", b)  # [100, 2, 3]\n\n# === 正确的复制方式 ===\na = [1, 2, 3]\n\n# 方法1：切片\nb = a[:]\n\n# 方法2：copy()方法\nc = a.copy()\n\n# 方法3：list()\nd = list(a)\n\n# 修改b，a不会变\nb[0] = 100\nprint(\"a =\", a)  # [1, 2, 3]\nprint(\"b =\", b)  # [100, 2, 3]\nprint(id(a) == id(b))  # False，是两个不同的列表"
+          },
+          {
+            "title": "5.15 列表推导式",
+            "content": "列表推导式（List Comprehension）是Python的特色语法，用非常简洁的方式创建列表。\n\n基本格式：\n`[表达式 for 变量 in 序列]`\n\n相当于：\n```python\nresult = []\nfor 变量 in 序列:\n    result.append(表达式)\n```\n\n还可以加条件：\n`[表达式 for 变量 in 序列 if 条件]`\n\n列表推导式写起来简洁优雅，而且执行效率比普通的for循环append还要高一点。推荐多用！"
+          },
+          {
+            "title": "5.16 列表推导式代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 生成1-10的平方列表\n# 普通写法\nsquares = []\nfor i in range(1, 11):\n    squares.append(i * i)\nprint(squares)\n\n# 列表推导式写法（一句话搞定！）\nsquares = [i*i for i in range(1, 11)]\nprint(squares)\n\n# 带条件的：生成1-20中的偶数的平方\neven_squares = [i*i for i in range(1, 21) if i % 2 == 0]\nprint(even_squares)\n\n# 把列表中所有字符串转成大写\nwords = [\"hello\", \"world\", \"python\"]\nupper_words = [word.upper() for word in words]\nprint(upper_words)  # ['HELLO', 'WORLD', 'PYTHON']\n\n# 生成所有两位的回文数（11, 22, ..., 99）\npals = [i for i in range(10, 100) if i // 10 == i % 10]\nprint(pals)\n\n# 嵌套的列表推导式 - 展开二维列表\nmatrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\nflat = [num for row in matrix for num in row]\nprint(flat)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]"
+          },
+          {
+            "title": "5.17 遍历列表",
+            "content": "遍历列表就是依次把列表中的每个元素取出来做处理。我们学过的for循环就是干这个的。\n\n有几种遍历方式：\n\n1. **直接遍历元素** - `for item in list:` （最简单，最常用）\n2. **通过索引遍历** - `for i in range(len(list)):` （需要索引的时候用）\n3. **同时获取索引和元素** - `for i, item in enumerate(list):` （推荐，两个都要的时候用）\n\nenumerate()函数很好用，可以同时拿到索引和元素，强烈推荐！"
+          },
+          {
+            "title": "5.18 遍历列表代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "fruits = [\"苹果\", \"香蕉\", \"橘子\", \"葡萄\"]\n\n# 方式1：直接遍历元素（最常用）\nfor fruit in fruits:\n    print(\"我喜欢\", fruit)\n\nprint(\"---\")\n\n# 方式2：通过索引遍历\nfor i in range(len(fruits)):\n    print(f\"第{i+1}个水果是：{fruits[i]}\")\n\nprint(\"---\")\n\n# 方式3：enumerate同时获取索引和元素（推荐！）\nfor i, fruit in enumerate(fruits):\n    print(f\"第{i+1}个：{fruit}\")\n\n# enumerate还可以指定起始序号\nfor i, fruit in enumerate(fruits, start=1):\n    print(f\"{i}. {fruit}\")"
+          },
+          {
+            "title": "5.19 小项目：学生成绩管理系统",
+            "content": "用列表做一个简单的学生成绩管理系统，功能包括：\n1. 添加学生成绩\n2. 显示所有成绩\n3. 计算平均分、最高分、最低分\n4. 按分数从高到低排序\n5. 查找某个分数\n6. 删除某个成绩\n\n我们可以用一个菜单让用户选择功能，这是一个经典的列表练习项目。"
+          },
+          {
+            "title": "5.20 成绩管理系统代码",
+            "type": "code",
+            "language": "python",
+            "code": "# 学生成绩管理系统\nscores = []  # 存储成绩的列表\n\nprint(\"=\" * 40)\nprint(\"      学生成绩管理系统 v1.0\")\nprint(\"=\" * 40)\n\nwhile True:\n    print(\"\\n功能菜单：\")\n    print(\"1. 添加成绩\")\n    print(\"2. 显示所有成绩\")\n    print(\"3. 统计分析（平均分/最高/最低）\")\n    print(\"4. 排序（从高到低）\")\n    print(\"5. 查找成绩\")\n    print(\"6. 删除成绩\")\n    print(\"7. 退出系统\")\n    \n    choice = input(\"\\n请输入你的选择（1-7）：\")\n    \n    if choice == \"1\":\n        # 添加成绩\n        while True:\n            score_str = input(\"请输入成绩（输入q返回）：\")\n            if score_str.lower() == 'q':\n                break\n            if not score_str.isdigit():\n                print(\"请输入有效的数字！\")\n                continue\n            score = int(score_str)\n            if score < 0 or score > 100:\n                print(\"成绩要在0-100之间！\")\n                continue\n            scores.append(score)\n            print(f\"已添加成绩：{score}\")\n    \n    elif choice == \"2\":\n        # 显示所有成绩\n        if len(scores) == 0:\n            print(\"还没有成绩呢！\")\n        else:\n            print(f\"共有 {len(scores)} 个成绩：\")\n            for i, score in enumerate(scores, 1):\n                print(f\"  {i}. {score}分\")\n    \n    elif choice == \"3\":\n        # 统计分析\n        if len(scores) == 0:\n            print(\"还没有成绩呢！\")\n        else:\n            avg = sum(scores) / len(scores)\n            max_s = max(scores)\n            min_s = min(scores)\n            print(f\"统计结果：\")\n            print(f\"  总人数：{len(scores)}人\")\n            print(f\"  平均分：{avg:.2f}分\")\n            print(f\"  最高分：{max_s}分\")\n            print(f\"  最低分：{min_s}分\")\n    \n    elif choice == \"4\":\n        # 排序\n        if len(scores) == 0:\n            print(\"还没有成绩呢！\")\n        else:\n            scores.sort(reverse=True)\n            print(\"已按从高到低排序：\")\n            for i, score in enumerate(scores, 1):\n                print(f\"  第{i}名：{score}分\")\n    \n    elif choice == \"5\":\n        # 查找\n        if len(scores) == 0:\n            print(\"还没有成绩呢！\")\n        else:\n            target = int(input(\"请输入要查找的分数：\"))\n            count = scores.count(target)\n            if count > 0:\n                print(f\"找到 {count} 个 {target} 分\")\n                indexes = [i for i, s in enumerate(scores) if s == target]\n                print(\"位置：\", [i+1 for i in indexes])\n            else:\n                print(f\"没有找到 {target} 分\")\n    \n    elif choice == \"6\":\n        # 删除\n        if len(scores) == 0:\n            print(\"还没有成绩呢！\")\n        else:\n            print(\"当前成绩列表：\")\n            for i, score in enumerate(scores, 1):\n                print(f\"  {i}. {score}分\")\n            idx = int(input(\"请输入要删除的序号：\"))\n            if 1 <= idx <= len(scores):\n                removed = scores.pop(idx - 1)\n                print(f\"已删除第{idx}个成绩：{removed}分\")\n            else:\n                print(\"序号错误！\")\n    \n    elif choice == \"7\":\n        print(\"感谢使用，再见！\")\n        break\n    \n    else:\n        print(\"输入有误，请输入1-7之间的数字！\")"
+          },
+          {
+            "title": "5.21 动手练习",
+            "type": "exercise",
+            "content": "完成下面的练习：\n\n1. 写一个程序，输入10个整数，存入列表，然后输出它们的和、平均值、最大值、最小值\n2. 写一个程序，生成10个1-100之间的随机整数，存入列表，然后找出其中的偶数并放到另一个列表中\n3. 写一个函数，接受一个列表，返回去重后的新列表（用列表的方法自己实现，不要用set）\n4. 写一个冒泡排序：把列表中的数从大到小排列（冒泡排序是最基础的排序算法，可以搜一下怎么写）\n5. 写一个程序，输入两个列表，找出它们的公共元素，存入新列表\n6. 写一个程序，统计一句话中每个字符出现的次数（可以用列表，也可以用学过的方法）\n7. （挑战）写一个插入排序或者选择排序\n\n列表是Python中最重要的数据结构之一，一定要多练习！"
+          }
+        ],
+        "summary": "这节课我们学习了列表（list）的各种用法：创建、访问、切片、增删改查、排序、复制、列表推导式、遍历等等。列表是Python中最常用的数据结构，后面我们写代码几乎天天都会用到，一定要熟练掌握。下节课我们学习元组和字典！",
+        "quiz": {
+          "question": "想要在列表末尾添加一个元素，用哪个方法？",
+          "options": [
+            "add()",
+            "append()",
+            "insert()",
+            "extend()"
+          ],
+          "answer": 1,
+          "explanation": "append(x)是在列表末尾添加一个元素。insert(i, x)是在指定位置插入。extend()是扩展，把另一个列表的元素都加进来。list没有add方法（set才有）。"
+        }
+      }
+    }
+  ]
+}

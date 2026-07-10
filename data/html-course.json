@@ -1,0 +1,1226 @@
+{
+  "id": "html",
+  "title": "HTML/CSS 入门到精通",
+  "subtitle": "从零开始学习网页开发，打造属于你自己的网站",
+  "icon": "🌐",
+  "color": "orange",
+  "description": "HTML是网页的骨架，CSS是网页的衣服。学会这两样，你就能做出漂亮的网页了！本课程从零基础开始，一步步教你创建属于自己的网站。",
+  "duration": "12小时",
+  "lessons": 12,
+  "level": "入门级",
+  "whatYouLearn": [
+    "HTML基本结构和常用标签",
+    "CSS样式和布局",
+    "响应式网页设计",
+    "Flexbox弹性布局",
+    "Grid网格布局",
+    "实战项目：个人主页"
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title": "HTML入门：什么是HTML？",
+      "duration": "30分钟",
+      "content": {
+        "introduction": "欢迎来到HTML/CSS课程的第一节课！在开始写代码之前，我们先来了解一下什么是HTML，它有什么用，以及我们为什么要学习它。",
+        "sections": [
+          {
+            "title": "1.1 什么是HTML？",
+            "content": "HTML的全称是HyperText Markup Language，中文叫超文本标记语言。它不是编程语言，而是一种标记语言，用来描述网页的结构和内容。\n\n你可以把HTML想象成盖房子时的图纸和骨架——它决定了网页上有哪些东西，这些东西放在什么位置。比如标题在哪里，段落在哪里，图片在哪里，按钮在哪里……这些都是HTML来管的。\n\n那CSS呢？CSS的全称是Cascading Style Sheets，层叠样式表。它是用来美化网页的，比如给文字换个颜色、加个背景、调整大小和位置等等。如果HTML是房子的骨架，那CSS就是装修——刷墙、铺地板、摆家具。\n\nJavaScript呢？它是编程语言，用来让网页动起来。比如点击按钮弹出一个框，滑动图片轮播，表单验证等等。它就像房子里的电器和开关，让房子有了交互功能。\n\n所以一个完整的网页通常由三部分组成：\n- HTML：结构（骨架）\n- CSS：样式（装修）\n- JavaScript：行为（功能）\n\n我们这门课先学HTML和CSS，打好基础，后面再学JavaScript。"
+          },
+          {
+            "title": "1.2 网页是怎么工作的？",
+            "content": "在开始写代码之前，我们先来了解一下网页是怎么工作的。你每天都在上网，看视频、刷网页、玩游戏，但你知道这些网页是怎么从服务器跑到你的浏览器里的吗？\n\n其实很简单，大致过程是这样的：\n\n1. 你在浏览器里输入一个网址（比如www.baidu.com）\n2. 浏览器把这个请求发送给服务器（服务器就是一台一直开着的电脑，上面存着网站的文件）\n3. 服务器找到对应的网页文件（通常是.html文件）\n4. 服务器把文件发回给你的浏览器\n5. 浏览器读取这个文件，把它渲染成你看到的网页\n\n所以HTML文件就是网页的源代码，浏览器读取并解析它，然后展示给你看。\n\n你现在正在看的这个网页，本质上也是一个HTML文件，加上CSS和JavaScript，被你的浏览器渲染出来的。"
+          },
+          {
+            "title": "1.3 第一个HTML文件",
+            "content": "好了，理论讲了这么多，我们来动手写第一个HTML文件吧！\n\n你需要一个文本编辑器来写代码。推荐使用VS Code，它是免费的，功能很强大。你也可以用记事本，但体验会差很多。\n\n创建一个新文件，把下面的代码复制进去，然后保存为index.html（注意后缀是.html不是.txt）。\n\n然后双击这个文件，它会在浏览器里打开，你就能看到你的第一个网页了！"
+          },
+          {
+            "title": "1.4 代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>我的第一个网页</title>\n</head>\n<body>\n  <h1>你好，世界！</h1>\n  <p>这是我写的第一个网页。</p>\n  <p>我正在学习HTML！</p>\n</body>\n</html>"
+          },
+          {
+            "title": "1.5 代码解释",
+            "content": "我们一行一行来看这个文件：\n\n`<!DOCTYPE html>` - 这是文档类型声明，告诉浏览器这是一个HTML5文件。它必须写在第一行。\n\n`<html lang=\"zh-CN\">` - 这是HTML文档的根标签，所有内容都要放在里面。`lang=\"zh-CN\"`表示这个网页是中文的。\n\n`<head>` - 头部区域，里面放一些网页的配置信息，比如标题、字符编码等。这些信息不会显示在网页正文里，但对网页很重要。\n\n`<meta charset=\"UTF-8\">` - 设置字符编码为UTF-8，这样中文才能正常显示。如果没有这一行，中文可能会变成乱码。\n\n`<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">` - 这是移动端适配用的，让网页在手机上也能正常显示。\n\n`<title>我的第一个网页</title>` - 网页的标题，会显示在浏览器的标签页上。\n\n`<body>` - 网页的主体内容，你在网页上看到的所有东西都放在这里。\n\n`<h1>你好，世界！</h1>` - 一级标题标签，显示为大号加粗文字。\n\n`<p>这是我写的第一个网页。</p>` - 段落标签，用来放普通文字。\n\n注意到了吗？HTML标签都是用尖括号`<>`包起来的，而且大多数标签都是成对出现的——有一个开始标签（比如`<h1>`），就有一个结束标签（比如`</h1>`，注意前面有个斜杠）。\n\n标签是可以嵌套的，比如`<body>`里面嵌套着`<h1>`和`<p>`。就像俄罗斯套娃一样，一层套一层。\n\n一个基本的HTML文件结构就是这样的，以后我们写的所有网页都是在这个基础上扩展的。"
+          },
+          {
+            "title": "1.6 动手练习",
+            "type": "exercise",
+            "content": "试试修改下面的内容，看看网页会有什么变化：\n1. 把标题改成你自己的名字\n2. 再添加一个段落，介绍一下你自己\n3. 试试看，如果删掉一个结束标签，会发生什么？\n\n提示：动手试一试是最好的学习方式！不要怕写错，大胆尝试吧～"
+          }
+        ],
+        "summary": "这节课我们学习了HTML的基本概念，了解了网页的工作原理，还写出了第一个HTML文件。下节课我们来学习更多的HTML标签，让网页内容更丰富！",
+        "quiz": {
+          "question": "HTML的作用是什么？",
+          "options": [
+            "给网页添加动画效果",
+            "描述网页的结构和内容",
+            "存储网站的数据",
+            "让服务器运行更快"
+          ],
+          "answer": 1,
+          "explanation": "HTML是超文本标记语言，用来描述网页的结构和内容。动画效果是CSS和JavaScript做的，数据存储是后端的事情。"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "HTML文本标签：标题、段落、文字样式",
+      "duration": "45分钟",
+      "content": {
+        "introduction": "上节课我们学习了HTML的基本结构，这节课我们来学习更多的文本标签。文字是网页上最常见的内容，掌握好文本标签是基础中的基础。",
+        "sections": [
+          {
+            "title": "2.1 标题标签 h1~h6",
+            "content": "HTML提供了六级标题标签，从`<h1>`到`<h6>`，数字越小字号越大，级别越高。\n\n`<h1>`是最高级别的标题，一个页面通常只有一个，用来表示页面的主题。`<h2>`是二级标题，`<h3>`是三级标题，依此类推。\n\n标题标签的作用不只是让文字变大变粗，更重要的是它表示了内容的层级结构，就像一本书的目录一样。搜索引擎也会根据标题来判断网页内容的重要性。"
+          },
+          {
+            "title": "2.2 标题代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<h1>一级标题 h1</h1>\n<h2>二级标题 h2</h2>\n<h3>三级标题 h3</h3>\n<h4>四级标题 h4</h4>\n<h5>五级标题 h5</h5>\n<h6>六级标题 h6</h6>"
+          },
+          {
+            "title": "2.3 段落标签 p",
+            "content": "段落用`<p>`标签表示，是paragraph的缩写。浏览器会自动在段落之间添加一些间距，让文字看起来更舒服。\n\n段落里的文字会自动换行，根据浏览器窗口的宽度自动调整。你在代码里写的换行和空格，浏览器通常会忽略，只显示一个空格。如果你想强制换行，需要用`<br>`标签。\n\n`<br>`是一个单标签（也叫空标签），它没有结束标签，写一个`<br>`就相当于换一行。"
+          },
+          {
+            "title": "2.4 段落代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<p>这是第一个段落。段落里的文字会自动换行，根据浏览器窗口的宽度自动调整。</p>\n\n<p>这是第二个段落。<br>这里用br标签换行了。<br>又换了一行。</p>"
+          },
+          {
+            "title": "2.5 文本格式化标签",
+            "content": "除了标题和段落，HTML还提供了很多文本格式化标签，用来给文字加上各种样式：\n\n- `<strong>` - 加粗，表示重要的文字\n- `<em>` - 斜体，表示强调\n- `<u>` - 下划线\n- `<s>` - 删除线\n- `<mark>` - 高亮标记\n- `<small>` - 小号文字\n- `<sup>` - 上标\n- `<sub>` - 下标\n\n以前人们常用`<b>`表示加粗，`<i>`表示斜体，但现在更推荐用`<strong>`和`<em>`，因为它们不仅有样式，还有语义（表示重要和强调），对搜索引擎和屏幕阅读器更友好。"
+          },
+          {
+            "title": "2.6 文本格式化代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<p>这是<strong>加粗文字</strong>，这是<em>斜体文字</em>。</p>\n<p>这是<u>下划线</u>，这是<s>删除线</s>。</p>\n<p>这是<mark>高亮文字</mark>，这是<small>小号文字</small>。</p>\n<p>水的化学式是H<sub>2</sub>O，2的10次方是2<sup>10</sup>。</p>"
+          },
+          {
+            "title": "2.7 水平分割线 hr",
+            "content": "`<hr>`标签用来插入一条水平分割线，通常用来分隔不同的内容区域。它也是一个单标签。\n\nhr是horizontal rule的缩写，意思是水平线。"
+          },
+          {
+            "title": "2.8 分割线代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<h2>第一部分</h2>\n<p>这是第一部分的内容……</p>\n\n<hr>\n\n<h2>第二部分</h2>\n<p>这是第二部分的内容……</p>"
+          },
+          {
+            "title": "2.9 引用和代码",
+            "content": "还有一些特殊的文本标签：\n\n- `<blockquote>` - 块级引用，用来引用一大段话，通常会有缩进\n- `<q>` - 行内引用，短句子引用\n- `<code>` - 行内代码\n- `<pre>` - 预格式化文本，保留空格和换行，通常用来显示代码块\n- `<kbd>` - 键盘输入，表示用户按键\n\n这些标签各有用处，在合适的场景使用它们会让你的HTML更有语义。"
+          },
+          {
+            "title": "2.10 引用代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<blockquote>\n  <p>学而不思则罔，思而不学则殆。</p>\n  <cite>—— 孔子</cite>\n</blockquote>\n\n<p>孔子说过：<q>三人行，必有我师焉。</q></p>\n\n<p>在JavaScript中，用 <code>console.log()</code> 来打印输出。</p>\n\n<pre>\nfunction hello() {\n    console.log(\"Hello, World!\");\n}\n</pre>\n\n<p>按 <kbd>Ctrl</kbd> + <kbd>C</kbd> 复制文字。</p>"
+          },
+          {
+            "title": "2.11 动手练习",
+            "type": "exercise",
+            "content": "写一个介绍你的一天的网页，要求：\n1. 有一个大标题（h1）：我的一天\n2. 有三个二级标题（h2）：早上、下午、晚上\n3. 每个二级标题下面有2-3个段落，描述你在做什么\n4. 至少使用一次strong、em、u标签\n5. 用hr分隔不同的部分\n\n试着在浏览器里打开看看效果吧！"
+          }
+        ],
+        "summary": "这节课我们学习了各种文本标签：标题h1~h6、段落p、格式化标签strong/em/u/s/mark等、水平线hr、引用blockquote等。这些都是最常用的标签，一定要熟练掌握。下节课我们学习链接和图片！",
+        "quiz": {
+          "question": "以下哪个标签表示最重要的标题？",
+          "options": [
+            "<h6>",
+            "<p>",
+            "<h1>",
+            "<strong>"
+          ],
+          "answer": 2,
+          "explanation": "<h1>是一级标题，级别最高，一个页面通常只有一个。<h6>是级别最低的标题，<p>是段落，<strong>是加粗但不是标题标签。"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "链接和图片：a标签和img标签",
+      "duration": "45分钟",
+      "content": {
+        "introduction": "网页之所以叫\"网\"页，就是因为它可以通过链接跳来跳去，把各个页面连在一起，就像一张网一样。图片也是网页上不可或缺的元素，有图才有真相嘛。这节课我们就来学习链接和图片标签。",
+        "sections": [
+          {
+            "title": "3.1 链接标签 a",
+            "content": "链接用`<a>`标签表示，是anchor（锚）的缩写。它可以让你点击后跳转到另一个页面、另一个网站，或者同一个页面的不同位置。\n\n`<a>`标签最重要的属性是`href`，它指定了链接的目标地址。href是hypertext reference的缩写。\n\n链接的文字放在开始标签和结束标签之间，默认情况下会显示成蓝色带下划线的样子，鼠标移上去会变成手型。"
+          },
+          {
+            "title": "3.2 基本链接代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<a href=\"https://www.baidu.com\">百度一下</a>\n\n<a href=\"https://www.bilibili.com\">B站</a>\n\n<a href=\"https://www.zhihu.com\">知乎</a>"
+          },
+          {
+            "title": "3.3 target属性",
+            "content": "`<a>`标签还有一个常用属性`target`，它指定了链接在哪里打开。\n\n常用的值有：\n- `_self` - 在当前窗口打开（默认值）\n- `_blank` - 在新窗口或新标签页打开\n- `_parent` - 在父框架打开\n- `_top` - 在顶层框架打开\n\n最常用的是`_blank`，点击后会在新标签页打开链接，原来的页面还在。如果你不希望用户离开你的网站，就可以用这个。"
+          },
+          {
+            "title": "3.4 target代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<p>在当前窗口打开：</p>\n<a href=\"https://www.baidu.com\" target=\"_self\">百度</a>\n\n<p>在新窗口打开：</p>\n<a href=\"https://www.bilibili.com\" target=\"_blank\" rel=\"noopener\">B站（新窗口）</a>"
+          },
+          {
+            "title": "3.5 内部链接和锚点",
+            "content": "链接不只能跳到别的网站，也可以跳到自己网站的其他页面，这叫内部链接。\n\n内部链接的href写相对路径就可以了，比如`about.html`、`../index.html`等。\n\n还有一种叫锚点链接，可以跳到同一个页面的不同位置。这对于长页面特别有用，比如回到顶部、目录跳转等。\n\n使用方法：\n1. 给目标元素加一个`id`属性，比如`<h2 id=\"section1\">第一节</h2>`\n2. 链接的href写`#`加上id，比如`<a href=\"#section1\">跳转到第一节</a>`\n3. 如果href只有一个`#`，就是跳到页面顶部"
+          },
+          {
+            "title": "3.6 锚点链接代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<p>目录：</p>\n<a href=\"#section1\">第一节</a> |\n<a href=\"#section2\">第二节</a> |\n<a href=\"#section3\">第三节</a>\n\n<h2 id=\"section1\">第一节</h2>\n<p>这里是第一节的内容……（很长很长）</p>\n\n<h2 id=\"section2\">第二节</h2>\n<p>这里是第二节的内容……（很长很长）</p>\n\n<h2 id=\"section3\">第三节</h2>\n<p>这里是第三节的内容……（很长很长）</p>\n\n<a href=\"#top\">回到顶部</a>"
+          },
+          {
+            "title": "3.7 图片标签 img",
+            "content": "图片用`<img>`标签表示，它是一个单标签。img最重要的两个属性是`src`和`alt`。\n\n- `src` - source的缩写，指定图片的地址，可以是本地路径，也可以是网络图片的URL\n- `alt` - alternative的缩写，图片的替代文字。如果图片加载失败（比如地址错了、网络不好），就会显示这段文字。同时，屏幕阅读器也会读这段文字给视力障碍的人听。\n\nalt属性非常重要，它对用户体验和SEO（搜索引擎优化）都有好处，所以写img标签时一定要加上alt！"
+          },
+          {
+            "title": "3.8 图片代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<img src=\"cat.jpg\" alt=\"一只可爱的小猫\">\n\n<img src=\"https://example.com/dog.png\" alt=\"一只小狗\" width=\"300\" height=\"200\">\n\n<img src=\"wrong.jpg\" alt=\"图片加载失败时显示这段文字\">"
+          },
+          {
+            "title": "3.9 图片的其他属性",
+            "content": "除了src和alt，img还有一些常用属性：\n\n- `width` - 图片宽度，单位是像素\n- `height` - 图片高度，单位是像素\n- `title` - 鼠标悬停在图片上时显示的提示文字\n\n一般来说，width和height只设一个就够了，另一个会自动按比例缩放。如果两个都设，图片可能会变形。\n\n现在更推荐用CSS来控制图片大小，而不是写在HTML属性里。"
+          },
+          {
+            "title": "3.10 图片链接",
+            "content": "你还可以把图片放在`<a>`标签里面，这样点击图片就会跳转链接了！这在网页上非常常见，比如点击商品图片进入商品详情页。"
+          },
+          {
+            "title": "3.11 图片链接代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<a href=\"https://www.baidu.com\" target=\"_blank\">\n  <img src=\"baidu-logo.png\" alt=\"百度logo，点击跳转到百度\">\n</a>\n\n<p>点击上面的图片会跳转到百度首页。</p>"
+          },
+          {
+            "title": "3.12 动手练习",
+            "type": "exercise",
+            "content": "做一个你自己的收藏夹网页：\n1. 标题叫\"我的收藏\"\n2. 放5-10个你常用的网站链接，每个链接在新窗口打开\n3. 给每个网站配一张图片（可以用网络图片，也可以用本地图片）\n4. 图片也可以点击跳转\n5. 给页面加一个目录，可以跳转到不同分类\n\n提示：找图片可以去百度图片搜哦～"
+          }
+        ],
+        "summary": "这节课我们学习了链接标签`<a>`和图片标签`<img>`，它们是网页上最常用的元素之一。有了链接，网页才能连成网；有了图片，网页才生动。下节课我们学习列表和表格！",
+        "quiz": {
+          "question": "以下哪个属性是img标签必须的，对SEO和用户体验都很重要？",
+          "options": [
+            "width",
+            "height",
+            "alt",
+            "title"
+          ],
+          "answer": 2,
+          "explanation": "alt是图片的替代文字，图片加载失败时显示，屏幕阅读器也会读取它。它对用户体验和SEO都很重要，写img时一定要加。"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "列表和表格：有序、无序、表格标签",
+      "duration": "50分钟",
+      "content": {
+        "introduction": "列表和表格都是用来组织内容的。列表可以让信息更有条理，表格可以展示数据。这节课我们来学习这两种标签。",
+        "sections": [
+          {
+            "title": "4.1 无序列表 ul",
+            "content": "无序列表用`<ul>`标签表示，里面的每一项用`<li>`标签（list item）。\n\n无序列表的每一项前面默认是一个小圆点（实心圆）。这种列表适合展示没有顺序关系的内容，比如兴趣爱好、购物清单等。\n\nul是unordered list的缩写。"
+          },
+          {
+            "title": "4.2 无序列表代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<h3>我的兴趣爱好</h3>\n<ul>\n  <li>打游戏</li>\n  <li>骑自行车</li>\n  <li>玩AI</li>\n  <li>看动漫</li>\n  <li>听音乐</li>\n</ul>"
+          },
+          {
+            "title": "4.3 有序列表 ol",
+            "content": "有序列表用`<ol>`标签表示，里面的每一项也是用`<li>`。\n\n有序列表的每一项前面默认是数字编号（1、2、3……）。这种列表适合有先后顺序的内容，比如操作步骤、排行榜等。\n\nol是ordered list的缩写。\n\n你还可以通过`type`属性改变编号的样式，不过现在更推荐用CSS来控制。"
+          },
+          {
+            "title": "4.4 有序列表代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<h3>如何泡方便面</h3>\n<ol>\n  <li>打开面饼包装，放入碗中</li>\n  <li>加入调味料</li>\n  <li>倒入开水</li>\n  <li>盖上盖子，等待3分钟</li>\n  <li>搅拌均匀，开吃！</li>\n</ol>\n\n<h3>考试排名</h3>\n<ol type=\"A\">\n  <li>小明 - 100分</li>\n  <li>小红 - 98分</li>\n  <li>小刚 - 95分</li>\n</ol>"
+          },
+          {
+            "title": "4.5 定义列表 dl",
+            "content": "除了无序列表和有序列表，还有一种定义列表`<dl>`，它用来展示一组术语和定义。\n\n- `<dl>` - definition list，定义列表\n- `<dt>` - definition term，术语\n- `<dd>` - definition description，定义描述\n\n这种列表用得不多，但在某些场景下很合适，比如词汇表、问答等。"
+          },
+          {
+            "title": "4.6 定义列表代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<h3>HTML术语</h3>\n<dl>\n  <dt>HTML</dt>\n  <dd>超文本标记语言，用来描述网页结构</dd>\n  \n  <dt>CSS</dt>\n  <dd>层叠样式表，用来美化网页</dd>\n  \n  <dt>JavaScript</dt>\n  <dd>脚本语言，用来给网页添加交互功能</dd>\n</dl>"
+          },
+          {
+            "title": "4.7 嵌套列表",
+            "content": "列表是可以嵌套的，就是一个列表里面再套一个列表。这在做多级菜单、多级目录时很常用。\n\n你可以ul里面套ol，也可以ol里面套ul，想怎么套就怎么套。"
+          },
+          {
+            "title": "4.8 嵌套列表代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<h3>编程学习路线</h3>\n<ul>\n  <li>前端开发\n    <ul>\n      <li>HTML/CSS</li>\n      <li>JavaScript</li>\n      <li>Vue / React</li>\n    </ul>\n  </li>\n  <li>后端开发\n    <ul>\n      <li>Python</li>\n      <li>Java</li>\n      <li>Node.js</li>\n    </ul>\n  </li>\n  <li>AI开发\n    <ul>\n      <li>Python基础</li>\n      <li>机器学习</li>\n      <li>深度学习</li>\n    </ul>\n  </li>\n</ul>"
+          },
+          {
+            "title": "4.9 表格 table",
+            "content": "表格用`<table>`标签表示，用来展示二维数据。表格的结构稍微复杂一点：\n\n- `<table>` - 表格容器\n- `<tr>` - table row，表格的一行\n- `<td>` - table data，表格的数据单元格\n- `<th>` - table header，表头单元格（默认加粗居中）\n- `<thead>` - 表头部分（可选）\n- `<tbody>` - 表体部分（可选）\n- `<tfoot>` - 表脚部分（可选）\n\n简单来说，表格是由行组成的，每行是由单元格组成的。"
+          },
+          {
+            "title": "4.10 表格代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<table border=\"1\">\n  <tr>\n    <th>姓名</th>\n    <th>语文</th>\n    <th>数学</th>\n    <th>英语</th>\n  </tr>\n  <tr>\n    <td>小明</td>\n    <td>90</td>\n    <td>95</td>\n    <td>85</td>\n  </tr>\n  <tr>\n    <td>小红</td>\n    <td>95</td>\n    <td>88</td>\n    <td>92</td>\n  </tr>\n  <tr>\n    <td>小刚</td>\n    <td>80</td>\n    <td>100</td>\n    <td>78</td>\n  </tr>\n</table>"
+          },
+          {
+            "title": "4.11 合并单元格",
+            "content": "有时候我们需要把相邻的单元格合并起来，这就用到了两个属性：\n\n- `colspan` - 横向合并，跨几列\n- `rowspan` - 纵向合并，跨几行\n\n这两个属性用在td或th标签上。"
+          },
+          {
+            "title": "4.12 合并单元格代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<table border=\"1\">\n  <tr>\n    <th colspan=\"2\">个人信息</th>\n    <th colspan=\"2\">成绩</th>\n  </tr>\n  <tr>\n    <th>姓名</th>\n    <th>班级</th>\n    <th>语文</th>\n    <th>数学</th>\n  </tr>\n  <tr>\n    <td rowspan=\"2\">小明</td>\n    <td rowspan=\"2\">2班</td>\n    <td>90</td>\n    <td>95</td>\n  </tr>\n  <tr>\n    <td colspan=\"2\">总分：185</td>\n  </tr>\n</table>"
+          },
+          {
+            "title": "4.13 动手练习",
+            "type": "exercise",
+            "content": "做一个课程表网页：\n1. 用表格做一个你的课程表\n2. 表头是星期（周一到周五），左边是节次\n3. 合并单元格表示连堂课\n4. 用列表列出你所有的科目\n5. 用嵌套列表列出每个科目的章节\n\n尽量做得好看一点哦～"
+          }
+        ],
+        "summary": "这节课我们学习了三种列表（ul、ol、dl）和表格（table）。列表用来组织内容，表格用来展示数据。这些都是很实用的标签，以后做网页经常会用到。下节课我们学习表单，这是用户和网页交互的重要方式！",
+        "quiz": {
+          "question": "以下哪个标签表示有序列表？",
+          "options": [
+            "<ul>",
+            "<ol>",
+            "<li>",
+            "<dl>"
+          ],
+          "answer": 1,
+          "explanation": "<ol>是ordered list（有序列表），<ul>是unordered list（无序列表），<li>是列表项，<dl>是定义列表。"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "表单：input和各种表单元素",
+      "duration": "50分钟",
+      "content": {
+        "introduction": "表单是用户和网页交互的重要方式。你在网页上填的各种输入框、下拉菜单、单选框、复选框、按钮等等，都是表单元素。这节课我们来学习表单相关的标签。",
+        "sections": [
+          {
+            "title": "5.1 表单标签 form",
+            "content": "所有表单元素都应该放在`<form>`标签里面。form标签定义了一个表单，它有几个重要的属性：\n\n- `action` - 表单提交的地址（后端接口的URL）\n- `method` - 提交方式，常用的有get和post\n- `target` - 在哪里打开action URL\n- `enctype` - 编码方式，上传文件时需要设置\n\n不过，如果你只是用JavaScript处理表单数据，不提交给后端，那这些属性可以不写。\n\n现在我们来认识一下各种表单输入元素。"
+          },
+          {
+            "title": "5.2 input标签",
+            "content": "`<input>`是最重要的表单元素，它有很多种类型，通过`type`属性来区分。\n\n常用的type值有：\n- `text` - 单行文本框（默认）\n- `password` - 密码框（输入的内容显示为圆点）\n- `number` - 数字输入框\n- `email` - 邮箱输入框\n- `tel` - 电话号码输入框\n- `url` - 网址输入框\n- `search` - 搜索框\n- `date` - 日期选择器\n- `time` - 时间选择器\n- `color` - 颜色选择器\n- `file` - 文件上传\n- `radio` - 单选框\n- `checkbox` - 复选框\n- `button` - 按钮\n- `submit` - 提交按钮\n- `reset` - 重置按钮\n\ninput是一个单标签。"
+          },
+          {
+            "title": "5.3 文本输入类示例",
+            "type": "code",
+            "language": "html",
+            "code": "<p>用户名：<input type=\"text\" placeholder=\"请输入用户名\"></p>\n<p>密&emsp;码：<input type=\"password\" placeholder=\"请输入密码\"></p>\n<p>年&emsp;龄：<input type=\"number\" min=\"0\" max=\"120\" value=\"15\"></p>\n<p>邮&emsp;箱：<input type=\"email\" placeholder=\"example@qq.com\"></p>\n<p>电&emsp;话：<input type=\"tel\" placeholder=\"请输入手机号\"></p>\n<p>网&emsp;址：<input type=\"url\" placeholder=\"https://\"></p>\n<p>日&emsp;期：<input type=\"date\"></p>\n<p>颜&emsp;色：<input type=\"color\" value=\"#6366f1\"></p>"
+          },
+          {
+            "title": "5.4 单选框和复选框",
+            "content": "单选框radio和复选框checkbox比较特殊，它们是通过`value`属性来传值的，而不是输入文字。\n\n单选框的特点是：同一组的单选框name属性必须相同，这样它们才会互斥（只能选一个）。\n\n复选框的特点是：同一组的复选框name属性也相同，但是可以选多个。\n\n`checked`属性表示默认选中。"
+          },
+          {
+            "title": "5.5 单选和复选代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<p>性别：</p>\n<label><input type=\"radio\" name=\"gender\" value=\"male\" checked> 男</label>\n<label><input type=\"radio\" name=\"gender\" value=\"female\"> 女</label>\n\n<p>兴趣爱好：</p>\n<label><input type=\"checkbox\" name=\"hobby\" value=\"game\" checked> 打游戏</label>\n<label><input type=\"checkbox\" name=\"hobby\" value=\"bike\"> 骑自行车</label>\n<label><input type=\"checkbox\" name=\"hobby\" value=\"ai\"> 玩AI</label>\n<label><input type=\"checkbox\" name=\"hobby\" value=\"anime\"> 看动漫</label>"
+          },
+          {
+            "title": "5.6 下拉选择 select",
+            "content": "下拉选择框用`<select>`标签，里面的选项用`<option>`。\n\nselect也可以设置`multiple`属性，这样就可以多选了（按住Ctrl或Shift键）。\n\noption的`value`是提交的值，标签之间的文字是显示给用户看的。如果option有`selected`属性，表示默认选中。"
+          },
+          {
+            "title": "5.7 下拉选择代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<p>你所在的城市：</p>\n<select name=\"city\">\n  <option value=\"beijing\">北京</option>\n  <option value=\"shanghai\">上海</option>\n  <option value=\"guangzhou\">广州</option>\n  <option value=\"shenzhen\">深圳</option>\n  <option value=\"luan\" selected>六安</option>\n  <option value=\"other\">其他</option>\n</select>\n\n<p>你喜欢的科目（多选）：</p>\n<select name=\"subject\" multiple size=\"4\">\n  <option value=\"math\">数学</option>\n  <option value=\"english\">英语</option>\n  <option value=\"chinese\">语文</option>\n  <option value=\"programming\">编程</option>\n</select>"
+          },
+          {
+            "title": "5.8 文本域 textarea",
+            "content": "input的text类型只能输入一行文字，如果需要输入多行文字（比如留言、评论），就用`<textarea>`标签。\n\ntextarea有两个常用属性：\n- `rows` - 行数，决定高度\n- `cols` - 列数，决定宽度\n\n不过现在一般用CSS来控制它的大小。textarea是双标签，标签之间的文字就是默认内容。"
+          },
+          {
+            "title": "5.9 文本域代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<p>留言板：</p>\n<textarea name=\"message\" rows=\"6\" cols=\"50\" placeholder=\"请输入你想说的话...\"></textarea>\n\n<p>自我介绍：</p>\n<textarea name=\"intro\" rows=\"4\" cols=\"40\">大家好，我是蘇魚，来自六安汇文中学，我喜欢编程和骑自行车！</textarea>"
+          },
+          {
+            "title": "5.9 按钮",
+            "content": "表单里的按钮有几种：\n\n- `<input type=\"submit\">` - 提交按钮，点击后提交表单\n- `<input type=\"reset\">` - 重置按钮，点击后清空表单\n- `<input type=\"button\">` - 普通按钮，需要配合JavaScript使用\n- `<button>` - 按钮标签，功能更灵活，中间可以放文字、图片等\n\n`<button>`标签比input按钮更灵活，因为它里面可以放任何内容，比如图标、文字等。如果不设置type，默认是submit。"
+          },
+          {
+            "title": "5.10 按钮代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<input type=\"submit\" value=\"提交\">\n<input type=\"reset\" value=\"重置\">\n<input type=\"button\" value=\"普通按钮\" onclick=\"alert('你点击了按钮！')\">\n\n<br><br>\n\n<button type=\"submit\">提交</button>\n<button type=\"button\" onclick=\"alert('hello')\">\n  <span>😊</span> 点我点我\n</button>"
+          },
+          {
+            "title": "5.11 label标签",
+            "content": "`<label>`标签是表单元素的说明文字。它有两个好处：\n\n1. 语义化：明确哪个文字是哪个输入框的说明\n2. 点击label也能选中输入框：比如点击文字也能选中单选框/复选框，对用户更友好\n\n使用方法：\n- 方法一：把input放在label里面\n- 方法二：label的for属性等于input的id属性\n\n第二种方法更灵活，推荐使用。"
+          },
+          {
+            "title": "5.12 label代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- 方法一：嵌套 -->\n<label>用户名：<input type=\"text\" name=\"username\"></label>\n\n<!-- 方法二：for和id -->\n<label for=\"pwd\">密码：</label>\n<input type=\"password\" id=\"pwd\" name=\"password\">\n\n<p>性别：</p>\n<label for=\"male\">男</label>\n<input type=\"radio\" id=\"male\" name=\"gender\" value=\"male\">\n<label for=\"female\">女</label>\n<input type=\"radio\" id=\"female\" name=\"gender\" value=\"female\">"
+          },
+          {
+            "title": "5.13 完整表单示例",
+            "type": "code",
+            "language": "html",
+            "code": "<form action=\"#\" method=\"post\">\n  <h3>用户注册</h3>\n  \n  <p>\n    <label for=\"username\">用户名：</label>\n    <input type=\"text\" id=\"username\" name=\"username\" placeholder=\"请输入用户名\">\n  </p>\n  \n  <p>\n    <label for=\"pwd\">密码：</label>\n    <input type=\"password\" id=\"pwd\" name=\"password\" placeholder=\"请输入密码\">\n  </p>\n  \n  <p>\n    <label>性别：</label>\n    <label><input type=\"radio\" name=\"gender\" value=\"male\" checked> 男</label>\n    <label><input type=\"radio\" name=\"gender\" value=\"female\"> 女</label>\n  </p>\n  \n  <p>\n    <label for=\"city\">城市：</label>\n    <select id=\"city\" name=\"city\">\n      <option value=\"beijing\">北京</option>\n      <option value=\"shanghai\">上海</option>\n      <option value=\"luan\" selected>六安</option>\n    </select>\n  </p>\n  \n  <p>\n    <label for=\"intro\">简介：</label><br>\n    <textarea id=\"intro\" name=\"intro\" rows=\"4\" cols=\"30\"></textarea>\n  </p>\n  \n  <p>\n    <input type=\"checkbox\" id=\"agree\" name=\"agree\">\n    <label for=\"agree\">我已阅读并同意用户协议</label>\n  </p>\n  \n  <p>\n    <button type=\"submit\">注册</button>\n    <button type=\"reset\">重置</button>\n  </p>\n</form>"
+          },
+          {
+            "title": "5.14 动手练习",
+            "type": "exercise",
+            "content": "做一个调查问卷表单：\n1. 标题：趣味小调查\n2. 包含：姓名（文本框）、年龄（数字）、性别（单选）\n3. 包含：最喜欢的科目（下拉选择）、兴趣爱好（复选框，至少5个选项）\n4. 包含：个人介绍（文本域）、是否同意协议（复选框）\n5. 有提交和重置按钮\n6. 用label标签让所有输入框都有关联的文字\n\n做得详细一点，越丰富越好！"
+          }
+        ],
+        "summary": "这节课我们学习了表单相关的各种标签，包括form、input的各种类型、select、textarea、button、label等。表单是用户和网站交互的重要方式，以后学了JavaScript和后端，你就能真正处理用户提交的数据了。下节课我们开始学习CSS！",
+        "quiz": {
+          "question": "以下哪个input类型是密码框？",
+          "options": [
+            "text",
+            "password",
+            "hidden",
+            "secret"
+          ],
+          "answer": 1,
+          "explanation": "type=\"password\"是密码框，输入的内容会显示为圆点或星号，保护用户隐私。"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "CSS入门：什么是CSS和三种引入方式",
+      "duration": "40分钟",
+      "content": {
+        "introduction": "从这节课开始，我们进入CSS的学习。HTML负责结构，CSS负责样式。学会了CSS，你就能把网页打扮得漂漂亮亮的了！",
+        "sections": [
+          {
+            "title": "6.1 什么是CSS？",
+            "content": "CSS的全称是Cascading Style Sheets，中文叫层叠样式表。它是用来控制网页外观的，比如文字的颜色、大小、字体，元素的背景、边框、位置、大小等等。\n\n为什么叫\"层叠\"呢？因为一个元素的样式可以来自多个地方——浏览器默认样式、外部样式表、内部样式、内联样式等，这些样式会一层层叠加起来，最终决定元素长什么样。如果有冲突，优先级高的会覆盖优先级低的。\n\nCSS的出现，实现了结构和样式的分离。HTML只负责内容和结构，CSS负责美化。这样改样式的时候不用动HTML，改HTML的时候也不用管样式，代码更清晰，更好维护。"
+          },
+          {
+            "title": "6.2 CSS三种引入方式",
+            "content": "CSS有三种引入方式：\n\n1. **内联样式**（Inline） - 写在HTML标签的style属性里\n2. **内部样式表**（Internal） - 写在HTML的`<style>`标签里\n3. **外部样式表**（External） - 写在单独的.css文件里，通过`<link>`标签引入\n\n三种方式各有优缺点，优先级也不同。我们一个个来看。"
+          },
+          {
+            "title": "6.3 内联样式",
+            "content": "内联样式就是把CSS直接写在HTML标签的`style`属性里。\n\n优点：直接、优先级最高\n缺点：只能作用于一个元素，代码复用性差，HTML和CSS混在一起不好维护\n\n不推荐大量使用，但偶尔用一下调整单个元素的样式还是挺方便的。"
+          },
+          {
+            "title": "6.4 内联样式代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<h1 style=\"color: #6366f1; font-size: 32px;\">这是一个彩色的标题</h1>\n\n<p style=\"color: red; background: yellow; padding: 10px;\">\n  这段文字是红色的，背景是黄色的。\n</p>\n\n<button style=\"background: #6366f1; color: white; padding: 10px 20px; border: none; border-radius: 5px;\">\n  按钮\n</button>"
+          },
+          {
+            "title": "6.5 内部样式表",
+            "content": "内部样式表是把CSS写在HTML的`<style>`标签里，通常放在`<head>`里面。\n\n优点：同一个页面上的元素都能复用，不需要额外加载文件\n缺点：只能在当前页面使用，不能跨页面复用\n\n适合单页面的小项目，或者测试一些样式的时候用。"
+          },
+          {
+            "title": "6.6 内部样式表代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>内部样式表示例</title>\n  <style>\n    h1 {\n      color: #6366f1;\n      text-align: center;\n    }\n    \n    p {\n      color: #475569;\n      font-size: 16px;\n      line-height: 1.8;\n    }\n    \n    .highlight {\n      background: linear-gradient(135deg, #6366f1, #22d3ee);\n      color: white;\n      padding: 20px;\n      border-radius: 10px;\n    }\n  </style>\n</head>\n<body>\n  <h1>欢迎来到我的网站</h1>\n  <p>这是第一个段落。</p>\n  <p>这是第二个段落。</p>\n  <div class=\"highlight\">\n    <p>这是一个高亮区块。</p>\n  </div>\n</body>\n</html>"
+          },
+          {
+            "title": "6.7 外部样式表",
+            "content": "外部样式表是把CSS写在一个单独的.css文件里，然后在HTML里用`<link>`标签引入。\n\n这是最推荐的方式！\n\n优点：\n- HTML和CSS完全分离\n- 多个页面可以共用一个CSS文件\n- 修改一次，所有页面都生效\n- 代码好维护\n\n缺点：需要多加载一个文件（但影响不大）\n\n实际项目中几乎都是用这种方式。"
+          },
+          {
+            "title": "6.8 外部样式表代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- index.html -->\n<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <title>外部样式表示例</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n  <h1>欢迎来到我的网站</h1>\n  <p>这是第一个段落。</p>\n</body>\n</html>\n\n<!-- style.css -->\nh1 {\n  color: #6366f1;\n  text-align: center;\n}\n\np {\n  color: #475569;\n  font-size: 16px;\n}"
+          },
+          {
+            "title": "6.9 CSS基本语法",
+            "content": "CSS的语法很简单，由选择器和声明块组成：\n\n```\n选择器 {\n  属性1: 值1;\n  属性2: 值2;\n  属性3: 值3;\n}\n```\n\n- **选择器**（Selector）：选中你要样式化的元素\n- **属性**（Property）：你要改什么样式，比如color、font-size、background等\n- **值**（Value）：属性的具体值，比如red、16px等\n- 每个声明（属性:值）后面要加分号\n- 多个声明放在大括号里\n- CSS对大小写不敏感，但推荐用小写\n- CSS里的注释是 `/* 注释内容 */`\n\n是不是很简单？接下来我们就要学习各种选择器和各种属性了。"
+          },
+          {
+            "title": "6.10 CSS注释",
+            "content": "CSS的注释用 `/* */` 包裹，中间可以写一行或多行文字。浏览器会忽略注释。\n\n写注释是个好习惯，可以帮你和别人理解代码的意思。不过也不要什么都注释，一目了然的代码比注释更重要。"
+          },
+          {
+            "title": "6.11 注释代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 这是一行注释 */\n\n/*\n  这是多行注释\n  第二行\n  第三行\n*/\n\n/* 标题样式 */\nh1 {\n  color: #6366f1; /* 紫色 */\n  font-size: 32px;\n}\n\n/* 段落样式\np {\n  color: #333;\n}  // 注意：CSS里不能用//注释！\n*/"
+          },
+          {
+            "title": "6.12 样式优先级",
+            "content": "前面说了CSS是层叠的，那如果一个元素的同一个属性被多个地方设置了不同的值，听谁的呢？\n\n简单的优先级规则（从高到低）：\n1. 内联样式（style属性）- 最高\n2. ID选择器\n3. 类选择器、属性选择器、伪类\n4. 标签选择器\n5. 浏览器默认样式 - 最低\n\n还有一个简单的判断方法：越具体的优先级越高。而且写在后面的会覆盖前面的（同优先级的情况下）。\n\n后面我们会详细讲选择器，到时候你就更明白了。"
+          },
+          {
+            "title": "6.13 动手练习",
+            "type": "exercise",
+            "content": "把你之前写的HTML文件加上样式：\n1. 用外部样式表（创建一个style.css文件）\n2. 给标题加上颜色和居中\n3. 给段落设置合适的字号和行高\n4. 给页面设置一个背景色\n5. 用内联样式给某一段文字加上特殊的颜色\n\n试着加各种你知道的样式，大胆尝试！"
+          }
+        ],
+        "summary": "这节课我们了解了CSS的基本概念，学习了三种引入方式（内联、内部、外部），以及CSS的基本语法和注释。推荐使用外部样式表，结构清晰，好维护。下节课我们学习CSS选择器，看看如何选中想要的元素！",
+        "quiz": {
+          "question": "以下哪种CSS引入方式优先级最高？",
+          "options": [
+            "外部样式表",
+            "内部样式表",
+            "内联样式",
+            "浏览器默认样式"
+          ],
+          "answer": 2,
+          "explanation": "优先级从高到低：内联样式 > ID选择器 > 类选择器 > 标签选择器 > 浏览器默认样式。内联样式优先级最高。"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "CSS选择器：选择你想要的元素",
+      "duration": "60分钟",
+      "content": {
+        "introduction": "选择器是CSS的核心，它决定了你要给哪些元素加样式。CSS提供了很多种选择器，灵活运用它们可以精确地选中任何你想要的元素。",
+        "sections": [
+          {
+            "title": "7.1 基础选择器",
+            "content": "最基本的选择器有四个：\n\n1. **通用选择器**（*）- 选中所有元素\n2. **标签选择器**（元素名）- 选中指定标签的所有元素\n3. **类选择器**（.class名）- 选中有指定class的元素\n4. **ID选择器**（#id名）- 选中有指定id的元素\n\n它们的优先级从低到高是：通用 < 标签 < 类 < ID\n\n我们一个个来看。"
+          },
+          {
+            "title": "7.2 通用选择器",
+            "content": "通用选择器用 `*` 表示，它会选中页面上的所有元素。\n\n通常用来重置浏览器的默认样式，比如去掉margin、padding，设置统一的box-sizing等。\n\n因为它会选中所有元素，效率会低一点，但用来做reset还是很常见的。"
+          },
+          {
+            "title": "7.3 通用选择器代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 重置所有元素的内外边距 */\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\n/* 所有文字默认颜色 */\n* {\n  color: #333;\n}"
+          },
+          {
+            "title": "7.4 标签选择器",
+            "content": "标签选择器直接写标签名，会选中页面上所有这个标签的元素。\n\n比如 `p` 选中所有段落，`h1` 选中所有一级标题，`a` 选中所有链接。\n\n标签选择器适合用来设置全局基础样式。"
+          },
+          {
+            "title": "7.5 标签选择器代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 所有段落 */\np {\n  color: #475569;\n  font-size: 16px;\n  line-height: 1.8;\n  margin-bottom: 16px;\n}\n\n/* 所有一级标题 */\nh1 {\n  color: #6366f1;\n  font-size: 32px;\n  margin-bottom: 24px;\n}\n\n/* 所有链接 */\na {\n  color: #22d3ee;\n  text-decoration: none;\n}"
+          },
+          {
+            "title": "7.6 类选择器",
+            "content": "类选择器用 `.` 加上类名，表示选中所有有这个class的元素。\n\n类名可以自定义，你想叫什么就叫什么，但最好见名知意。一个元素可以有多个class，用空格隔开。\n\n类选择器是最常用的选择器，因为它灵活、可复用、优先级适中。推荐多用class来设置样式。"
+          },
+          {
+            "title": "7.7 类选择器代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- HTML -->\n<p class=\"highlight\">这是高亮文字</p>\n<p class=\"highlight big\">这是高亮且大号的文字</p>\n<p class=\"big\">这是大号文字</p>\n<div class=\"card card-shadow\">这是一个卡片</div>"
+          },
+          {
+            "title": "7.8 类选择器CSS代码",
+            "type": "code",
+            "language": "css",
+            "code": "/* CSS */\n.highlight {\n  background: yellow;\n  color: red;\n}\n\n.big {\n  font-size: 24px;\n  font-weight: bold;\n}\n\n.card {\n  padding: 20px;\n  background: white;\n  border-radius: 10px;\n}\n\n.card-shadow {\n  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);\n}"
+          },
+          {
+            "title": "7.9 ID选择器",
+            "content": "ID选择器用 `#` 加上id名，表示选中有这个id的元素。\n\n注意：一个页面上同一个id只能用一次，ID是唯一的。所以ID选择器只能选中一个元素。\n\nID选择器优先级很高，而且JS里常用id来获取元素。但不推荐用ID来加样式，因为太不灵活了（不能复用）。用class就好。"
+          },
+          {
+            "title": "7.10 ID选择器代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- HTML -->\n<div id=\"header\">这是页头</div>\n<div id=\"main\">这是主要内容</div>\n<div id=\"footer\">这是页脚</div>"
+          },
+          {
+            "title": "7.11 ID选择器CSS代码",
+            "type": "code",
+            "language": "css",
+            "code": "/* CSS */\n#header {\n  height: 80px;\n  background: #6366f1;\n  color: white;\n}\n\n#main {\n  min-height: 400px;\n  padding: 20px;\n}\n\n#footer {\n  height: 60px;\n  background: #1e293b;\n  color: #94a3b8;\n  text-align: center;\n  line-height: 60px;\n}"
+          },
+          {
+            "title": "7.12 复合选择器",
+            "content": "基础选择器还可以组合起来，形成复合选择器，更精确地选中元素：\n\n1. **后代选择器**（空格）- 选中某个元素内部的后代元素\n2. **子选择器**（>）- 选中某个元素的直接子元素\n3. **并集选择器**（,）- 同时选中多个选择器\n4. **交集选择器**（连写）- 选中同时满足多个条件的元素\n5. **相邻兄弟选择器**（+）- 选中紧挨着的下一个兄弟元素\n6. **通用兄弟选择器**（~）- 选中后面所有的兄弟元素"
+          },
+          {
+            "title": "7.13 后代和子选择器",
+            "type": "code",
+            "language": "css",
+            "code": "/* 后代选择器：nav里面所有的a，不管嵌套多少层 */\nnav a {\n  color: white;\n}\n\n/* 子选择器：ul的直接子元素li，不包括孙子 */\nul > li {\n  list-style: none;\n}\n\n/* 对比一下： */\n<div class=\"box\">\n  <p>第一层p（子元素）</p>\n  <div>\n    <p>第二层p（后代，不是子）</p>\n  </div>\n</div>\n\n/* .box p 两个都选中 */\n/* .box > p 只选中第一个 */"
+          },
+          {
+            "title": "7.14 并集和交集选择器",
+            "type": "code",
+            "language": "css",
+            "code": "/* 并集选择器：同时选中h1、h2、h3 */\nh1, h2, h3 {\n  color: #6366f1;\n  margin-bottom: 16px;\n}\n\n/* 交集选择器：选中同时有box和active类的元素 */\n.box.active {\n  border-color: #22d3ee;\n}\n\n/* 交集：p标签且有intro类 */\np.intro {\n  font-size: 18px;\n  color: #1e293b;\n}"
+          },
+          {
+            "title": "7.15 兄弟选择器",
+            "type": "code",
+            "language": "css",
+            "code": "/* 相邻兄弟：选中h2紧挨着的下一个p */\nh2 + p {\n  text-indent: 2em;\n  color: #64748b;\n}\n\n/* 通用兄弟：选中h2后面所有的p兄弟 */\nh2 ~ p {\n  margin-left: 20px;\n}"
+          },
+          {
+            "title": "7.16 伪类选择器",
+            "content": "伪类选择器用 `:` 表示，它描述的是元素的某种状态。比如鼠标悬停时、点击时、获得焦点时等等。\n\n常用的伪类有：\n- `:hover` - 鼠标悬停\n- `:active` - 鼠标按下（激活状态）\n- `:focus` - 获得焦点\n- `:visited` - 已访问过的链接\n- `:first-child` - 第一个子元素\n- `:last-child` - 最后一个子元素\n- `:nth-child(n)` - 第n个子元素\n- `:nth-of-type(n)` - 同类型的第n个\n- `:first-of-type` - 同类型的第一个\n- `:not(selector)` - 不满足条件的\n- `:disabled` - 禁用状态\n- `:checked` - 选中状态（单选/复选框）"
+          },
+          {
+            "title": "7.17 伪类代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 链接的四种状态（注意顺序：LVHA） */\na:link { color: #6366f1; }    /* 未访问 */\na:visited { color: #8b5cf6; } /* 已访问 */\na:hover { color: #22d3ee; }   /* 鼠标悬停 */\na:active { color: #f472b6; }  /* 点击时 */\n\n/* 按钮悬停效果 */\nbutton:hover {\n  transform: translateY(-2px);\n  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);\n}\n\n/* 列表的第偶数项变色 */\nli:nth-child(even) {\n  background: #f8fafc;\n}\n\n/* 第一个li去掉上边距 */\nli:first-child {\n  margin-top: 0;\n}"
+          },
+          {
+            "title": "7.18 伪元素选择器",
+            "content": "伪元素用 `::` 表示（旧的也有写:的，但推荐写::），它可以创建一个虚拟的元素，不需要在HTML里写标签。\n\n常用的伪元素：\n- `::before` - 在元素内容前面插入\n- `::after` - 在元素内容后面插入\n- `::first-letter` - 第一个字母\n- `::first-line` - 第一行\n- `::selection` - 选中的文字\n\n`::before`和`::after`必须设置`content`属性才有效果，它们的content可以是文字、图片、空字符串等。"
+          },
+          {
+            "title": "7.19 伪元素代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 在每个标题前面加个小方块 */\nh2::before {\n  content: '';\n  display: inline-block;\n  width: 4px;\n  height: 20px;\n  background: #6366f1;\n  margin-right: 10px;\n  vertical-align: middle;\n}\n\n/* 段落第一个字放大 */\np::first-letter {\n  font-size: 2em;\n  font-weight: bold;\n  color: #6366f1;\n  float: left;\n  margin-right: 5px;\n}\n\n/* 选中文字的样式 */\n::selection {\n  background: rgba(99, 102, 241, 0.3);\n  color: #0f172a;\n}\n\n/* 清除浮动（经典用法） */\n.clearfix::after {\n  content: '';\n  display: block;\n  clear: both;\n}"
+          },
+          {
+            "title": "7.20 属性选择器",
+            "content": "属性选择器可以根据元素的属性来选择，用`[]`表示。\n\n常用的：\n- `[attr]` - 有这个属性的\n- `[attr=val]` - 属性等于val的\n- `[attr~=val]` - 属性包含val这个词（空格分隔）\n- `[attr|=val]` - 属性以val开头或以val-开头\n- `[attr^=val]` - 属性以val开头\n- `[attr$=val]` - 属性以val结尾\n- `[attr*=val]` - 属性包含val字符串\n\n这种选择器用得不多，但在某些情况下很有用。"
+          },
+          {
+            "title": "7.21 属性选择器代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 有target属性的a标签 */\na[target] {\n  position: relative;\n}\n\n/* type是text的input */\ninput[type=\"text\"] {\n  border: 1px solid #cbd5e1;\n}\n\n/* 链接以https开头的 */\na[href^=\"https\"] {\n  color: #22c55e;\n}\n\n/* 链接以.pdf结尾的 */\na[href$=\".pdf\"]::after {\n  content: ' [PDF]';\n  font-size: 0.8em;\n  color: #ef4444;\n}\n\n/* class里包含box的（和.box类似，但更灵活） */\n[class*=\"box\"] {\n  border-radius: 8px;\n}"
+          },
+          {
+            "title": "7.22 动手练习",
+            "type": "exercise",
+            "content": "练习使用各种选择器：\n1. 用标签选择器设置整体文字样式\n2. 用类选择器创建几个不同的按钮样式（主要按钮、次要按钮、危险按钮）\n3. 用后代选择器设置导航栏里的链接样式\n4. 用伪类选择器给按钮加hover效果\n5. 用伪元素选择器给标题前面加个装饰\n6. 用nth-child让表格隔行变色\n\n越丰富越好，把你学到的选择器都用上！"
+          }
+        ],
+        "summary": "这节课我们学习了CSS的各种选择器，包括基础选择器（通用、标签、类、ID）、复合选择器（后代、子、并集、交集、兄弟）、伪类选择器、伪元素选择器和属性选择器。选择器是CSS的灵魂，一定要熟练掌握，后面做布局、做动画都离不开它。下节课我们学习CSS的文本样式！",
+        "quiz": {
+          "question": "以下哪个选择器优先级最高？",
+          "options": [
+            "p",
+            ".text",
+            "#title",
+            "*"
+          ],
+          "answer": 2,
+          "explanation": "优先级从高到低：ID选择器 > 类选择器 > 标签选择器 > 通用选择器。所以#title优先级最高。"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "CSS文本和字体样式",
+      "duration": "50分钟",
+      "content": {
+        "introduction": "文字是网页上最常见的内容，所以文本样式非常重要。这节课我们来学习各种和文字、字体相关的CSS属性。",
+        "sections": [
+          {
+            "title": "8.1 颜色 color",
+            "content": "`color`属性设置文字的颜色。\n\n颜色值的写法有很多种：\n\n1. **颜色名** - 比如red、blue、green等（不推荐，可选的太少）\n2. **十六进制** - 比如`#ff0000`、`#f00`（最常用）\n3. **RGB** - `rgb(255, 0, 0)`，红绿蓝三个值\n4. **RGBA** - `rgba(255, 0, 0, 0.5)`，多了一个透明度（0~1）\n5. **HSL** - `hsl(0, 100%, 50%)`，色相、饱和度、亮度\n6. **HSLA** - `hsla(0, 100%, 50%, 0.5)`，HSL加透明度\n\n最常用的是十六进制和RGBA。"
+          },
+          {
+            "title": "8.2 颜色代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 颜色名 */\n.red { color: red; }\n\n/* 十六进制（6位） */\n.purple { color: #6366f1; }\n\n/* 十六进制（3位简写，每位重复） */\n.red2 { color: #f00; } /* 等于#ff0000 */\n\n/* RGB */\n.blue { color: rgb(59, 130, 246); }\n\n/* RGBA（带透明度） */\n.transparent-red { color: rgba(239, 68, 68, 0.7); }\n\n/* HSL */\n.green { color: hsl(120, 100%, 50%); }\n\n/* HSLA */\n.cyan { color: hsla(180, 100%, 50%, 0.8); }"
+          },
+          {
+            "title": "8.3 字体大小 font-size",
+            "content": "`font-size`设置文字的大小。\n\n单位有很多种：\n\n- **px** - 像素，固定大小，最常用\n- **em** - 相对父元素的字体大小，1em = 父元素字号\n- **rem** - 相对根元素(html)的字体大小，1rem = html的字号\n- **%** - 百分比，和em类似\n- **vw/vh** - 视口宽度/高度的百分比，响应式用\n- **关键字** - xx-small、x-small、small、medium、large、x-large、xx-large\n\n移动端适配的时候常用rem和vw。pc端常用px。"
+          },
+          {
+            "title": "8.4 字体大小代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "html {\n  font-size: 16px; /* 根元素字号，1rem = 16px */\n}\n\nh1 {\n  font-size: 32px; /* 像素 */\n}\n\nh2 {\n  font-size: 1.5rem; /* 相对根元素，1.5 * 16 = 24px */\n}\n\n.small {\n  font-size: 0.8em; /* 相对父元素 */\n}\n\n.big {\n  font-size: 150%; /* 百分比，和em一样 */\n}\n\n.responsive {\n  font-size: 5vw; /* 视口宽度的5%，会随屏幕大小变化 */\n}"
+          },
+          {
+            "title": "8.5 字体族 font-family",
+            "content": "`font-family`设置用什么字体。\n\n你可以写多个字体，用逗号分隔，浏览器会从前往后找，第一个有的就用哪个。如果都没有，就用浏览器默认字体。\n\n通常最后会写一个通用字体族，比如`sans-serif`（无衬线字体）、`serif`（衬线字体）、`monospace`（等宽字体）等，作为兜底。\n\n注意：如果字体名有空格，要用引号括起来。"
+          },
+          {
+            "title": "8.6 字体族代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 无衬线字体栈（推荐） */\nbody {\n  font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;\n}\n\n/* 衬线字体 */\n.serif {\n  font-family: 'Times New Roman', Georgia, serif;\n}\n\n/* 等宽字体（代码用） */\ncode {\n  font-family: 'JetBrains Mono', Consolas, Monaco, monospace;\n}\n\n/* 艺术字体 */\n.fancy {\n  font-family: 'Space Grotesk', 'Arial Black', sans-serif;\n}"
+          },
+          {
+            "title": "8.7 字体粗细 font-weight",
+            "content": "`font-weight`设置文字的粗细。\n\n可以用数字（100~900，整百），也可以用关键字：\n- `normal` - 正常，等于400\n- `bold` - 加粗，等于700\n- `lighter` - 比父元素细\n- `bolder` - 比父元素粗\n\n注意：不是所有字体都有9个粗细等级的，很多字体只有normal和bold两种。如果字体没有对应的粗细，浏览器会自动找最接近的。"
+          },
+          {
+            "title": "8.8 字体粗细代码示例",
+            "type": "code",
+            "language": "css",
+            "code": ".normal { font-weight: normal; } /* 400 */\n.bold { font-weight: bold; }     /* 700 */\n.light { font-weight: 300; }\n.medium { font-weight: 500; }\n.extrabold { font-weight: 800; }\n\nh1, h2, h3 {\n  font-weight: 600;\n}"
+          },
+          {
+            "title": "8.9 字体样式 font-style",
+            "content": "`font-style`设置字体的样式，主要是斜体。\n\n常用值：\n- `normal` - 正常\n- `italic` - 斜体\n- `oblique` - 倾斜（和italic类似，但很少用）\n\n一般用italic就够了。"
+          },
+          {
+            "title": "8.10 行高 line-height",
+            "content": "`line-height`设置行高，也就是一行文字的高度。\n\n行高越大，两行文字之间的距离越远。合适的行高能让文字读起来更舒服。\n\n值可以是：\n- 数字 - 比如1.5，表示是字号的1.5倍（推荐用这种）\n- 像素 - 比如24px\n- 百分比 - 比如150%\n- normal - 默认，大概1.2左右\n\n正文一般设置line-height在1.6~2.0之间比较舒服。"
+          },
+          {
+            "title": "8.11 行高代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "body {\n  line-height: 1.6; /* 1.6倍字号，推荐写法 */\n}\n\np {\n  line-height: 1.8; /* 段落行高一点更大 */\n}\n\n.single-line {\n  height: 40px;\n  line-height: 40px; /* 行高等于高度，可以让单行文字垂直居中 */\n}"
+          },
+          {
+            "title": "8.12 文本对齐 text-align",
+            "content": "`text-align`设置文本的水平对齐方式。\n\n常用值：\n- `left` - 左对齐（默认）\n- `center` - 居中\n- `right` - 右对齐\n- `justify` - 两端对齐\n\n注意：这个属性是设置在父元素上的，对里面的行内元素生效。"
+          },
+          {
+            "title": "8.13 文本装饰 text-decoration",
+            "content": "`text-decoration`设置文字的装饰线。\n\n常用值：\n- `none` - 没有装饰（用来去掉链接的下划线）\n- `underline` - 下划线\n- `overline` - 上划线\n- `line-through` - 删除线\n\n它其实是一个简写属性，包括text-decoration-line、text-decoration-color、text-decoration-style、text-decoration-thickness。"
+          },
+          {
+            "title": "8.14 文本装饰代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 去掉链接的下划线 */\na {\n  text-decoration: none;\n}\n\n/* 鼠标悬停时加上下划线 */\na:hover {\n  text-decoration: underline;\n}\n\n/* 删除线 */\n.old-price {\n  text-decoration: line-through;\n  color: #94a3b8;\n}\n\n/* 彩色波浪下划线 */\n.fancy-underline {\n  text-decoration: underline wavy #6366f1;\n  text-underline-offset: 4px;\n}"
+          },
+          {
+            "title": "8.15 其他文本属性",
+            "content": "还有一些常用的文本属性：\n\n- `text-indent` - 首行缩进，比如`2em`就是缩进两个字\n- `letter-spacing` - 字符间距\n- `word-spacing` - 单词间距\n- `text-transform` - 文字大小写（uppercase/lowercase/capitalize）\n- `white-space` - 空白处理（nowrap/pre等）\n- `text-overflow` - 文字溢出时的显示（ellipsis省略号）\n- `text-shadow` - 文字阴影\n- `overflow` - 超出部分的处理\n- `vertical-align` - 垂直对齐"
+          },
+          {
+            "title": "8.16 其他文本属性代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 首行缩进两个字 */\np {\n  text-indent: 2em;\n}\n\n/* 字符间距 */\n.letter-spacing {\n  letter-spacing: 2px;\n}\n\n/* 单行文字溢出显示省略号（经典三件套） */\n.ellipsis {\n  white-space: nowrap;      /* 不换行 */\n  overflow: hidden;         /* 超出隐藏 */\n  text-overflow: ellipsis;  /* 省略号 */\n}\n\n/* 文字阴影 */\n.shadow-text {\n  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);\n}\n\n/* 大写 */\n.uppercase {\n  text-transform: uppercase;\n}"
+          },
+          {
+            "title": "8.17 font简写",
+            "content": "和文字相关的属性可以用`font`简写，一次写多个，顺序是：\n\n`font: font-style font-variant font-weight font-size/line-height font-family;`\n\n其中font-size和font-family是必须的，其他可以省略（用默认值）。\n\n虽然写起来快，但可读性不如分开写，而且容易记错顺序。一般不推荐用简写，除非你很熟练。"
+          },
+          {
+            "title": "8.18 font简写代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 分开写 */\nbody {\n  font-style: normal;\n  font-weight: 400;\n  font-size: 16px;\n  line-height: 1.6;\n  font-family: sans-serif;\n}\n\n/* 简写（等价于上面） */\nbody {\n  font: normal 400 16px/1.6 sans-serif;\n}\n\n/* 只写必须的两个 */\nbody {\n  font: 16px sans-serif;\n}"
+          },
+          {
+            "title": "8.19 动手练习",
+            "type": "exercise",
+            "content": "做一个文章页面的排版：\n1. 标题：大号、加粗、居中、紫色渐变文字\n2. 副标题：稍小一点、灰色、居中\n3. 正文：合适的字号、行高1.8、首行缩进\n4. 引用文字：斜体、灰色、左边框、左边距\n5. 代码文字：等宽字体、背景色、圆角、内边距\n6. 强调文字：红色加粗\n7. 底部信息：小号、灰色、居中\n\n参考你平时看的文章网站的样式，尽量做得专业一点！"
+          }
+        ],
+        "summary": "这节课我们学习了各种文本和字体相关的CSS属性：颜色、字号、字体、粗细、行高、对齐、装饰、缩进、阴影等等。这些都是做网页时天天要用到的，一定要熟练掌握。下节课我们学习盒子模型！",
+        "quiz": {
+          "question": "要让单行文字超出时显示省略号，不需要哪个属性？",
+          "options": [
+            "white-space: nowrap",
+            "overflow: hidden",
+            "text-overflow: ellipsis",
+            "text-align: center"
+          ],
+          "answer": 3,
+          "explanation": "单行省略号三件套是：white-space: nowrap（不换行）、overflow: hidden（超出隐藏）、text-overflow: ellipsis（省略号）。text-align: center是对齐，和省略号无关。"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "title": "CSS盒子模型：padding、margin、border",
+      "duration": "60分钟",
+      "content": {
+        "introduction": "盒子模型是CSS里最重要的概念之一，理解了盒子模型，你才能真正搞懂布局。这节课我们来详细学习盒子模型。",
+        "sections": [
+          {
+            "title": "9.1 什么是盒子模型？",
+            "content": "CSS把所有的HTML元素都看作是一个矩形的\"盒子\"，这个盒子由四个部分组成，从内到外分别是：\n\n1. **内容区（content）** - 元素的实际内容，比如文字、图片等\n2. **内边距（padding）** - 内容和边框之间的距离\n3. **边框（border）** - 盒子的边框\n4. **外边距（margin）** - 盒子和其他盒子之间的距离\n\n就像一个快递盒子：\n- 内容 = 盒子里装的东西\n- padding = 泡沫缓冲（保护里面的东西）\n- border = 纸箱本身\n- margin = 箱子和箱子之间的空隙\n\n理解了这个，很多布局问题就迎刃而解了。"
+          },
+          {
+            "title": "9.2 内容区 width 和 height",
+            "content": "`width`和`height`设置内容区的宽度和高度。\n\n注意：默认情况下，你设置的width和height只是内容区的大小，不是盒子的总大小！盒子的总宽度 = width + padding-left + padding-right + border-left + border-right。\n\n这就是为什么有时候你设置了width: 100px，但实际盒子看起来更宽——因为还有padding和border！\n\n除了width和height，还有min-width、max-width、min-height、max-height，用来设置最小/最大尺寸。"
+          },
+          {
+            "title": "9.3 内边距 padding",
+            "content": "`padding`设置内边距，也就是内容和边框之间的距离。\n\n它有四个方向的写法：\n- `padding-top` - 上内边距\n- `padding-right` - 右内边距\n- `padding-bottom` - 下内边距\n- `padding-left` - 左内边距\n\n也可以用简写`padding`，值的顺序是：上、右、下、左（顺时针）。\n\n简写的几种情况：\n- 1个值：四边都一样\n- 2个值：上下、左右\n- 3个值：上、左右、下\n- 4个值：上、右、下、左"
+          },
+          {
+            "title": "9.4 padding代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 四边都是20px */\n.box1 { padding: 20px; }\n\n/* 上下10px，左右20px */\n.box2 { padding: 10px 20px; }\n\n/* 上10px，左右20px，下30px */\n.box3 { padding: 10px 20px 30px; }\n\n/* 上10px，右20px，下30px，左40px */\n.box4 { padding: 10px 20px 30px 40px; }\n\n/* 分开写 */\n.box5 {\n  padding-top: 10px;\n  padding-right: 20px;\n  padding-bottom: 30px;\n  padding-left: 40px;\n}"
+          },
+          {
+            "title": "9.5 边框 border",
+            "content": "`border`设置边框。边框有三个要素：宽度、样式、颜色。\n\n三个常用的简写属性：\n- `border-width` - 边框宽度\n- `border-style` - 边框样式（solid实线、dashed虚线、dotted点线、double双线、none无）\n- `border-color` - 边框颜色\n\n最常用的是直接用`border`简写：`border: width style color;`\n\n也可以单独设置某一边：border-top、border-right、border-bottom、border-left。\n\n还有`border-radius`设置圆角，这个超常用！值越大角越圆。"
+          },
+          {
+            "title": "9.6 border代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 简写：宽度 样式 颜色 */\n.box {\n  border: 2px solid #6366f1;\n}\n\n/* 分开写 */\n.box {\n  border-width: 2px;\n  border-style: solid;\n  border-color: #6366f1;\n}\n\n/* 只设置某一边 */\n.box {\n  border-bottom: 3px solid #22d3ee;\n  border-left: 4px solid #f472b6;\n}\n\n/* 圆角 */\n.rounded {\n  border-radius: 10px; /* 四个角都是10px */\n}\n\n.circle {\n  width: 100px;\n  height: 100px;\n  border-radius: 50%; /* 50%就是圆形 */\n}\n\n/* 四个角分别设置（左上、右上、右下、左下） */\n.box {\n  border-radius: 10px 20px 30px 40px;\n}"
+          },
+          {
+            "title": "9.7 外边距 margin",
+            "content": "`margin`设置外边距，也就是盒子和其他盒子之间的距离。\n\n写法和padding一模一样：\n- 四个方向：margin-top、margin-right、margin-bottom、margin-left\n- 简写：margin，顺序也是上、右、下、左\n- 1~4个值的规则和padding一样\n\n但是margin有几个特殊的地方需要注意："
+          },
+          {
+            "title": "9.8 margin的特殊现象",
+            "content": "margin有两个常见的特殊现象：\n\n**1. 外边距合并（折叠）**\n当两个块级元素上下挨在一起时，它们的上下margin会合并，取较大的那个，而不是加起来。左右margin不会合并。\n\n比如上面的div有margin-bottom: 20px，下面的div有margin-top: 30px，它们之间的距离不是50px，而是30px（取大的）。\n\n**2. 外边距塌陷**\n当父元素没有padding、border、overflow等内容时，子元素的margin-top会\"跑\"到父元素外面，把父元素也顶下来。\n\n解决方法：给父元素加overflow: hidden，或者加1px的padding/border，或者用flex布局。\n\nmargin的这两个特性是初学者最容易踩的坑，一定要注意！"
+          },
+          {
+            "title": "9.9 margin的auto值",
+            "content": "margin有一个很实用的技巧：`margin: 0 auto;` 可以让块级元素水平居中！\n\n原理是：左右margin设为auto，浏览器会自动把左右的空白平均分配到两边，元素就居中了。\n\n注意：\n- 只对块级元素有效\n- 元素必须有明确的width（不然它会占满父元素，看不出居中）\n- 只能水平居中，不能垂直居中（垂直居中有别的方法）"
+          },
+          {
+            "title": "9.10 margin auto代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 块级元素水平居中 */\n.box {\n  width: 300px;\n  height: 200px;\n  margin: 0 auto; /* 上下0，左右自动（居中） */\n  background: #6366f1;\n}\n\n/* 只让左边自动，元素靠右 */\n.box-right {\n  width: 200px;\n  margin-left: auto;\n}\n\n/* 只让右边自动，元素靠左（默认就是） */\n.box-left {\n  width: 200px;\n  margin-right: auto;\n}"
+          },
+          {
+            "title": "9.10 box-sizing",
+            "content": "前面说了，默认情况下width和height只是内容区的大小，不包括padding和border。这样算大小很麻烦，因为你设置了100px的宽度，加上padding和border实际就更宽了。\n\nCSS提供了`box-sizing`属性来改变这个行为：\n\n- `content-box` - 默认值，width = 内容宽度（传统盒子模型）\n- `border-box` - width = 内容 + padding + border（怪异盒子模型/IE盒子模型）\n\n强烈推荐把所有元素都设为`box-sizing: border-box;`！这样你设置的width就是盒子的实际宽度，padding和border都包含在里面，算大小超级方便。这是现在的标准做法。"
+          },
+          {
+            "title": "9.11 box-sizing代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 全局设置border-box（强烈推荐！） */\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\n/* 现在你设置width: 200px，实际宽度就是200px，padding和border都在里面 */\n.box {\n  width: 200px;\n  padding: 20px;\n  border: 2px solid #6366f1;\n  /* 总宽度仍然是200px，内容区自动缩小 */\n}"
+          },
+          {
+            "title": "9.12 轮廓 outline",
+            "content": "`outline`和border很像，也是元素周围的一条线，但它有几个不同：\n\n- outline不占空间，不会影响布局（画在盒子外面）\n- outline不能单独设置某一边，四边都一样\n- outline通常是矩形，不能设置圆角（不过现在有些浏览器支持了）\n\noutline最常出现在input获得焦点的时候，浏览器默认会加一个outline。有时候我们会把它去掉，或者改成自己喜欢的样式。"
+          },
+          {
+            "title": "9.13 盒子阴影 box-shadow",
+            "content": "`box-shadow`给盒子加阴影，是一个超好用的属性，可以让元素看起来有立体感。\n\n语法：`box-shadow: h-shadow v-shadow blur spread color inset;`\n\n- `h-shadow` - 水平阴影位置，正右负左\n- `v-shadow` - 垂直阴影位置，正下负上\n- `blur` - 模糊距离，越大越模糊\n- `spread` - 阴影扩展，正值扩大，负值缩小（可选）\n- `color` - 阴影颜色（可选，但推荐加上）\n- `inset` - 内阴影（可选，默认是外阴影）\n\n阴影可以写多个，用逗号分隔。"
+          },
+          {
+            "title": "9.14 box-shadow代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 简单的阴影 */\n.box1 {\n  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);\n}\n\n/* 带扩散的阴影 */\n.box2 {\n  box-shadow: 0 0 20px 5px rgba(99, 102, 241, 0.3);\n}\n\n/* 内阴影 */\n.box3 {\n  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);\n}\n\n/* 多层阴影（更真实） */\n.box4 {\n  box-shadow: \n    0 4px 6px rgba(0, 0, 0, 0.05),\n    0 10px 20px rgba(0, 0, 0, 0.1);\n}\n\n/* 浮动效果（hover时上移+阴影） */\n.card {\n  transition: all 0.3s;\n}\n.card:hover {\n  transform: translateY(-4px);\n  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.2);\n}"
+          },
+          {
+            "title": "9.15 背景 background",
+            "content": "背景相关的属性也很多，我们简单列一下：\n\n- `background-color` - 背景颜色\n- `background-image` - 背景图片（url()）\n- `background-repeat` - 背景是否重复（repeat/no-repeat/repeat-x/repeat-y）\n- `background-position` - 背景位置（center/top/left/百分比/像素）\n- `background-size` - 背景大小（cover/contain/像素/百分比）\n- `background-attachment` - 背景是否随页面滚动（scroll/fixed）\n- `background` - 简写属性\n\n背景颜色和背景图片可以同时存在，图片在颜色上面。\n\n`background-size: cover` 很常用，意思是背景图片完全覆盖元素，可能会裁剪一部分，但不会变形。"
+          },
+          {
+            "title": "9.16 background代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 背景颜色 */\n.box1 {\n  background-color: #f1f5f9;\n}\n\n/* 背景图片 */\n.box2 {\n  background-image: url('bg.jpg');\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: cover;\n}\n\n/* 简写 */\n.box3 {\n  background: #6366f1 url('bg.jpg') no-repeat center / cover;\n}\n\n/* 渐变背景 */\n.box4 {\n  background: linear-gradient(135deg, #6366f1, #22d3ee);\n}\n\n/* 多重背景 */\n.box5 {\n  background-image: url('top.png'), linear-gradient(#fff, #eee);\n  background-position: top center, center;\n  background-repeat: no-repeat, repeat;\n}"
+          },
+          {
+            "title": "9.17 动手练习",
+            "type": "exercise",
+            "content": "做一个卡片组件：\n1. 一个矩形卡片，有白色背景、圆角、阴影\n2. 卡片里有一张图片（可以用背景图或img）\n3. 图片下面有标题、描述文字\n4. 底部有一个按钮\n5. 鼠标悬停时卡片上移一点，阴影变大\n6. 用box-sizing: border-box\n\n可以参考你平时见过的卡片样式，做得越漂亮越好！"
+          }
+        ],
+        "summary": "这节课我们学习了盒子模型的各个部分：内容区、内边距padding、边框border、外边距margin，还有box-sizing、box-shadow、背景等相关属性。盒子模型是CSS布局的基础，一定要彻底理解。下节课我们学习元素的显示模式和浮动！",
+        "quiz": {
+          "question": "以下哪个CSS属性可以让块级元素水平居中？",
+          "options": [
+            "text-align: center",
+            "margin: 0 auto",
+            "padding: auto",
+            "position: center"
+          ],
+          "answer": 1,
+          "explanation": "给块级元素设置margin: 0 auto（左右margin为auto）可以让它水平居中。text-align: center是让内部的行内元素居中，不是元素本身居中。"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "title": "CSS布局：display、浮动和定位",
+      "duration": "70分钟",
+      "content": {
+        "introduction": "布局是CSS的重头戏。这节课我们学习元素的显示模式、浮动、定位这些传统的布局方式。掌握了这些，你就能排出各种花样的页面了。",
+        "sections": [
+          {
+            "title": "10.1 display显示模式",
+            "content": "HTML元素按显示模式可以分为几大类：\n\n1. **块级元素（block）** - 独占一行，可以设置宽高。比如div、p、h1~h6、ul、li、section等\n2. **行内元素（inline）** - 不独占一行，和其他行内元素排在一行，不能设置宽高，大小由内容决定。比如span、a、strong、em等\n3. **行内块元素（inline-block）** - 不独占一行（可以排在一行），但可以设置宽高。比如img、input、button等\n\n用`display`属性可以改变元素的显示模式：\n- `display: block` - 变成块级\n- `display: inline` - 变成行内\n- `display: inline-block` - 变成行内块\n- `display: none` - 隐藏元素，不占位置"
+          },
+          {
+            "title": "10.2 display代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 把a标签变成块级，可以设置宽高 */\n.nav a {\n  display: block;\n  width: 100px;\n  height: 40px;\n  line-height: 40px;\n  text-align: center;\n}\n\n/* 把li变成行内块，做横向菜单 */\n.nav li {\n  display: inline-block;\n  margin: 0 10px;\n}\n\n/* 隐藏元素（不占位置） */\n.hidden {\n  display: none;\n}\n\n/* 注意和visibility:hidden的区别： */\n/* display:none - 隐藏，完全不占位置 */\n/* visibility:hidden - 隐藏，但位置还在 */"
+          },
+          {
+            "title": "10.3 浮动float",
+            "content": "`float`（浮动）最初是用来实现文字环绕图片效果的，后来被广泛用于布局。现在有了flex和grid，浮动用得少了，但还是要了解一下。\n\nfloat的取值：\n- `left` - 左浮动\n- `right` - 右浮动\n- `none` - 不浮动（默认）\n\n浮动的特点：\n1. 浮动元素会脱离标准流（不占原来的位置）\n2. 浮动元素会贴在父元素的左边或右边\n3. 浮动元素遇到父元素边界或其他浮动元素会停下来\n4. 浮动元素有\"行内块\"的特性（可以设置宽高，不独占一行）"
+          },
+          {
+            "title": "10.4 浮动代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 文字环绕图片 */\n.article img {\n  float: left;\n  margin: 0 20px 10px 0;\n}\n\n/* 左浮动做两列布局 */\n.left {\n  float: left;\n  width: 30%;\n  background: #e0e7ff;\n}\n\n.right {\n  float: right;\n  width: 70%;\n  background: #f1f5f9;\n}\n\n/* 导航栏横向排列 */\n.nav li {\n  float: left;\n  list-style: none;\n  padding: 0 15px;\n}"
+          },
+          {
+            "title": "10.5 清除浮动",
+            "content": "浮动有一个著名的问题：高度塌陷。因为浮动元素脱离了标准流，父元素如果没有设置高度，而且里面的元素都是浮动的，那父元素的高度就会变成0（塌陷了）。\n\n这会影响后面的布局，所以我们需要清除浮动，让父元素能包住浮动的子元素。\n\n清除浮动的方法有很多：\n1. 给父元素加`overflow: hidden`（触发BFC）\n2. 额外标签法：在最后加一个空div，设置`clear: both`\n3. 伪元素法（最推荐）：给父元素加一个::after伪元素来清除浮动\n\n`clear`属性的意思是：不允许左边/右边/两边有浮动元素。"
+          },
+          {
+            "title": "10.6 清除浮动代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 方法1：overflow:hidden（简单但不万能） */\n.parent {\n  overflow: hidden;\n}\n\n/* 方法2：伪元素法（最推荐，通用清除浮动类） */\n.clearfix::after {\n  content: '';\n  display: block;\n  clear: both;\n}\n\n/* 用法：给父元素加上clearfix类 */\n/* <div class=\"parent clearfix\"> ...浮动子元素... </div> */\n\n/* 方法3：双伪元素（更彻底） */\n.clearfix::before,\n.clearfix::after {\n  content: '';\n  display: table;\n}\n.clearfix::after {\n  clear: both;\n}"
+          },
+          {
+            "title": "10.7 定位position",
+            "content": "`position`（定位）可以让你把元素放在你想要的任何位置，非常强大。\n\nposition的取值：\n- `static` - 静态定位，默认值，就是正常的文档流\n- `relative` - 相对定位\n- `absolute` - 绝对定位\n- `fixed` - 固定定位\n- `sticky` - 粘性定位\n\n设置了relative/absolute/fixed/sticky之后，就可以用`top`、`right`、`bottom`、`left`四个属性来调整位置了。\n\n还有个`z-index`属性，用来控制元素的层叠顺序（谁在上谁在下），值越大越靠上。"
+          },
+          {
+            "title": "10.8 相对定位 relative",
+            "content": "相对定位：相对于元素自己原来的位置进行偏移。\n\n特点：\n1. 元素还在标准流里，原来的位置还占着（没有脱离）\n2. 相对于自己原来的位置移动\n3. 移动之后可能会盖住别的元素\n\n相对定位一般不单独用，通常是作为绝对定位的父元素（\"子绝父相\"）。"
+          },
+          {
+            "title": "10.9 绝对定位 absolute",
+            "content": "绝对定位：相对于最近的已定位（非static）祖先元素进行偏移。如果没有已定位的祖先，就相对于浏览器窗口（初始包含块）。\n\n特点：\n1. 完全脱离标准流，不占位置\n2. 相对于最近的有定位的祖先元素移动（没有就相对于初始包含块）\n3. 有行内块特性（可以设宽高，不独占一行）\n\n这是最常用的定位方式，通常配合相对定位的父元素一起使用，叫\"子绝父相\"——子元素绝对定位，父元素相对定位。这样父元素还在文档流里，子元素相对于父元素定位。"
+          },
+          {
+            "title": "10.10 定位代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 子绝父相经典用法：图片上的标签 */\n.card {\n  position: relative; /* 父元素相对定位 */\n}\n\n.badge {\n  position: absolute; /* 子元素绝对定位 */\n  top: 10px;\n  right: 10px;\n  background: #ef4444;\n  color: white;\n  padding: 2px 8px;\n  border-radius: 4px;\n  font-size: 12px;\n}\n\n/* 左上角的返回按钮 */\n.back-btn {\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  width: 40px;\n  height: 40px;\n  background: white;\n  border-radius: 50%;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.15);\n}\n\n/* 居中定位技巧：top50% left50% + translate */\n.center-box {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}"
+          },
+          {
+            "title": "10.11 固定定位 fixed",
+            "content": "固定定位：相对于浏览器窗口（视口）进行定位。\n\n特点：\n1. 完全脱离标准流，不占位置\n2. 相对于浏览器窗口定位，不随页面滚动\n3. 有行内块特性\n\n常用于固定在页面某个位置的元素，比如顶部导航栏、侧边悬浮按钮、回到顶部按钮、弹窗等。"
+          },
+          {
+            "title": "10.12 固定定位代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 固定顶部导航栏 */\n.navbar {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 60px;\n  background: white;\n  box-shadow: 0 2px 10px rgba(0,0,0,0.1);\n  z-index: 1000;\n}\n\n/* 回到顶部按钮 */\n.back-to-top {\n  position: fixed;\n  right: 30px;\n  bottom: 50px;\n  width: 50px;\n  height: 50px;\n  background: #6366f1;\n  color: white;\n  border-radius: 50%;\n  cursor: pointer;\n  z-index: 999;\n}\n\n/* 固定遮罩层 */\n.modal-mask {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(0,0,0,0.5);\n  z-index: 2000;\n}"
+          },
+          {
+            "title": "10.13 粘性定位 sticky",
+            "content": "粘性定位可以说是相对定位和固定定位的结合体：一开始是相对定位（正常滚动），当滚动到某个位置时，就变成固定定位，粘在那里不动了。\n\n特点：\n- 不脱离标准流，占位置\n- 当滚动到top/right/bottom/left设置的位置时，就\"粘\"住不动了\n- 父元素必须有滚动条，而且sticky元素只能在父元素范围内粘\n\n常用于吸附导航、侧边目录、表头固定等。"
+          },
+          {
+            "title": "10.14 sticky代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 滚动到顶部时导航栏粘住 */\n.subnav {\n  position: sticky;\n  top: 60px; /* 距离顶部60px时开始粘住 */\n  background: white;\n  padding: 10px 0;\n  z-index: 100;\n}\n\n/* 表格表头固定 */\ntable th {\n  position: sticky;\n  top: 0;\n  background: #6366f1;\n  color: white;\n}\n\n/* 侧边栏，滚动到一定位置就固定 */\n.sidebar {\n  position: sticky;\n  top: 80px;\n  align-self: flex-start; /* 配合flex用 */\n}"
+          },
+          {
+            "title": "10.15 z-index层叠等级",
+            "content": "元素有了定位之后，可能会叠在一起，这时候谁在上谁在下呢？用`z-index`属性来控制。\n\nz-index的值是整数（正、负、0都可以），值越大，元素越靠上（越先被看到）。\n\n注意：\n- z-index只对有定位的元素（非static）有效\n- 父元素的z-index会影响子元素。如果父元素z-index低，子元素z-index再高也不会超过父元素上面的元素\n- 同一层级的，后面的元素默认在上面（后来居上）\n\n做弹窗的时候z-index要设大一点，比如1000、2000，确保在最上面。"
+          },
+          {
+            "title": "10.16 overflow溢出",
+            "content": "`overflow`属性控制当内容超出盒子时怎么办：\n\n- `visible` - 默认，超出的部分还能看见（溢出显示）\n- `hidden` - 超出的部分裁剪掉，看不见了\n- `scroll` - 总是显示滚动条（不管够不够）\n- `auto` - 超出时显示滚动条，不超出就不显示\n\n也可以分开设置overflow-x和overflow-y。\n\n这个属性很常用，比如：\n- 图片外面套个盒子overflow:hidden，hover时放大图片，就有放大效果\n- 文字太多时，用overflow:auto让它可以滚动\n- 清除浮动也可以用overflow:hidden"
+          },
+          {
+            "title": "10.17 overflow代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 图片悬停放大效果 */\n.img-box {\n  width: 300px;\n  height: 200px;\n  overflow: hidden;\n  border-radius: 10px;\n}\n\n.img-box img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n  transition: transform 0.3s;\n}\n\n.img-box:hover img {\n  transform: scale(1.1);\n}\n\n/* 滚动容器 */\n.scroll-box {\n  height: 300px;\n  overflow-y: auto;\n  border: 1px solid #e2e8f0;\n  padding: 20px;\n  border-radius: 8px;\n}\n\n/* 圆形头像（裁剪多余部分） */\n.avatar {\n  width: 100px;\n  height: 100px;\n  border-radius: 50%;\n  overflow: hidden;\n}\n.avatar img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}"
+          },
+          {
+            "title": "10.18 动手练习",
+            "type": "exercise",
+            "content": "做一个完整的页面布局：\n1. 顶部导航栏：固定在顶部，有logo和几个菜单链接\n2. 主体部分：左边侧边栏（30%）+ 右边内容区（70%），用浮动或定位实现\n3. 内容区里有文章标题、图片、段落文字\n4. 图片左上角有个\"热门\"标签（用子绝父相）\n5. 右下角有一个\"回到顶部\"按钮（固定定位）\n6. 底部有页脚\n\n注意清除浮动和高度塌陷问题哦！"
+          }
+        ],
+        "summary": "这节课我们学习了CSS布局的传统方式：display显示模式、float浮动、position定位（相对、绝对、固定、粘性）、z-index、overflow等。这些是CSS布局的基础，虽然现在有flex和grid了，但这些知识还是很重要的，很多老项目还在用。下节课我们学习Flex弹性布局，这是现在最主流的布局方式！",
+        "quiz": {
+          "question": "以下哪种定位方式会脱离标准文档流？",
+          "options": [
+            "static",
+            "relative",
+            "absolute",
+            "sticky"
+          ],
+          "answer": 2,
+          "explanation": "absolute（绝对定位）和fixed（固定定位）会完全脱离标准流，不占位置。relative和sticky还在文档流里。"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "title": "Flex弹性布局",
+      "duration": "70分钟",
+      "content": {
+        "introduction": "Flexbox（弹性盒子）是CSS3新增的布局方式，非常强大和灵活，可以轻松实现各种复杂的布局。现在几乎所有网站都在用flex，一定要好好学！",
+        "sections": [
+          {
+            "title": "11.1 什么是Flex？",
+            "content": "Flex是Flexible Box的缩写，意思是\"弹性盒子\"。它是一种一维的布局方式，就是在一个方向上（水平或垂直）排列元素。\n\n使用flex很简单：给父元素设置`display: flex`，它的直接子元素就变成了flex项，可以很方便地排列对齐。\n\nFlex有两个重要的概念：\n- **容器（flex container）** - 设置了display:flex的元素，也就是父元素\n- **项目（flex item）** - 容器的直接子元素\n\n容器有容器的属性，项目有项目的属性。我们分开来讲。"
+          },
+          {
+            "title": "11.2 基本用法",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- HTML -->\n<div class=\"container\">\n  <div class=\"item\">1</div>\n  <div class=\"item\">2</div>\n  <div class=\"item\">3</div>\n</div>"
+          },
+          {
+            "title": "11.3 基本CSS",
+            "type": "code",
+            "language": "css",
+            "code": "/* CSS */\n.container {\n  display: flex; /* 开启flex */\n  width: 500px;\n  height: 200px;\n  background: #f1f5f9;\n  border-radius: 10px;\n}\n\n.item {\n  width: 100px;\n  height: 100px;\n  background: #6366f1;\n  color: white;\n  border-radius: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 24px;\n  margin: 10px;\n}"
+          },
+          {
+            "title": "11.4 容器属性：flex-direction",
+            "content": "`flex-direction`设置主轴的方向，也就是项目的排列方向。\n\n- `row` - 水平方向，从左到右（默认值）\n- `row-reverse` - 水平反向，从右到左\n- `column` - 垂直方向，从上到下\n- `column-reverse` - 垂直反向，从下到上\n\n主轴和交叉轴：\n- 主轴（main axis）：flex-direction设定的方向就是主轴\n- 交叉轴（cross axis）：和主轴垂直的方向\n\n项目是沿着主轴排列的。"
+          },
+          {
+            "title": "11.5 flex-direction示例图",
+            "content": "想象一下：\n- 如果flex-direction是row（水平），那主轴就是水平的，交叉轴是垂直的\n  → 项目从左到右一排排列\n- 如果flex-direction是column（垂直），那主轴就是垂直的，交叉轴是水平的\n  → 项目从上到下一列排列\n\n后面的justify-content和align-items，分别是主轴对齐和交叉轴对齐，要先搞清楚哪个是主轴哪个是交叉轴哦～"
+          },
+          {
+            "title": "11.6 容器属性：justify-content",
+            "content": "`justify-content`设置项目在主轴上的对齐方式。\n\n- `flex-start` - 起点对齐（默认）\n- `flex-end` - 终点对齐\n- `center` - 居中\n- `space-between` - 两端对齐，项目之间的间隔相等\n- `space-around` - 每个项目两边的间隔相等（项目之间的间隔是两边间隔的两倍）\n- `space-evenly` - 所有间隔都相等（包括两端的间隙）\n\n这个属性超常用，特别是居中、两端对齐，以前要实现很麻烦，现在一句话搞定！"
+          },
+          {
+            "title": "11.7 justify-content代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 居中 */\n.center {\n  display: flex;\n  justify-content: center;\n}\n\n/* 两端对齐（导航栏常用） */\n.navbar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n\n/* 均匀分布 */\n.tags {\n  display: flex;\n  justify-content: space-around;\n}"
+          },
+          {
+            "title": "11.8 容器属性：align-items",
+            "content": "`align-items`设置项目在交叉轴上的对齐方式。\n\n- `flex-start` - 起点对齐\n- `flex-end` - 终点对齐\n- `center` - 居中\n- `baseline` - 基线对齐（文字基线）\n- `stretch` - 拉伸，占满整个交叉轴（默认值，如果项目没设置高度/宽度的话）\n\n水平居中+垂直居中，用flex一句话就能搞定：`display: flex; justify-content: center; align-items: center;`，这是flex最经典的用法！"
+          },
+          {
+            "title": "11.9 align-items代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 完美居中：水平垂直都居中 */\n.center-box {\n  display: flex;\n  justify-content: center;  /* 主轴居中 */\n  align-items: center;      /* 交叉轴居中 */\n  width: 300px;\n  height: 200px;\n  background: #f1f5f9;\n}\n\n/* 按钮里的图标和文字垂直居中 */\n.btn {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  padding: 10px 20px;\n}\n\n/* 头像和名字垂直居中 */\n.user-info {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}"
+          },
+          {
+            "title": "11.10 容器属性：flex-wrap",
+            "content": "默认情况下，flex项目会尽量排在一行，就算放不下，也会缩小自己挤进去。\n\n`flex-wrap`设置项目排不下的时候要不要换行：\n\n- `nowrap` - 不换行（默认）\n- `wrap` - 换行，从上到下\n- `wrap-reverse` - 换行，从下到上\n\n如果设置了wrap，换行之后，多行之间的对齐方式可以用`align-content`来设置（和justify-content类似，但是作用在多行的交叉轴上，只有一行时不生效）。"
+          },
+          {
+            "title": "11.11 flex-wrap代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 卡片网格：自动换行 */\n.cards {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 20px; /* 间距 */\n}\n\n.card {\n  width: calc((100% - 40px) / 3); /* 一行3个，减去两个间隙 */\n  background: white;\n  border-radius: 10px;\n  padding: 20px;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n}"
+          },
+          {
+            "title": "11.12 容器属性：align-content",
+            "content": "`align-content`设置多行项目在交叉轴上的对齐方式，只有一行的时候不生效。\n\n取值和justify-content差不多：\n- `flex-start` - 起点\n- `flex-end` - 终点\n- `center` - 居中\n- `space-between` - 两端对齐\n- `space-around` - 每行周围间隔相等\n- `stretch` - 拉伸（默认）\n\n注意和align-items的区别：align-items是单行内的对齐，align-content是多行之间的对齐。"
+          },
+          {
+            "title": "11.13 flex-flow简写",
+            "content": "`flex-flow`是flex-direction和flex-wrap的简写：\n\n`flex-flow: direction wrap;`\n\n比如`flex-flow: row wrap;`就是水平排列+换行。这个用得不多，分开写更清楚。"
+          },
+          {
+            "title": "11.14 项目属性：order",
+            "content": "接下来看项目（子元素）的属性。\n\n`order`设置项目的排列顺序。数值越小越靠前，可以是负数。默认值是0。\n\n用这个属性，你可以在不改变HTML结构的情况下，改变元素的显示顺序。这在响应式设计中很有用，比如在手机上调整顺序。"
+          },
+          {
+            "title": "11.15 order代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 默认order都是0，按HTML顺序排 */\n.item1 { order: 3; } /* 排第三 */\n.item2 { order: 1; } /* 排第一 */\n.item3 { order: 2; } /* 排第二 */\n\n/* 手机上把侧边栏放到后面 */\n@media (max-width: 768px) {\n  .sidebar {\n    order: 2;\n  }\n  .main-content {\n    order: 1;\n  }\n}"
+          },
+          {
+            "title": "11.16 项目属性：flex-grow",
+            "content": "`flex-grow`设置项目的放大比例，当主轴有剩余空间时，项目按比例放大占满空间。\n\n- 默认值是0：不放大，剩余空间空着\n- 如果所有项目的flex-grow都是1，它们平均分配剩余空间\n- 如果一个是2，其他是1，那它分到的空间是其他的两倍\n\n这个属性很有用，比如经典的圣杯布局（两边固定，中间自适应）就可以用这个实现。"
+          },
+          {
+            "title": "11.17 flex-grow代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 中间部分自适应 */\n.layout {\n  display: flex;\n}\n.left { width: 200px; }  /* 左边固定200px */\n.right { width: 200px; } /* 右边固定200px */\n.center {\n  flex-grow: 1; /* 中间占满剩下的所有空间 */\n}\n\n/* 输入框+按钮：按钮固定宽度，输入框自适应 */\n.search-box {\n  display: flex;\n  gap: 10px;\n}\n.search-box input {\n  flex-grow: 1; /* 输入框占满剩余空间 */\n  padding: 10px;\n}\n.search-box button {\n  width: 80px; /* 按钮固定宽度 */\n}"
+          },
+          {
+            "title": "11.18 项目属性：flex-shrink",
+            "content": "`flex-shrink`设置项目的缩小比例，当空间不够时，项目按比例缩小。\n\n- 默认值是1：大家一起缩小\n- 如果设置为0：这个项目不缩小，保持原始大小\n- 数值越大，缩得越多\n\n这个用得比flex-grow少一些。"
+          },
+          {
+            "title": "11.19 项目属性：flex-basis",
+            "content": "`flex-basis`设置项目在主轴上的初始大小（在分配剩余空间之前）。默认是auto，就是项目本来的大小（width或height）。\n\n如果设置了flex-basis，那它会覆盖width/height（在主轴方向上）。\n\n这个单独用得不多，一般和flex-grow、flex-shrink一起用flex简写。"
+          },
+          {
+            "title": "11.20 项目属性：flex简写",
+            "content": "`flex`是flex-grow、flex-shrink、flex-basis的简写。\n\n语法：`flex: grow shrink basis;`\n\n常用简写：\n- `flex: 1` → 等于 `flex: 1 1 0%`，就是可大可小，占满剩余空间（最常用！）\n- `flex: auto` → 等于 `flex: 1 1 auto`\n- `flex: none` → 等于 `flex: 0 0 auto`，不放大也不缩小，就是原始大小\n\n日常写代码推荐用简写`flex: 1`，简单又方便。"
+          },
+          {
+            "title": "11.21 项目属性：align-self",
+            "content": "`align-self`和容器的align-items类似，但它是给单个项目设置的，可以单独控制某一个项目在交叉轴上的对齐方式，覆盖容器的align-items。\n\n取值和align-items一样：\n- `auto` - 默认，继承父元素的align-items\n- `flex-start` / `flex-end` / `center` / `baseline` / `stretch`\n\n这样就不用所有项目都统一了，可以单独给某个项目设置不一样的对齐方式。"
+          },
+          {
+            "title": "11.22 align-self代码示例",
+            "type": "code",
+            "language": "css",
+            "code": ".container {\n  display: flex;\n  align-items: center; /* 全部居中 */\n  height: 200px;\n}\n\n.item1 { align-self: flex-start; } /* 第一个靠上 */\n.item3 { align-self: flex-end; }   /* 第三个靠下 */\n\n/* 结果：第一个在上，第二个在中，第三个在下 */"
+          },
+          {
+            "title": "11.23 gap间距",
+            "content": "`gap`（以前叫grid-gap）设置flex项目之间的间距。有row-gap（行间距）和column-gap（列间距），gap是简写。\n\n这个属性本来是grid的，但现在flex也可以用了！非常方便，以前要加间距只能用margin，还要考虑边距折叠、最后一行的问题，现在一句gap就搞定了。\n\n注意：gap是设置在容器上的，不是项目上。"
+          },
+          {
+            "title": "11.24 gap代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 统一的间距 */\n.box {\n  display: flex;\n  gap: 20px; /* 水平和垂直都是20px */\n}\n\n/* 分开设置 */\n.box {\n  display: flex;\n  flex-wrap: wrap;\n  row-gap: 30px;    /* 行间距30px */\n  column-gap: 20px; /* 列间距20px */\n}\n\n/* 简写 */\n.box {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 30px 20px; /* 行 列 */\n}"
+          },
+          {
+            "title": "11.25 Flex布局经典案例",
+            "content": "Flex能做的事情太多了，举几个经典案例：\n\n1. **水平垂直居中** - justify-content + align-items\n2. **导航栏两端对齐** - justify-content: space-between\n3. **自适应布局** - flex: 1\n4. **等高布局** - align-items默认是stretch，自动等高\n5. **卡片网格** - flex-wrap + gap\n6. **圣杯布局** - 左右固定，中间自适应\n7. **底部贴底** - flex-direction: column + flex: 1\n\n可以说，flex出现之后，CSS布局变得前所未有的简单！"
+          },
+          {
+            "title": "11.26 圣杯布局代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 圣杯布局：头、中间三列、脚 */\n.layout {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh; /* 至少一屏高 */\n}\n\n.header { height: 60px; background: #6366f1; color: white; }\n\n.main {\n  display: flex;\n  flex: 1; /* 中间占满剩余空间，底部就被推到最下面了 */\n}\n\n.sidebar-left { width: 200px; background: #f1f5f9; }\n.content { flex: 1; background: white; } /* 中间自适应 */\n.sidebar-right { width: 200px; background: #f1f5f9; }\n\n.footer { height: 50px; background: #1e293b; color: #94a3b8; text-align: center; line-height: 50px; }"
+          },
+          {
+            "title": "11.27 动手练习",
+            "type": "exercise",
+            "content": "用Flex布局重做之前的页面：\n1. 用flex实现顶部导航（logo在左，菜单在右，垂直居中）\n2. 主体用flex：左侧边栏 + 中间内容 + 右边栏（左右固定宽度，中间自适应）\n3. 内容区里用flex做一个卡片网格（自动换行，有间距）\n4. 每张卡片里的内容用flex排列\n5. 底部footer用flex布局让内容居中\n\n感受一下用flex布局比用浮动方便多少！"
+          }
+        ],
+        "summary": "这节课我们学习了Flex弹性布局，包括容器的6个属性（flex-direction、justify-content、align-items、flex-wrap、align-content、flex-flow）和项目的6个属性（order、flex-grow、flex-shrink、flex-basis、flex、align-self），还有gap间距。Flex是现在做布局的首选，一定要熟练掌握。下节课我们学习Grid网格布局，它是二维的，更强大！",
+        "quiz": {
+          "question": "用Flex实现水平垂直居中，以下哪个是正确的？",
+          "options": [
+            "display: flex; justify-content: center;",
+            "display: flex; align-items: center;",
+            "display: flex; justify-content: center; align-items: center;",
+            "display: flex; text-align: center; vertical-align: middle;"
+          ],
+          "answer": 2,
+          "explanation": "justify-content: center是主轴水平居中，align-items: center是交叉轴垂直居中，两个一起用才能完美居中。"
+        }
+      }
+    },
+    {
+      "id": 12,
+      "title": "Grid网格布局和响应式设计",
+      "duration": "80分钟",
+      "content": {
+        "introduction": "Grid（网格布局）是CSS中最强大的布局方式，它是二维的——同时控制行和列。Flex是一维的（一行或一列），Grid是二维的（多行多列），非常适合做整体页面布局和网格排列。这节课我们来学习Grid和响应式设计。",
+        "sections": [
+          {
+            "title": "12.1 什么是Grid？",
+            "content": "Grid布局是CSS Grid Layout的简称，它是一个二维布局系统，可以同时处理行和列。\n\n和Flex类似，Grid也有容器和项目：\n- **Grid容器** - 设置了`display: grid`的元素\n- **Grid项目** - 容器的直接子元素\n\nGrid的概念比Flex多一些：\n- **行（row）** - 水平的线\n- **列（column）** - 垂直的线\n- **单元格（cell）** - 行和列交叉形成的格子，是最小单位\n- **网格线（grid line）** - 分隔单元格的线，有行线和列线\n- **轨道（track）** - 两条网格线之间的空间，行轨道或列轨道\n- **区域（area）** - 由多个单元格组成的矩形区域\n\n听起来很多，但实际用起来很简单。"
+          },
+          {
+            "title": "12.2 基本用法示例",
+            "type": "code",
+            "language": "css",
+            "code": ".container {\n  display: grid;\n  /* 3列，每列100px */\n  grid-template-columns: 100px 100px 100px;\n  /* 2行，每行80px */\n  grid-template-rows: 80px 80px;\n  /* 间距 */\n  gap: 10px;\n}\n\n.item {\n  background: #6366f1;\n  color: white;\n  border-radius: 8px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 20px;\n}"
+          },
+          {
+            "title": "12.3 定义列和行",
+            "content": "用`grid-template-columns`定义列的宽度和数量，`grid-template-rows`定义行的高度和数量。\n\n写几个值就有几列/几行。值的单位可以是：\n- px - 固定像素\n- % - 百分比（相对于容器）\n- fr - 分数单位（fraction的缩写，Grid专用，非常好用！）\n- auto - 自动（由内容决定）\n- minmax(min, max) - 最小最大值\n- repeat(n, value) - 重复n个，简化写法\n\n`fr`是Grid的精华，它表示剩余空间的份数。比如`grid-template-columns: 1fr 2fr 1fr`就是分成4份，三列分别占1、2、4份。"
+          },
+          {
+            "title": "12.4 行列定义代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 3列，宽度是1:2:1 */\ngrid-template-columns: 1fr 2fr 1fr;\n\n/* 4列，每列相等 */\ngrid-template-columns: repeat(4, 1fr);\n\n/* 4列，每列最小200px，最大自适应 */\ngrid-template-columns: repeat(4, minmax(200px, 1fr));\n\n/* 第一列200px，第二列自适应 */\ngrid-template-columns: 200px 1fr;\n\n/* 3行，第一行60px，第三行50px，中间自适应 */\ngrid-template-rows: 60px 1fr 50px;\n\n/* 混合使用 */\ngrid-template-columns: 100px 1fr 2fr auto;"
+          },
+          {
+            "title": "12.5 gap间距",
+            "content": "Grid的gap和Flex的gap一样，设置行和列之间的间距。\n\n- `row-gap` - 行间距\n- `column-gap` - 列间距\n- `gap` - 简写\n\n比margin方便太多了，不用考虑边距折叠、最后一行多余边距的问题。"
+          },
+          {
+            "title": "12.6 项目位置：grid-column和grid-row",
+            "content": "默认情况下，Grid项目按顺序一个个放进格子里。但你也可以手动指定某个项目从哪一列/行到哪一列/行。\n\n用`grid-column`和`grid-row`：\n\n- `grid-column-start` - 起始列线\n- `grid-column-end` - 结束列线\n- `grid-column` - 简写：start / end\n- `grid-row-start` - 起始行线\n- `grid-row-end` - 结束行线\n- `grid-row` - 简写\n\n还可以用`span n`表示跨越n个格。比如`grid-column: span 2`就是跨2列。"
+          },
+          {
+            "title": "12.7 项目位置代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 第一个项目：占第一行的前两列 */\n.item1 {\n  grid-column: 1 / 3; /* 从第1条列线到第3条列线 = 跨2列 */\n  /* 或者 */\n  grid-column: 1 / span 2; /* 从第1条开始，跨2列 */\n}\n\n/* 第二个项目：占前两行的第二列 */\n.item2 {\n  grid-row: 1 / 3;  /* 跨2行 */\n  grid-column: 3;  /* 第3列 */\n}\n\n/* 从第2列到最后一列 */\n.item3 {\n  grid-column: 2 / -1; /* -1表示最后一条线 */\n}\n\n/* 占满整行 */\n.full-width {\n  grid-column: 1 / -1;\n}"
+          },
+          {
+            "title": "12.8 网格区域 grid-template-areas",
+            "content": "Grid还有一个超酷的功能：命名网格区域。你可以给每个区域起个名字，然后像画画一样把布局画出来！\n\n步骤：\n1. 容器里用`grid-template-areas`定义区域布局，用字符串表示每一行，同一行的区域用空格分开\n2. 项目里用`grid-area`指定自己属于哪个区域\n\n这样看代码就能直观地知道布局是什么样的，超级直观！\n\n注意：\n- 区域必须是矩形，不能有奇形怪状的\n- `.` 表示空的格子\n- 同名的区域必须连在一起"
+          },
+          {
+            "title": "12.9 grid-template-areas代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 圣杯布局用Grid写，超直观！ */\n.layout {\n  display: grid;\n  grid-template-columns: 200px 1fr 200px;\n  grid-template-rows: 60px 1fr 50px;\n  grid-template-areas:\n    \"header header header\"\n    \"sidebar-left main sidebar-right\"\n    \"footer footer footer\";\n  min-height: 100vh;\n  gap: 10px;\n}\n\n.header { grid-area: header; background: #6366f1; color: white; }\n.sidebar-left { grid-area: sidebar-left; background: #f1f5f9; }\n.main { grid-area: main; background: white; }\n.sidebar-right { grid-area: sidebar-right; background: #f1f5f9; }\n.footer { grid-area: footer; background: #1e293b; color: #94a3b8; }"
+          },
+          {
+            "title": "12.10 容器的对齐属性",
+            "content": "和Flex类似，Grid也有对齐属性，但因为是二维的，有两组：\n\n**内容对齐（整个网格在容器里的对齐）：**\n- `justify-content` - 水平方向（行轴）\n- `align-content` - 垂直方向（列轴）\n- `place-content` - 简写（align / justify）\n\n**项目对齐（项目在自己格子里的对齐）：**\n- `justify-items` - 水平方向\n- `align-items` - 垂直方向\n- `place-items` - 简写\n\n取值和Flex的差不多：start、end、center、stretch等。\n\n单个项目的对齐用`justify-self`和`align-self`、`place-self`。"
+          },
+          {
+            "title": "12.11 对齐代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 所有项目在格子里居中 */\n.container {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  justify-items: center; /* 水平居中 */\n  align-items: center;   /* 垂直居中 */\n}\n\n/* 整个网格在容器里居中（比如格子总宽度比容器小） */\n.container {\n  display: grid;\n  grid-template-columns: 200px 200px 200px;\n  justify-content: center;\n  align-content: center;\n  width: 800px;\n  height: 400px;\n}\n\n/* 单个项目单独设置 */\n.item3 {\n  justify-self: end;\n  align-self: start;\n}"
+          },
+          {
+            "title": "12.12 auto-fill和auto-fit",
+            "content": "Grid有两个超实用的关键字：`auto-fill`和`auto-fit`，配合`repeat`和`minmax`使用，可以实现自适应的网格布局——自动计算一行能放几个，不用写媒体查询！\n\n区别：\n- `auto-fill`：尽量多填列，即使是空的列也保留\n- `auto-fit`：尽量填满，空的列会折叠（展开已有项）\n\n当项目数量够多的时候，两者效果一样；项目少的时候能看出区别。日常用`auto-fit`更多。"
+          },
+          {
+            "title": "12.13 自适应网格代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 响应式卡片网格：自动计算列数 */\n.cards {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));\n  gap: 24px;\n}\n\n/* 解释：\n   repeat(auto-fit, ...) - 自动填充列，能放几列就放几列\n   minmax(280px, 1fr) - 每列最小280px，最大1fr（等分剩余空间）\n   \n   效果：屏幕宽的时候一行放好几个，屏幕窄的时候自动减少，\n   小屏幕甚至一列，完全自适应，不用写媒体查询！\n*/\n\n/* 图片墙 */\n.gallery {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n  gap: 12px;\n  grid-auto-rows: 200px; /* 自动创建的行高200px */\n}"
+          },
+          {
+            "title": "12.14 响应式设计入门",
+            "content": "响应式设计就是让网站在不同屏幕大小（手机、平板、电脑）上都有良好的显示效果。\n\n实现响应式的核心是**媒体查询（Media Queries）**——可以针对不同的屏幕宽度应用不同的CSS样式。\n\n媒体查询的基本语法：\n```css\n@media 媒体类型 and (条件) {\n  /* 满足条件时的CSS */\n}\n```\n\n常用媒体类型：\n- `screen` - 屏幕（最常用）\n- `print` - 打印\n\n常用条件（断点）：\n- `max-width: 768px` - 屏幕宽度小于等于768px时（平板以下）\n- `min-width: 1024px` - 屏幕宽度大于等于1024px时（电脑以上）\n\n一般采用移动优先还是桌面优先？推荐移动优先（从小到大），用min-width。"
+          },
+          {
+            "title": "12.15 媒体查询代码示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 基础样式（移动端，默认） */\n.container {\n  width: 100%;\n  padding: 0 16px;\n}\n\n/* 平板 >= 768px */\n@media (min-width: 768px) {\n  .container {\n    max-width: 720px;\n    margin: 0 auto;\n  }\n  \n  .cards {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n/* 小电脑 >= 1024px */\n@media (min-width: 1024px) {\n  .container {\n    max-width: 960px;\n  }\n  \n  .cards {\n    grid-template-columns: repeat(3, 1fr);\n  }\n  \n  .mobile-only {\n    display: none;\n  }\n}\n\n/* 大电脑 >= 1280px */\n@media (min-width: 1280px) {\n  .container {\n    max-width: 1200px;\n  }\n  \n  .cards {\n    grid-template-columns: repeat(4, 1fr);\n  }\n}"
+          },
+          {
+            "title": "12.16 响应式其他要点",
+            "content": "响应式设计还有一些重要的点：\n\n**1. 视口设置viewport**\nHTML里一定要加这个：\n`<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">`\n不然移动端会按桌面宽度来渲染，字会很小。\n\n**2. 相对单位**\n尽量用相对单位（rem、em、%、vw、vh、fr），少用固定的px。\n\n**3. 图片自适应**\nimg设置max-width: 100%，图片不会超出容器。\n\n**4. 移动端优先**\n先写移动端的样式，再用min-width逐步增加更大屏幕的样式。这样移动端性能更好，代码更简洁。\n\n**5. 断点选择**\n常用的断点：768px（平板）、1024px（笔记本）、1280px（台式机）、1536px（大屏）。不用太纠结，根据内容来设就行。"
+          },
+          {
+            "title": "12.17 移动端导航菜单示例",
+            "type": "code",
+            "language": "css",
+            "code": "/* 移动端：显示汉堡按钮，菜单隐藏 */\n.nav-toggle {\n  display: block;\n}\n.nav-links {\n  position: fixed;\n  top: 0;\n  right: -100%;\n  width: 75%;\n  height: 100vh;\n  background: white;\n  flex-direction: column;\n  padding: 80px 24px;\n  transition: right 0.3s;\n}\n.nav-links.active {\n  right: 0;\n}\n\n/* 电脑端：隐藏汉堡按钮，菜单正常显示 */\n@media (min-width: 1024px) {\n  .nav-toggle {\n    display: none;\n  }\n  .nav-links {\n    position: static;\n    width: auto;\n    height: auto;\n    flex-direction: row;\n    padding: 0;\n    background: transparent;\n  }\n}"
+          },
+          {
+            "title": "12.18 实战项目：个人主页",
+            "content": "恭喜你！学完了HTML和CSS的全部核心内容，你现在已经可以做出非常漂亮的网站了！\n\n接下来，用你学到的知识做一个完整的个人主页作为练手吧：\n\n**要求：**\n1. 顶部导航栏（固定，滚动有变化）\n2. Hero区（大标题、副标题、按钮）\n3. 关于我（文字介绍）\n4. 技能展示（进度条或卡片）\n5. 作品/项目展示（卡片网格）\n6. 联系我（表单或社交链接）\n7. 页脚\n8. 响应式设计（手机、平板、电脑都好看）\n9. 加上过渡动画，让交互更流畅\n\n**提示：**\n- 先规划好结构再写代码\n- 多用Flex和Grid布局\n- 配色统一，可以用渐变\n- 加一点阴影和圆角，马上就有质感\n- 别忘了hover效果\n\n把它部署到GitHub Pages上，你就有自己的个人网站了！"
+          },
+          {
+            "title": "12.19 学习资源推荐",
+            "content": "学完了基础，想继续提高的话，推荐这些资源：\n\n**网站：**\n- MDN Web Docs（https://developer.mozilla.org）- 最权威的前端文档\n- W3Schools - 入门教程，有很多例子\n- CSS-Tricks - 各种CSS技巧\n- Codepen - 别人写的创意代码，可以参考学习\n\n**练习：**\n- FreeCodeCamp - 免费的编程学习平台，有习题和项目\n- CSSBattle - CSS挑战，用CSS画图案，有趣又练手\n- LeetCode - 算法题（学编程都可以刷）\n\n**视频：**\n- B站搜索\"前端入门\"，有很多免费课程\n- 找项目实战的视频跟着做\n\n最重要的是多动手，多做项目，光看不练是学不会的！加油～"
+          }
+        ],
+        "summary": "恭喜你！学完了HTML/CSS课程的全部12节课！从最基础的HTML标签，到CSS各种样式、盒子模型、Flex布局、Grid布局，再到响应式设计，你已经掌握了网页开发的核心技能。接下来就去做项目实战吧，在实践中巩固和提高。祝你在编程的世界里越走越远！🎉",
+        "quiz": {
+          "question": "Grid布局中，以下哪个单位是专门表示剩余空间分数的？",
+          "options": [
+            "%",
+            "em",
+            "fr",
+            "rem"
+          ],
+          "answer": 2,
+          "explanation": "fr（fraction）是Grid布局专用的分数单位，表示剩余空间的份数，非常灵活好用。"
+        }
+      }
+    }
+  ]
+}
