@@ -774,8 +774,66 @@ const courseFileMap = {
   'ai-project': 'ai-project.json'
 };
 
-// ===== 从URL加载课程 =====
-async function loadFromURL() {
+// ===== 从localStorage或URL加载课程 =====
+function loadFromURL() {
+  // 优先从localStorage加载（更可靠）
+  try {
+    const saved = localStorage.getItem('playgroundData');
+    if (saved) {
+      const data = JSON.parse(saved);
+      renderCourseData(data);
+      return;
+    }
+  } catch(e) {}
+  
+  // 备用：从URL参数加载（需要fetch）
+  loadFromURLFetch();
+}
+
+function renderCourseData(data) {
+  let html = `<h3>${data.chapterTitle || '课程内容'}</h3>`;
+  
+  if (data.introduction) {
+    html += `<p>${data.introduction}</p>`;
+  }
+  
+  if (data.sectionTitle) {
+    html += `<p><strong>${data.sectionTitle}</strong></p>`;
+  }
+  
+  if (data.sectionContent) {
+    html += `<p>${data.sectionContent}</p>`;
+  }
+  
+  if (data.code) {
+    html += `
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">${data.language || 'code'}</span>
+          <button class="code-load-btn" id="loadCodeBtn">加载到编辑器</button>
+        </div>
+        <pre><code>${escapeHtml(data.code)}</code></pre>
+      </div>
+    `;
+  }
+  
+  document.getElementById('courseContent').innerHTML = html;
+  
+  if (data.code) {
+    const btn = document.getElementById('loadCodeBtn');
+    if (btn) {
+      btn.addEventListener('click', function() {
+        loadCodeToEditor(data.code, data.language);
+      });
+    }
+    
+    // 自动加载代码到编辑器
+    setTimeout(() => loadCodeToEditor(data.code, data.language), 300);
+  }
+}
+
+// 备用：从URL参数fetch加载
+async function loadFromURLFetch() {
   const params = new URLSearchParams(window.location.search);
   const courseId = params.get('course');
   const chapter = parseInt(params.get('chapter') || '1') - 1;
@@ -794,29 +852,15 @@ async function loadFromURL() {
     const ch = data.chapters[chapter];
     const content = ch.content;
     
-    let html = `
-      <h3>${ch.title}</h3>
-    `;
-    
-    if (content.introduction) {
-      html += `<p>${content.introduction}</p>`;
-    }
-    
-    // 找到第一个代码小节作为默认展示
     let codeSection = null;
     let codeSectionIndex = 0;
     
     if (content.sections && content.sections.length) {
       const sec = content.sections[sectionIdx] || content.sections[0];
-      html += `<p><strong>${sec.title}</strong></p>`;
-      if (sec.content) {
-        html += `<p>${sec.content}</p>`;
-      }
       if (sec.type === 'code' || sec.code) {
         codeSection = sec;
       }
       
-      // 如果指定的小节不是代码，找最近的代码小节
       if (!codeSection) {
         for (let i = 0; i < content.sections.length; i++) {
           if (content.sections[i].type === 'code' || content.sections[i].code) {
@@ -829,98 +873,81 @@ async function loadFromURL() {
     }
     
     if (codeSection) {
-      const codeStr = encodeURIComponent(codeSection.code || '');
-      const langStr = encodeURIComponent(codeSection.language || 'html');
-      html += `
-        <div class="code-block">
-          <div class="code-header">
-            <span class="code-lang">${codeSection.language || 'code'}</span>
-            <button class="code-load-btn" onclick="loadCodeFromCourse(${chapter}, ${codeSectionIndex})">加载到编辑器</button>
-          </div>
-          <pre><code>${escapeHtml(codeSection.code || '')}</code></pre>
-        </div>
-      `;
-      
-      // 自动加载代码到编辑器
-      setTimeout(() => loadCodeFromCourse(chapter, codeSectionIndex), 300);
+      const courseData = {
+        courseId: courseId,
+        chapterTitle: ch.title,
+        sectionTitle: codeSection.title,
+        introduction: content.introduction || '',
+        sectionContent: codeSection.content || '',
+        code: codeSection.code || '',
+        language: codeSection.language || 'html'
+      };
+      renderCourseData(courseData);
     }
-    
-    document.getElementById('courseContent').innerHTML = html;
   } catch (e) {
     console.error('加载课程失败:', e);
   }
 }
 
-let loadedCourseData = null;
-let loadedChapterIndex = 0;
-
-async function loadCodeFromCourse(chapterIdx, sectionIdx) {
-  const params = new URLSearchParams(window.location.search);
-  const courseId = params.get('course');
-  if (!courseId) return;
-  
-  const dataFile = courseFileMap[courseId];
-  if (!dataFile) return;
-  
-  try {
-    if (!loadedCourseData) {
-      const res = await fetch(`data/${dataFile}`);
-      loadedCourseData = await res.json();
-      loadedChapterIndex = chapterIdx;
-    }
-    
-    const ch = loadedCourseData.chapters[chapterIdx];
-    if (!ch || !ch.content.sections) return;
-    
-    let codeSection = null;
-    for (let i = 0; i < ch.content.sections.length; i++) {
-      if (ch.content.sections[i].type === 'code' || ch.content.sections[i].code) {
-        if (i >= sectionIdx || !codeSection) {
-          codeSection = ch.content.sections[i];
-          break;
-        }
-      }
-    }
-    
-    if (!codeSection && ch.content.sections.length > 0) {
-      codeSection = ch.content.sections.find(s => s.type === 'code' || s.code);
-    }
-    
-    if (codeSection) {
-      loadCodeToEditor(codeSection.code || '', codeSection.language || 'html');
-    }
-  } catch (e) {
-    console.error('加载代码失败:', e);
-  }
-}
-
 function loadCodeToEditor(code, language) {
   const lang = (language || '').toLowerCase();
+  const htmlEd = document.getElementById('htmlEditor');
+  const cssEd = document.getElementById('cssEditor');
+  const jsEd = document.getElementById('jsEditor');
+  
+  const baseHtml = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>预览</title>
+</head>
+<body>
+  <h1>Hello</h1>
+  <p>在这里预览你的代码效果</p>
+</body>
+</html>`;
+  
+  let targetTab = 'html';
   
   // 先按指定语言判断
   if (lang === 'html') {
-    document.getElementById('htmlEditor').value = code;
-    document.getElementById('cssEditor').value = '';
-    document.getElementById('jsEditor').value = '';
-    switchTab('html');
+    htmlEd.value = code;
+    cssEd.value = '';
+    jsEd.value = '';
+    targetTab = 'html';
   } else if (lang === 'css') {
-    document.getElementById('cssEditor').value = code;
-    switchTab('css');
+    if (!htmlEd.value || !htmlEd.value.includes('<body')) {
+      htmlEd.value = baseHtml;
+    }
+    cssEd.value = code;
+    targetTab = 'css';
   } else if (lang === 'javascript' || lang === 'js') {
-    document.getElementById('jsEditor').value = code;
-    switchTab('js');
+    if (!htmlEd.value || !htmlEd.value.includes('<body')) {
+      htmlEd.value = baseHtml;
+    }
+    jsEd.value = code;
+    targetTab = 'js';
   } else if (code.includes('<!DOCTYPE html>') || code.includes('<html')) {
-    document.getElementById('htmlEditor').value = code;
-    document.getElementById('cssEditor').value = '';
-    document.getElementById('jsEditor').value = '';
-    switchTab('html');
-  } else if (code.trim().startsWith('.') || code.trim().startsWith('#') || code.includes('{') && code.includes('}') && !code.includes('function') && !code.includes('var ') && !code.includes('let ')) {
-    document.getElementById('cssEditor').value = code;
-    switchTab('css');
+    htmlEd.value = code;
+    cssEd.value = '';
+    jsEd.value = '';
+    targetTab = 'html';
+  } else if (code.trim().startsWith('.') || code.trim().startsWith('#') || (code.includes('{') && code.includes('}') && !code.includes('function') && !code.includes('var ') && !code.includes('let '))) {
+    if (!htmlEd.value || !htmlEd.value.includes('<body')) {
+      htmlEd.value = baseHtml;
+    }
+    cssEd.value = code;
+    targetTab = 'css';
   } else {
-    document.getElementById('jsEditor').value = code;
-    switchTab('js');
+    if (!htmlEd.value || !htmlEd.value.includes('<body')) {
+      htmlEd.value = baseHtml;
+    }
+    jsEd.value = code;
+    targetTab = 'js';
   }
+  
+  switchTab(targetTab);
   runCode();
   
   // 移动端提示

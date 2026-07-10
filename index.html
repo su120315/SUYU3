@@ -1609,7 +1609,7 @@ function openChapter(index) {
   
   // 各个小节
   if (content.sections && content.sections.length) {
-    content.sections.forEach(section => {
+    content.sections.forEach((section, sectionIndex) => {
       html += `<h3>${section.title}</h3>`;
       
       if (section.type === 'code' || section.code) {
@@ -1617,13 +1617,12 @@ function openChapter(index) {
         if (section.content) {
           html += `<p>${formatText(section.content)}</p>`;
         }
-        const codeForUrl = encodeURIComponent(section.code || '');
         html += `
           <div class="code-block">
             <div class="code-header">
               <span class="code-lang">${section.language || 'code'}</span>
               <div style="display:flex;gap:8px;">
-                <button class="copy-btn" onclick="openPlayground(${currentChapterIndex}, ${i})" style="background:var(--accent-primary);color:white;">在线运行</button>
+                <button class="copy-btn" onclick="openPlayground(${currentChapterIndex}, ${sectionIndex})" style="background:var(--accent-primary);color:white;">在线运行</button>
                 <button class="copy-btn" onclick="copyCode(this)">复制</button>
               </div>
             </div>
@@ -1725,7 +1724,25 @@ function copyCode(btn) {
 
 // ===== 打开在线编程 =====
 function openPlayground(chapterIndex, sectionIndex) {
+  const chapter = currentCourseData.chapters[chapterIndex];
+  const section = chapter.content.sections[sectionIndex];
   const courseId = currentCourse ? currentCourse.id : '';
+  
+  const data = {
+    courseId: courseId,
+    courseTitle: currentCourse ? currentCourse.title : '',
+    chapterTitle: chapter.title,
+    sectionTitle: section.title,
+    introduction: chapter.content.introduction || '',
+    sectionContent: section.content || '',
+    code: section.code || '',
+    language: section.language || 'html'
+  };
+  
+  try {
+    localStorage.setItem('playgroundData', JSON.stringify(data));
+  } catch(e) {}
+  
   const url = `playground.html?course=${courseId}&chapter=${chapterIndex + 1}&section=${sectionIndex}`;
   window.open(url, '_blank');
 }
