@@ -1,380 +1,153 @@
 {
   "site": {
-    "title": "蘇魚 | 个人主页",
-    "description": "蘇魚的个人主页 - 汇文中学初二学生，热爱编程、AI、游戏和骑行。记录学习成长，分享有趣的项目。",
-    "keywords": "蘇魚,个人主页,汇文中学,编程,AI,学生,Python,网页开发",
-    "og_title": "蘇魚 | 个人主页",
-    "og_description": "汇文中学初二学生，热爱编程、AI、游戏和骑行。",
-    "og_site_name": "蘇魚的小窝"
+    "title": "蘇魚编程教学 | 零基础入门",
+    "description": "从零开始学习编程，掌握HTML/CSS、Python、JavaScript等热门技术",
+    "keywords": "编程教学,零基础编程,Python入门,HTML,CSS,JavaScript,编程学习",
+    "og_title": "蘇魚编程教学 | 零基础入门",
+    "og_description": "从零开始学习编程，包含HTML/CSS、Python、JavaScript等完整课程"
   },
   "nav": {
-    "logo": "蘇",
+    "logo": "蘇魚编程",
     "links": [
-      {
-        "href": "#about",
-        "text": "关于"
-      },
-      {
-        "href": "#skills",
-        "text": "技能"
-      },
-      {
-        "href": "#projects",
-        "text": "作品"
-      },
-      {
-        "href": "#hobbies",
-        "text": "爱好"
-      },
-      {
-        "href": "novel.html",
-        "text": "小说"
-      },
-      {
-        "href": "tools.html",
-        "text": "工具"
-      },
-      {
-        "href": "#gallery",
-        "text": "相册"
-      },
-      {
-        "href": "#comments",
-        "text": "留言"
-      },
-      {
-        "href": "#contact",
-        "text": "联系"
-      }
-    ],
-    "quickAccess": [
-      {
-        "href": "https://www.baidu.com",
-        "text": "百度"
-      },
-      {
-        "href": "https://www.bilibili.com",
-        "text": "B站"
-      },
-      {
-        "href": "https://www.zhihu.com",
-        "text": "知乎"
-      }
+      {"href": "#courses", "text": "课程"},
+      {"href": "#lessons", "text": "教程"},
+      {"href": "#code", "text": "代码演示"},
+      {"href": "#quiz", "text": "小测验"},
+      {"href": "#resources", "text": "资源"}
     ]
   },
   "hero": {
-    "title": "蘇魚",
-    "subtitle": "汇文中学 · 初二 · 热爱生活",
-    "tags": [
-      "学习",
-      "编程",
-      "游戏",
-      "AI",
-      "骑行"
+    "title": "编程入门",
+    "subtitle": "从零开始学习编程，掌握HTML/CSS、Python、JavaScript等热门技术",
+    "tags": ["HTML", "CSS", "Python", "JavaScript", "零基础"]
+  },
+  "courses": [
+    {
+      "id": "html",
+      "title": "HTML/CSS",
+      "description": "学习网页的骨架和样式，打造漂亮的网站页面",
+      "lessons": 12,
+      "hours": 6,
+      "progress": 80,
+      "icon": "🌐",
+      "color": "orange"
+    },
+    {
+      "id": "python",
+      "title": "Python",
+      "description": "最流行的编程语言，适合数据分析、AI、自动化等",
+      "lessons": 20,
+      "hours": 10,
+      "progress": 60,
+      "icon": "🐍",
+      "color": "blue"
+    },
+    {
+      "id": "javascript",
+      "title": "JavaScript",
+      "description": "让网页动起来！学习前端交互和后端开发",
+      "lessons": 18,
+      "hours": 8,
+      "progress": 40,
+      "icon": "⚡",
+      "color": "yellow"
+    },
+    {
+      "id": "ai",
+      "title": "AI编程",
+      "description": "了解人工智能基础，学习使用AI工具辅助编程",
+      "lessons": 8,
+      "hours": 4,
+      "progress": 20,
+      "icon": "🤖",
+      "color": "cyan"
+    }
+  ],
+  "lessons": [
+    {
+      "id": 1,
+      "title": "什么是编程？",
+      "category": "入门基础",
+      "description": "了解编程的基本概念，认识计算机如何理解我们的指令",
+      "tags": ["概念", "入门", "5分钟"]
+    },
+    {
+      "id": 2,
+      "title": "HTML基础结构",
+      "category": "HTML/CSS",
+      "description": "学习HTML标签的使用，创建第一个网页",
+      "tags": ["HTML", "标签", "15分钟"]
+    },
+    {
+      "id": 3,
+      "title": "CSS样式美化",
+      "category": "HTML/CSS",
+      "description": "用CSS给网页添加颜色、字体、布局等样式",
+      "tags": ["CSS", "样式", "20分钟"]
+    },
+    {
+      "id": 4,
+      "title": "Python变量和数据类型",
+      "category": "Python",
+      "description": "学习Python中的变量、数字、字符串等基本数据类型",
+      "tags": ["Python", "变量", "20分钟"]
+    },
+    {
+      "id": 5,
+      "title": "条件语句和循环",
+      "category": "Python",
+      "description": "学习if判断和for/while循环，让程序做出决策",
+      "tags": ["Python", "控制流", "25分钟"]
+    },
+    {
+      "id": 6,
+      "title": "JavaScript交互",
+      "category": "JavaScript",
+      "description": "学习JavaScript基础，实现网页按钮点击等交互效果",
+      "tags": ["JavaScript", "交互", "20分钟"]
+    }
+  ],
+  "quiz": {
+    "question": "以下哪个是HTML的标题标签？",
+    "options": [
+      {"letter": "A", "text": "<text>"},
+      {"letter": "B", "text": "<h1>"},
+      {"letter": "C", "text": "<paragraph>"},
+      {"letter": "D", "text": "<line>"}
     ],
-    "btnText": "了解更多",
-    "scrollText": "滚动探索"
+    "answer": "B",
+    "correctFeedback": "✅ 回答正确！<h1>是HTML中用于定义一级标题的标签。",
+    "wrongFeedback": "❌ 回答错误！正确答案是 B (<h1>)。<h1>到<h6>是HTML的标题标签，数字越小字号越大。"
   },
-  "about": {
-    "label": "01",
-    "title": "关于我",
-    "paragraphs": [
-      "你好呀！我是蘇魚，来自六安市汇文中学的一名初二学生。",
-      "热爱学习，也热爱生活。平时喜欢钻研编程和AI，也喜欢打游戏、骑自行车。对世界充满好奇心，喜欢探索各种有趣的新鲜事物。",
-      "英语和语文还在努力加油中，相信坚持就会进步！在学校里认真学习，课余时间做自己喜欢的事情。"
-    ],
-    "stats": [
-      {
-        "number": "汇文",
-        "label": "中学"
-      },
-      {
-        "number": "初二",
-        "label": "在读"
-      },
-      {
-        "number": "六安",
-        "label": "我的城市"
-      }
-    ]
-  },
-  "skills": {
-    "label": "02",
-    "title": "技能专长",
-    "items": [
-      {
-        "icon": "calculator",
-        "name": "数学",
-        "desc": "代数, 几何, 函数, 逻辑思维",
-        "width": 85
-      },
-      {
-        "icon": "languages",
-        "name": "英语",
-        "desc": "努力背单词中，加油！",
-        "width": 35
-      },
-      {
-        "icon": "book-open",
-        "name": "语文",
-        "desc": "还需多多阅读积累",
-        "width": 40
-      },
-      {
-        "icon": "code",
-        "name": "编程",
-        "desc": "Python, 网页开发, 小游戏",
-        "width": 70
-      },
-      {
-        "icon": "sparkles",
-        "name": "AI 探索",
-        "desc": "AI工具, ChatGPT, 图像生成, 自动化",
-        "width": 75
-      },
-      {
-        "icon": "gamepad-2",
-        "name": "游戏",
-        "desc": "三角洲行动, 极品飞车:集结, MC",
-        "width": 90
-      },
-      {
-        "icon": "bike",
-        "name": "骑自行车",
-        "desc": "公路车, 骑行, 兜风超爽",
-        "width": 90
-      }
-    ]
-  },
-  "projects": {
-    "label": "03",
-    "title": "我的作品",
-    "items": [
-      {
-        "icon": "globe",
-        "title": "个人主页网站",
-        "desc": "从零开始学 HTML/CSS/JS 做的第一个网站，深色未来风设计，有动画效果和交互体验～",
-        "tags": [
-          "HTML",
-          "CSS",
-          "JavaScript"
-        ],
-        "links": [
-          {
-            "icon": "external-link",
-            "title": "在线预览",
-            "url": "#"
-          },
-          {
-            "icon": "git-branch",
-            "title": "源码",
-            "url": "https://github.com/"
-          }
-        ]
-      },
-      {
-        "icon": "gamepad-2",
-        "title": "Python 贪吃蛇",
-        "desc": "用 Pygame 写的经典贪吃蛇小游戏，有计分、难度递增、最高分记录功能。",
-        "tags": [
-          "Python",
-          "Pygame",
-          "游戏开发"
-        ],
-        "links": [
-          {
-            "icon": "git-branch",
-            "title": "源码",
-            "url": "https://github.com/"
-          },
-          {
-            "icon": "download",
-            "title": "下载",
-            "url": "#"
-          }
-        ]
-      }
-    ]
-  },
-  "hobbies": {
-    "label": "04",
-    "title": "兴趣爱好",
-    "items": [
-      {
-        "emoji": "🎮",
-        "name": "打游戏",
-        "desc": "三角洲行动、极品飞车集结、MC，超爱开车和打枪！"
-      },
-      {
-        "emoji": "🚴",
-        "name": "骑自行车",
-        "desc": "周末骑车去兜风，风吹过的感觉超棒！"
-      },
-      {
-        "emoji": "🤖",
-        "name": "玩 AI",
-        "desc": "用AI画图、写代码、做各种有趣的东西"
-      },
-      {
-        "emoji": "📺",
-        "name": "看动漫",
-        "desc": "追番是日常快乐源泉，有好看的推荐吗？"
-      },
-      {
-        "emoji": "🎵",
-        "name": "听音乐",
-        "desc": "写作业、骑车、打游戏都要有BGM！"
-      },
-      {
-        "emoji": "🍜",
-        "name": "吃好吃的",
-        "desc": "没有什么是一顿美食解决不了的～"
-      }
-    ]
-  },
-  "weather": {
-    "label": "05",
-    "title": "天气",
-    "loading": "加载天气中...",
-    "location": "📍 六安"
-  },
-  "gallery": {
-    "label": "06",
-    "title": "我的相册",
-    "desc": "记录生活中的美好瞬间 📸 照片来自仓库的 gallery 文件夹",
-    "uploadBtn": "上传照片",
-    "clearBtn": "清空相册",
-    "notice": [
-      "⚠️ 上传即表示你同意以下规则：",
-      "🚫 禁止上传任何违法、色情、暴力内容",
-      "🚫 禁止上传他人隐私或未经授权的照片",
-      "🚫 禁止删除他人上传的照片",
-      "🚫 禁止上传广告、垃圾信息",
-      "📵 如有违规，相关内容将被删除并追究责任"
-    ],
-    "emptyText": "还没有照片呢，快上传几张吧～",
-    "loadingText": "加载照片中..."
-  },
-  "contact": {
-    "label": "07",
-    "title": "联系我",
-    "intro": "想和我交朋友吗？<br>欢迎来和我一起学习一起玩～",
-    "email": "jx120315@qq.com",
-    "socials": [
-      {
-        "icon": "git-branch",
-        "label": "GitHub",
-        "url": "https://github.com/"
-      },
-      {
-        "icon": "tv",
-        "label": "Bilibili",
-        "url": "https://space.bilibili.com/3546878031432247"
-      },
-      {
-        "icon": "book-open",
-        "label": "知乎",
-        "url": "https://www.zhihu.com/"
-      },
-      {
-        "icon": "message-circle",
-        "label": "QQ",
-        "url": "#"
-      }
-    ],
-    "tip": "* 手机号等隐私信息不公开，熟了之后自然会知道哒～"
-  },
-  "comments": {
-    "label": "08",
-    "title": "留言板",
-    "desc": "想说点什么？留个言吧～ 💬",
-    "namePlaceholder": "你的名字",
-    "contentPlaceholder": "想说点什么..."
-  },
-  "sites": {
-    "label": "09",
-    "title": "实用网站",
-    "items": [
-      {
-        "icon": "🔍",
-        "name": "百度",
-        "desc": "搜索引擎，什么都能搜",
-        "url": "https://www.baidu.com"
-      },
-      {
-        "icon": "📺",
-        "name": "哔哩哔哩",
-        "desc": "看视频、追番、学知识",
-        "url": "https://www.bilibili.com"
-      },
-      {
-        "icon": "💡",
-        "name": "知乎",
-        "desc": "有问题，上知乎",
-        "url": "https://www.zhihu.com"
-      },
-      {
-        "icon": "📚",
-        "name": "作业帮",
-        "desc": "不会的题目搜一搜",
-        "url": "https://www.baidu.com/s?wd=作业帮"
-      },
-      {
-        "icon": "📖",
-        "name": "有道翻译",
-        "desc": "英语翻译好帮手",
-        "url": "https://www.youdao.com"
-      },
-      {
-        "icon": "📝",
-        "name": "小红书",
-        "desc": "种草、攻略、生活分享",
-        "url": "https://www.xiaohongshu.com"
-      },
-      {
-        "icon": "🎵",
-        "name": "网易云音乐",
-        "desc": "听歌必备",
-        "url": "https://www.163.com"
-      },
-      {
-        "icon": "🛒",
-        "name": "淘宝",
-        "desc": "买买买",
-        "url": "https://www.taobao.com"
-      },
-      {
-        "icon": "🎮",
-        "name": "Steam",
-        "desc": "游戏平台",
-        "url": "https://store.steampowered.com"
-      },
-      {
-        "icon": "🔧",
-        "name": "图吧工具箱",
-        "desc": "硬件检测工具",
-        "url": "https://www.tbtool.cn"
-      },
-      {
-        "icon": "⚡",
-        "name": "瓦特工具箱",
-        "desc": "Steam 多功能工具箱",
-        "url": "https://www.watttool.com"
-      }
-    ]
-  },
+  "resources": [
+    {
+      "title": "在线编辑器",
+      "description": "无需安装软件，在浏览器中直接编写和运行代码",
+      "url": "https://www.w3schools.com",
+      "icon": "code"
+    },
+    {
+      "title": "GitHub",
+      "description": "全球最大的代码托管平台，查看和学习优秀项目",
+      "url": "https://github.com",
+      "icon": "github"
+    },
+    {
+      "title": "编程书籍",
+      "description": "推荐经典的编程入门书籍，系统学习编程知识",
+      "url": "#",
+      "icon": "book"
+    },
+    {
+      "title": "视频教程",
+      "description": "优质的编程教学视频，直观学习编程技巧",
+      "url": "#",
+      "icon": "video"
+    }
+  ],
   "footer": {
-    "copyright": "© 2026 蘇魚 · All rights reserved",
-    "madeWith": "用 ❤️ 和代码搭建",
-    "tech": "HTML + CSS + JS",
-    "lastUpdate": "最后更新：2026年",
-    "sourceText": "源码仓库",
-    "sourceUrl": "https://github.com/"
-  },
-  "chat": {
-    "title": "和我聊天",
-    "greeting": "嗨～我是蘇魚的 AI 分身，你可以问我关于蘇魚的任何问题！😊",
-    "headerTitle": "蘇魚 AI 分身",
-    "inputPlaceholder": "输入消息..."
+    "copyright": "© 2026 蘇魚编程教学 · All rights reserved",
+    "mainSiteUrl": "https://su120315.github.io/SUYU",
+    "sourceUrl": "https://github.com/su120315/SUYU3"
   }
 }
