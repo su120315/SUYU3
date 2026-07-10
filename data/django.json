@@ -1,0 +1,552 @@
+{
+  "id": "django",
+  "title": "Django Web开发",
+  "subtitle": "Python后端框架，快速搭建网站",
+  "icon": "🌍",
+  "color": "green",
+  "description": "Django是Python最流行的Web框架之一，采用MVT设计模式，内置ORM、Admin后台、表单处理、用户认证等丰富功能。本课程从环境搭建到项目实战，全面掌握Django开发技能。",
+  "duration": "22小时",
+  "lessons": 12,
+  "level": "进阶",
+  "whatYouLearn": [
+    "Django框架核心概念与MVT模式",
+    "路由系统与视图函数开发",
+    "模板系统与静态文件管理",
+    "ORM模型与数据库操作",
+    "表单处理与用户认证系统",
+    "类视图与中间件开发",
+    "Django REST Framework开发API",
+    "项目实战：完整博客系统",
+    "生产环境部署与性能优化"
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Django入门",
+      "duration": "100分钟",
+      "content": {
+        "introduction": "欢迎来到Django Web开发课程！Django是一个高级Python Web框架，鼓励快速开发和简洁、实用的设计。它由经验丰富的开发人员构建，解决了Web开发的大部分常见问题，因此你可以专注于编写应用程序而无需重新发明轮子。本章我们将了解Django的基本概念、安装环境并创建第一个Django项目。",
+        "sections": [
+          {
+            "title": "1.1 什么是Django",
+            "content": "Django是一个开源的Python Web框架，最初是为了管理新闻网站而开发的，于2005年正式发布。它遵循MVC（Model-View-Controller）设计模式，但在Django中被称为MVT（Model-View-Template）模式。\n\nDjango的核心哲学：\n- **DRY（Don't Repeat Yourself）**：不要重复自己，代码复用\n- **快速开发**：内置大量功能，开箱即用\n- **安全可靠**：内置防护SQL注入、XSS、CSRF等攻击\n- **可扩展**：组件化设计，易于扩展\n\nDjango内置功能：\n- ORM（对象关系映射）\n- 强大的URL路由系统\n- 模板引擎\n- 表单处理\n- 用户认证系统\n- Admin管理后台\n- 缓存系统\n- 国际化支持\n- 安全防护机制"
+          },
+          {
+            "title": "1.2 MVC/MVT模式",
+            "content": "Django采用MVT（Model-View-Template）架构模式，这是MVC模式的一种变体。\n\n**MVC模式：**\n- Model（模型）：数据层，处理数据相关的所有操作\n- View（视图）：表现层，处理数据的展示\n- Controller（控制器）：逻辑层，处理业务逻辑和用户交互\n\n**Django的MVT模式：**\n- Model（模型）：数据访问层，处理与数据库相关的所有事务\n- Template（模板）：表现层，处理与页面展示相关的内容\n- View（视图）：业务逻辑层，调用模型和模板，处理请求和响应\n- URLconf（URL配置）：相当于控制器，根据URL调用不同的视图\n\n简单来说：用户请求 → URL路由 → 视图函数 → 模型（数据库操作） → 模板（页面渲染） → 返回响应。"
+          },
+          {
+            "title": "1.3 安装与环境配置",
+            "content": "在开始Django开发之前，我们需要准备开发环境。\n\n**环境要求：**\n- Python 3.8+（推荐3.10或更高版本）\n- pip（Python包管理器）\n- 虚拟环境（推荐）\n\n**为什么用虚拟环境？**\n不同项目可能需要不同版本的Django和其他依赖包，使用虚拟环境可以隔离项目依赖，避免版本冲突。Python 3.3+内置了venv模块。\n\n**开发工具推荐：**\n- VS Code + Python插件（轻量强大）\n- PyCharm（专业级Python IDE）\n- 数据库：默认SQLite（轻量，不用额外安装），生产用PostgreSQL或MySQL"
+          },
+          {
+            "title": "1.4 环境安装代码示例",
+            "type": "code",
+            "language": "bash",
+            "code": "# 1. 检查Python版本\npython --version\npython3 --version\n\n# 2. 创建项目目录\nmkdir mydjango && cd mydjango\n\n# 3. 创建虚拟环境（Windows）\npython -m venv venv\n# 激活虚拟环境（Windows）\nvenv\\Scripts\\activate\n\n# 3. 创建虚拟环境（Mac/Linux）\npython3 -m venv venv\n# 激活虚拟环境（Mac/Linux）\nsource venv/bin/activate\n\n# 4. 安装Django\npip install django\n\n# 5. 验证安装\ndjango-admin --version\npython -m django --version\n\n# 6. 查看django-admin帮助\ndjango-admin help"
+          },
+          {
+            "title": "1.5 第一个Django项目",
+            "content": "现在我们来创建第一个Django项目。Django提供了`django-admin`命令行工具来快速创建项目。\n\n项目创建后会生成以下文件：\n- `manage.py`：命令行工具，用于管理Django项目（运行服务器、创建应用、数据库迁移等）\n- `项目名/`：项目配置目录\n  - `__init__.py`：空文件，标识这是一个Python包\n  - `asgi.py`：ASGI兼容的Web服务器入口（异步）\n  - `wsgi.py`：WSGI兼容的Web服务器入口（同步）\n  - `settings.py`：项目配置文件（数据库、应用、中间件等配置）\n  - `urls.py`：项目URL配置\n\n接下来我们运行开发服务器，看看Django的欢迎页面。"
+          },
+          {
+            "title": "1.6 创建项目代码示例",
+            "type": "code",
+            "language": "bash",
+            "code": "# 创建项目（项目名不能有连字符和空格）\ndjango-admin startproject myproject\n\n# 进入项目目录\ncd myproject\n\n# 查看项目结构\ntree .\n# 或者手动查看\n# myproject/\n# ├── manage.py\n# └── myproject/\n#     ├── __init__.py\n#     ├── asgi.py\n#     ├── settings.py\n#     ├── urls.py\n#     └── wsgi.py\n\n# 运行开发服务器（默认端口8000）\npython manage.py runserver\n\n# 指定端口\npython manage.py runserver 8080\n\n# 指定IP和端口（允许外部访问）\npython manage.py runserver 0.0.0.0:8000\n\n# 打开浏览器访问 http://127.0.0.1:8000/"
+          },
+          {
+            "title": "1.7 创建应用(App)",
+            "content": "Django项目由多个应用（App）组成，每个应用负责一个功能模块。例如一个博客系统可能有：文章应用、用户应用、评论应用等。\n\n**为什么要创建应用？**\n- 模块化：每个应用负责一个功能，代码结构清晰\n- 可复用：应用可以在不同项目中复用\n- 可插拔：可以随时添加或移除应用\n\n创建应用后需要在settings.py的INSTALLED_APPS中注册，Django才会识别这个应用。\n\n应用目录结构：\n- `migrations/`：数据库迁移文件目录\n- `__init__.py`：Python包标识\n- `admin.py`：Admin后台配置\n- `apps.py`：应用配置\n- `models.py`：数据模型（数据库表结构）\n- `tests.py`：测试代码\n- `views.py`：视图函数（处理请求）"
+          },
+          {
+            "title": "1.8 创建应用代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 命令行创建应用\n# python manage.py startapp blog\n\n# blog/views.py - 视图函数\nfrom django.http import HttpResponse\n\ndef index(request):\n    return HttpResponse(\"欢迎来到我的博客！\")\n\ndef about(request):\n    return HttpResponse(\"关于我们\")\n\n# blog/urls.py - 应用URL配置（需要手动创建）\nfrom django.urls import path\nfrom . import views\n\nurlpatterns = [\n    path('', views.index, name='index'),\n    path('about/', views.about, name='about'),\n]\n\n# myproject/urls.py - 项目URL配置\nfrom django.contrib import admin\nfrom django.urls import path, include\n\nurlpatterns = [\n    path('admin/', admin.site.urls),\n    path('blog/', include('blog.urls')),  # 包含应用的URL\n]\n\n# myproject/settings.py - 注册应用\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'blog',  # 注册我们的应用\n]"
+          },
+          {
+            "title": "1.9 项目配置详解",
+            "content": "settings.py是Django项目的核心配置文件，包含了很多重要配置：\n\n**常用配置项：**\n- `DEBUG`：调试模式，开发时设为True，生产环境必须设为False\n- `ALLOWED_HOSTS`：允许访问的域名列表\n- `INSTALLED_APPS`：已安装的应用列表\n- `MIDDLEWARE`：中间件列表\n- `ROOT_URLCONF`：根URL配置模块\n- `TEMPLATES`：模板配置\n- `DATABASES`：数据库配置\n- `AUTH_PASSWORD_VALIDATORS`：密码验证器\n- `LANGUAGE_CODE`：语言设置（'zh-hans'为简体中文）\n- `TIME_ZONE`：时区设置（'Asia/Shanghai'为中国时区）\n- `STATIC_URL`：静态文件URL前缀\n- `MEDIA_URL`：媒体文件URL前缀\n- `MEDIA_ROOT`：媒体文件存储路径\n\n开发时建议修改语言和时区设置，让Admin后台显示中文。"
+          },
+          {
+            "title": "1.10 settings.py配置示例",
+            "type": "code",
+            "language": "python",
+            "code": "# myproject/settings.py 关键配置\n\n# 调试模式（生产环境必须为False！）\nDEBUG = True\n\n# 允许的主机（生产环境要配置具体域名）\nALLOWED_HOSTS = ['*']  # 开发时允许所有\n\n# 已安装的应用\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'blog',\n]\n\n# 数据库配置（默认SQLite，无需额外安装）\nDATABASES = {\n    'default': {\n        'ENGINE': 'django.db.backends.sqlite3',\n        'NAME': BASE_DIR / 'db.sqlite3',\n    }\n}\n\n# 语言和时区\nLANGUAGE_CODE = 'zh-hans'  # 简体中文\nTIME_ZONE = 'Asia/Shanghai'  # 上海时区\nUSE_I18N = True\nUSE_TZ = True\n\n# 静态文件\nSTATIC_URL = 'static/'\n\n# 媒体文件（用户上传的文件）\nMEDIA_URL = 'media/'\nMEDIA_ROOT = BASE_DIR / 'media'"
+          },
+          {
+            "title": "1.11 动手练习",
+            "type": "exercise",
+            "content": "完成以下练习：\n\n1. 安装Django并创建一个名为`myblog`的项目\n2. 在项目中创建一个名为`articles`的应用，并在settings.py中注册\n3. 在articles应用中创建两个视图：`index`（文章列表页）和`detail`（文章详情页），分别返回简单的HTTP响应\n4. 配置应用的URL和项目的URL，通过浏览器访问 /articles/ 和 /articles/detail/\n5. 修改settings.py，将语言改为简体中文，时区改为上海时区\n6. 尝试运行开发服务器，查看Django欢迎页面和自己写的视图\n\n提示：使用 HttpResponse 返回响应，使用 path 配置路由，使用 include 包含应用的URL配置。"
+          }
+        ],
+        "summary": "本章我们学习了Django的基本概念、MVT模式、环境安装、项目创建和应用创建。Django的开发流程是：创建项目 → 创建应用 → 编写视图 → 配置URL → 运行测试。下一章我们将深入学习路由与视图的使用。",
+        "quiz": {
+          "question": "在Django的MVT模式中，负责处理业务逻辑和用户请求的是哪个部分？",
+          "options": [
+            "Model（模型）",
+            "View（视图）",
+            "Template（模板）",
+            "Admin（后台）"
+          ],
+          "answer": 1,
+          "explanation": "View（视图）负责处理业务逻辑，接收用户请求，调用模型获取数据，然后渲染模板返回响应。Model负责数据存储，Template负责页面展示。"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "路由与视图",
+      "duration": "110分钟",
+      "content": {
+        "introduction": "路由和视图是Django的核心部分。路由系统负责将URL请求分发给对应的视图函数，视图函数则负责处理业务逻辑并返回响应。本章我们将详细学习URL配置、路径参数、查询参数、各种响应类型以及重定向等内容。",
+        "sections": [
+          {
+            "title": "2.1 URL配置基础",
+            "content": "Django的URL配置（URLconf）就像目录一样，告诉Django根据不同的URL调用哪个视图函数。\n\n**URL配置的工作流程：**\n1. 用户在浏览器输入URL发起请求\n2. Django从settings.py的ROOT_URLCONF找到根URL配置\n3. 按顺序匹配urlpatterns中的每个URL模式\n4. 找到匹配的后，调用对应的视图函数\n5. 如果没找到匹配的，返回404错误\n\n**path()函数的参数：**\n- route：URL路径字符串\n- view：对应的视图函数或类视图\n- name：URL名称（用于反向解析）\n- kwargs：额外的关键字参数（可选）\n\nURL匹配是从上到下的，找到第一个匹配项就停止，所以顺序很重要。"
+          },
+          {
+            "title": "2.2 URL配置示例",
+            "type": "code",
+            "language": "python",
+            "code": "# myapp/urls.py\nfrom django.urls import path\nfrom . import views\n\nurlpatterns = [\n    # 固定路径\n    path('', views.index, name='index'),\n    path('about/', views.about, name='about'),\n    path('contact/', views.contact, name='contact'),\n    \n    # 带路径参数\n    path('articles/<int:article_id>/', views.article_detail, name='article_detail'),\n    path('users/<str:username>/', views.user_profile, name='user_profile'),\n    \n    # 多级路径\n    path('blog/categories/<int:cat_id>/', views.category_articles, name='category_articles'),\n]\n\n# 项目urls.py\nfrom django.contrib import admin\nfrom django.urls import path, include\n\nurlpatterns = [\n    path('admin/', admin.site.urls),\n    path('', include('myapp.urls')),  # 应用URL放在根路径\n    path('blog/', include('blog.urls')),  # 应用URL加前缀\n]\n\n# myapp/views.py\nfrom django.http import HttpResponse\n\ndef index(request):\n    return HttpResponse('首页')\n\ndef about(request):\n    return HttpResponse('关于我们')\n\ndef article_detail(request, article_id):\n    return HttpResponse(f'文章ID: {article_id}')\n\ndef user_profile(request, username):\n    return HttpResponse(f'用户: {username}')"
+          },
+          {
+            "title": "2.3 路径参数详解",
+            "content": "URL路径参数可以从URL中提取数据，传递给视图函数。\n\n**路径转换器类型：**\n- `str`：匹配除了路径分隔符`/`之外的非空字符串（默认）\n- `int`：匹配零或正整数\n- `slug`：匹配字母、数字、连字符、下划线组成的字符串\n- `uuid`：匹配格式化的UUID\n- `path`：匹配完整的路径（包括路径分隔符`/`）\n\n**自定义路径转换器：**\n如果内置的转换器不够用，还可以自定义转换器。比如要匹配特定格式的日期等。\n\n注意：路径参数名必须和视图函数的参数名一致，否则会报错。"
+          },
+          {
+            "title": "2.4 路径参数代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 各种路径转换器示例\nfrom django.urls import path\nfrom . import views\n\nurlpatterns = [\n    # int - 整数\n    path('products/<int:product_id>/', views.product_detail, name='product_detail'),\n    \n    # str - 字符串（默认，可不写）\n    path('category/<str:slug>/', views.category_detail, name='category_detail'),\n    \n    # slug - 字母数字连字符下划线\n    path('post/<slug:post_slug>/', views.post_detail, name='post_detail'),\n    \n    # uuid - UUID格式\n    path('item/<uuid:item_id>/', views.item_detail, name='item_detail'),\n    \n    # path - 完整路径（含/）\n    path('files/<path:file_path>/', views.file_download, name='file_download'),\n    \n    # 多个参数\n    path('archive/<int:year>/<int:month>/', views.archive, name='archive'),\n]\n\n# 对应的视图函数\ndef product_detail(request, product_id):\n    # product_id 已经是整数类型了\n    return HttpResponse(f'产品ID：{product_id}，类型：{type(product_id)}')\n\ndef archive(request, year, month):\n    return HttpResponse(f'归档：{year}年{month}月')\n\n# 自定义转换器示例（converters.py）\nclass FourDigitYearConverter:\n    regex = '[0-9]{4}'\n    \n    def to_python(self, value):\n        return int(value)\n    \n    def to_url(self, value):\n        return f'{value:04d}'"
+          },
+          {
+            "title": "2.5 查询参数",
+            "content": "除了路径参数，我们还可以通过查询参数（Query String）传递数据，就是URL中`?`后面的部分，如：`?page=2&sort=price`。\n\n**获取查询参数：**\n在视图函数中，通过`request.GET`获取查询参数。`request.GET`是一个类似字典的对象（QueryDict）。\n\n**QueryDict的特点：**\n- 一个key可以对应多个值（因为URL中可以有同名参数，如`?tag=python&tag=django`）\n- `get()`方法：获取单个值\n- `getlist()`方法：获取多个值组成的列表\n\n查询参数常用于分页、排序、筛选等场景。"
+          },
+          {
+            "title": "2.6 查询参数代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 视图中获取查询参数\nfrom django.http import HttpResponse\n\ndef search(request):\n    # 获取查询参数keyword，默认值为空字符串\n    keyword = request.GET.get('keyword', '')\n    \n    # 获取分页参数，默认第1页\n    page = request.GET.get('page', 1)\n    page = int(page)  # 查询参数都是字符串，需要手动转类型\n    \n    # 获取排序方式\n    sort = request.GET.get('sort', 'date')\n    \n    return HttpResponse(f'搜索关键词：{keyword}，第{page}页，排序：{sort}')\n\ndef filter_articles(request):\n    # 一个参数有多个值的情况\n    # 例如 URL: /filter/?tag=python&tag=django&tag=web\n    tags = request.GET.getlist('tag')\n    return HttpResponse(f'选中的标签：{tags}')\n\ndef pagination(request):\n    # 分页示例\n    page = int(request.GET.get('page', 1))\n    per_page = int(request.GET.get('per_page', 10))\n    start = (page - 1) * per_page\n    end = start + per_page\n    \n    articles = [f'文章{i}' for i in range(1, 101)]\n    page_articles = articles[start:end]\n    \n    return HttpResponse(f'''\n        <h1>第{page}页</h1>\n        <p>每页{per_page}条</p>\n        <ul>\n            {'<li>' + '</li><li>'.join(page_articles) + '</li>'}\n        </ul>\n    ''')"
+          },
+          {
+            "title": "2.7 HttpRequest对象",
+            "content": "视图函数的第一个参数永远是`request`，它是一个HttpRequest对象，包含了请求的所有信息。\n\n**常用属性：**\n- `request.method`：请求方法（GET、POST等）\n- `request.GET`：GET参数（查询参数）\n- `request.POST`：POST参数（表单数据）\n- `request.FILES`：上传的文件\n- `request.path`：请求路径（不含域名和查询参数）\n- `request.path_info`：请求路径信息\n- `request.get_full_path()`：完整路径（含查询参数）\n- `request.META`：请求头信息（字典）\n- `request.COOKIES`：请求的cookies\n- `request.session`：会话数据\n- `request.user`：当前登录用户\n- `request.headers`：请求头（Django 2.2+）\n\n还有很多其他属性，可以在官方文档中查阅。"
+          },
+          {
+            "title": "2.8 请求对象代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from django.http import HttpResponse\n\ndef request_info(request):\n    info = f'''\n    <h2>请求信息</h2>\n    <p>请求方法：{request.method}</p>\n    <p>请求路径：{request.path}</p>\n    <p>完整路径：{request.get_full_path()}</p>\n    <p>是否是AJAX：{request.headers.get('X-Requested-With') == 'XMLHttpRequest'}</p>\n    <p>用户IP：{request.META.get('REMOTE_ADDR')}</p>\n    <p>用户代理：{request.META.get('HTTP_USER_AGENT')}</p>\n    <p>引用页：{request.META.get('HTTP_REFERER', '直接访问')}</p>\n    <p>Content-Type：{request.content_type}</p>\n    '''\n    return HttpResponse(info)\n\ndef get_headers(request):\n    # 获取所有请求头\n    headers = []\n    for key, value in request.headers.items():\n        headers.append(f'{key}: {value}')\n    return HttpResponse('<br>'.join(headers))\n\ndef method_example(request):\n    # 根据请求方法做不同处理\n    if request.method == 'GET':\n        # 显示表单\n        return HttpResponse('这是GET请求，显示表单页面')\n    elif request.method == 'POST':\n        # 处理表单提交\n        return HttpResponse('这是POST请求，处理表单数据')\n    else:\n        return HttpResponse('不支持的请求方法', status=405)"
+          },
+          {
+            "title": "2.9 响应与重定向",
+            "content": "视图函数必须返回一个HttpResponse对象（或其子类）。Django提供了多种响应类型。\n\n**常用响应类：**\n- `HttpResponse`：普通响应，返回文本或HTML\n- `JsonResponse`：返回JSON数据\n- `HttpResponseRedirect` / `redirect()`：重定向\n- `HttpResponsePermanentRedirect`：永久重定向（301）\n- `HttpResponseNotFound`：404错误\n- `HttpResponseForbidden`：403禁止访问\n- `HttpResponseBadRequest`：400错误请求\n- `FileResponse`：文件下载响应\n\n**快捷函数 redirect()：**\n- 可以接收URL字符串\n- 可以接收URL的name（反向解析）\n- 可以接收模型对象（调用对象的get_absolute_url方法）\n- 默认是302临时重定向，加permanent=True变301"
+          },
+          {
+            "title": "2.10 响应示例代码",
+            "type": "code",
+            "language": "python",
+            "code": "from django.http import HttpResponse, JsonResponse, HttpResponseRedirect, FileResponse\nfrom django.shortcuts import redirect, render, get_object_or_404\nfrom django.urls import reverse\nimport json\n\ndef hello(request):\n    # 普通文本响应\n    return HttpResponse('Hello World')\n\ndef html_response(request):\n    # HTML响应\n    html = '''\n    <!DOCTYPE html>\n    <html>\n    <head><title>我的页面</title></head>\n    <body>\n        <h1>欢迎！</h1>\n        <p>这是一个HTML页面</p>\n    </body>\n    </html>\n    '''\n    return HttpResponse(html)\n\ndef json_response(request):\n    # JSON响应（自动设置Content-Type为application/json）\n    data = {\n        'name': '张三',\n        'age': 25,\n        'hobbies': ['读书', '编程', '运动']\n    }\n    return JsonResponse(data, json_dumps_params={'ensure_ascii': False})\n\ndef redirect_example(request):\n    # 重定向到URL字符串\n    # return HttpResponseRedirect('/blog/')\n    \n    # 推荐使用redirect()快捷函数\n    return redirect('/blog/')\n    \n    # 根据URL名称反向解析\n    # return redirect('article_detail', article_id=1)\n    \n    # 永久重定向（301）\n    # return redirect('index', permanent=True)\n\ndef file_download(request):\n    # 文件下载\n    f = open('example.pdf', 'rb')\n    return FileResponse(f, as_attachment=True, filename='下载的文件.pdf')"
+          },
+          {
+            "title": "2.11 URL反向解析",
+            "content": "硬编码URL有很多问题：如果以后修改了URL路径，所有用到这个URL的地方都要改。Django提供了URL反向解析的功能，通过URL的name来生成URL。\n\n**反向解析的用途：**\n- 在视图中重定向时使用\n- 在模板中生成链接\n- 避免硬编码URL，便于维护\n\n**使用方式：**\n- 视图中：`reverse('url_name')` 或 `redirect('url_name')`\n- 模板中：`{% url 'url_name' %}`\n\n**带命名空间（namespace）：**\n当多个应用有同名的URL时，可以给include加命名空间，用 `app_name:url_name` 来区分。"
+          },
+          {
+            "title": "2.12 反向解析代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# blog/urls.py\nfrom django.urls import path\nfrom . import views\n\napp_name = 'blog'  # 应用命名空间\n\nurlpatterns = [\n    path('', views.index, name='index'),\n    path('<int:article_id>/', views.detail, name='detail'),\n]\n\n# 项目 urls.py\nfrom django.urls import path, include\n\nurlpatterns = [\n    path('blog/', include('blog.urls', namespace='blog')),\n]\n\n# 视图中使用反向解析\nfrom django.urls import reverse\nfrom django.shortcuts import redirect\n\ndef test_redirect(request):\n    # 根据URL名称生成URL\n    url = reverse('blog:index')  # /blog/\n    print(url)\n    \n    # 带参数的反向解析\n    url2 = reverse('blog:detail', args=[1])  # /blog/1/\n    url3 = reverse('blog:detail', kwargs={'article_id': 2})  # /blog/2/\n    print(url2, url3)\n    \n    # redirect快捷函数也支持name\n    return redirect('blog:detail', article_id=1)\n\n# 模板中使用（后面模板章节会详细讲）\n# <a href=\"{% url 'blog:index' %}\">博客首页</a>\n# <a href=\"{% url 'blog:detail' article_id=1 %}\">文章1</a>"
+          },
+          {
+            "title": "2.13 动手练习",
+            "type": "exercise",
+            "content": "完成以下练习：\n\n1. 创建一个名为`shop`的应用，配置好URL（命名空间`shop`）\n2. 创建以下视图和路由：\n   - 首页 `/shop/` → `index`视图，显示\"商城首页\"\n   - 商品详情 `/shop/product/<int:product_id>/` → `product_detail`视图，显示商品ID\n   - 商品列表 `/shop/products/` → `product_list`视图，支持`?category=分类&page=页码`查询参数\n3. 在product_list视图中，获取category和page查询参数并显示出来\n4. 创建一个`search`视图，支持`?q=关键词`查询参数，返回JSON格式的搜索结果\n5. 创建一个`go_home`视图，重定向到商城首页\n6. 熟悉request对象的常用属性，写一个视图显示请求信息\n\n提示：使用 reverse() 函数进行URL反向解析，用 redirect() 函数进行重定向。"
+          }
+        ],
+        "summary": "本章我们深入学习了Django的路由系统和视图函数，包括URL配置、路径参数、查询参数、请求对象、各种响应类型、重定向和URL反向解析。掌握好这些是Django开发的基础。下一章我们学习模板系统。",
+        "quiz": {
+          "question": "在Django视图中，要获取URL查询参数page的值，应该用以下哪种方式？",
+          "options": [
+            "request.page",
+            "request.POST.get('page')",
+            "request.GET.get('page')",
+            "request.params.page"
+          ],
+          "answer": 2,
+          "explanation": "查询参数（URL中?后面的参数）通过request.GET获取，这是一个类字典对象，用get()方法可以设置默认值。request.POST用于获取POST请求的表单数据。"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "模板系统",
+      "duration": "120分钟",
+      "content": {
+        "introduction": "模板系统是Django的MVT模式中的T（Template），负责页面展示。Django自带了一个强大的模板引擎，支持模板继承、包含、过滤器、标签等功能。本章我们将学习模板语法、变量与过滤器、模板继承、模板包含以及静态文件的使用。",
+        "sections": [
+          {
+            "title": "3.1 模板基础",
+            "content": "模板是一个文本文件，用于生成HTML（或其他格式）。Django模板包含静态部分和动态部分。\n\n**为什么要用模板？**\n- 分离逻辑和展示：视图只处理数据，模板只负责展示\n- 代码复用：模板继承和包含可以减少重复代码\n- 便于维护：修改页面不需要改Python代码\n- 安全：自动转义HTML，防止XSS攻击\n\n**模板语法的三种标记：**\n- `{{ 变量 }}`：输出变量的值\n- `{% 标签 %}`：执行逻辑操作（循环、判断、继承等）\n- `{# 注释 #}`：模板注释，不会输出到HTML\n\n**模板文件存放位置：**\n- 应用目录下的`templates/`目录（每个应用都可以有自己的模板）\n- 项目根目录的`templates/`目录（公共模板）\n需要在settings.py的TEMPLATES配置中设置DIRS。"
+          },
+          {
+            "title": "3.2 第一个模板示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 1. 在应用下创建 templates/blog/index.html\n# blog/\n# ├── templates/\n# │   └── blog/\n# │       └── index.html\n# └── views.py\n\n# 模板文件 templates/blog/index.html\n<!DOCTYPE html>\n<html>\n<head>\n    <title>{{ title }}</title>\n</head>\n<body>\n    <h1>欢迎来到{{ site_name }}！</h1>\n    <p>{{ description }}</p>\n    \n    <h2>最新文章</h2>\n    <ul>\n        {% for article in articles %}\n        <li>{{ article.title }} - {{ article.date }}</li>\n        {% empty %}\n        <li>暂无文章</li>\n        {% endfor %}\n    </ul>\n    \n    {% if user.is_authenticated %}\n        <p>欢迎回来，{{ user.username }}！</p>\n    {% else %}\n        <p>请先登录</p>\n    {% endif %}\n    \n    {# 这是模板注释，不会输出到HTML #}\n</body>\n</html>\n\n# 2. 视图函数使用模板\nfrom django.shortcuts import render\n\ndef index(request):\n    # 模板上下文数据（字典）\n    context = {\n        'title': '我的博客',\n        'site_name': '小明的博客',\n        'description': '分享技术与生活',\n        'articles': [\n            {'title': 'Django入门教程', 'date': '2024-01-01'},\n            {'title': 'Python进阶技巧', 'date': '2024-01-02'},\n        ]\n    }\n    # render(request, 模板路径, 上下文数据)\n    return render(request, 'blog/index.html', context)"
+          },
+          {
+            "title": "3.3 变量与过滤器",
+            "content": "模板变量用 `{{ 变量名 }}` 输出。可以通过点号（`.`）访问变量的属性、字典的键、列表的索引，还可以调用不带参数的方法。\n\n**变量访问方式：**\n- `{{ name }}`：简单变量\n- `{{ dict.key }}`：字典的键\n- `{{ obj.attr }}`：对象的属性\n- `{{ obj.method }}`：对象的方法（无参数）\n- `{{ list.0 }}`：列表的索引\n\n**过滤器：**\n过滤器用于修改变量的显示格式，语法：`{{ 变量|过滤器 }}`，可以链式使用。\n\n常用过滤器：\n- `default`：默认值\n- `length`：长度\n- `date`：日期格式化\n- `upper` / `lower`：大写/小写\n- `truncatechars`：截断字符\n- `safe`：标记为安全（不转义HTML）\n- `escape`：转义HTML\n- `floatformat`：格式化小数\n- `slice`：切片\n- `join`：列表连接成字符串"
+          },
+          {
+            "title": "3.4 过滤器代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "{# 变量展示 #}\n<p>姓名：{{ name }}</p>\n<p>年龄：{{ person.age }}</p>\n<p>城市：{{ info.city }}</p>\n<p>第一个爱好：{{ hobbies.0 }}</p>\n<p>大写：{{ name|upper }}</p>\n<p>小写：{{ name|lower }}</p>\n\n{# default过滤器：变量不存在或为空时显示默认值 #}\n<p>手机：{{ phone|default:'暂无' }}</p>\n<p>描述：{{ description|default:'暂无描述' }}</p>\n\n{# 长度 #}\n<p>文章数量：{{ articles|length }} 篇</p>\n<p>名字长度：{{ name|length }}</p>\n\n{# 日期格式化 #}\n<p>发布日期：{{ pub_date|date:'Y-m-d' }}</p>\n<p>时间：{{ pub_date|date:'H:i:s' }}</p>\n<p>完整日期：{{ pub_date|date:'Y年m月d日 H:i' }}</p>\n\n{# 字符串截断 #}\n<p>摘要：{{ content|truncatechars:50 }}</p>\n<p>按单词截断：{{ content|truncatewords:10 }}</p>\n\n{# 其他常用过滤器 #}\n<p>首字母大写：{{ name|capfirst }}</p>\n<p>去掉空格：{{ text|cut:' ' }}</p>\n<p>列表用逗号连接：{{ tags|join:', ' }}</p>\n<p>小数保留2位：{{ price|floatformat:2 }}</p>\n<p>切片：{{ text|slice:':10' }}</p>\n<p>第一个：{{ list|first }}，最后一个：{{ list|last }}</p>\n\n{# safe过滤器：让HTML不被转义（小心XSS！） #}\n<div>{{ html_content|safe }}</div>\n\n{# 链式使用过滤器 #}\n<p>{{ text|upper|truncatechars:20 }}</p>"
+          },
+          {
+            "title": "3.5 模板标签",
+            "content": "模板标签用 `{% 标签 %}` 表示，用于执行逻辑操作。\n\n**常用标签：**\n- `{% if %} ... {% endif %}`：条件判断\n- `{% for %} ... {% endfor %}`：循环\n- `{% for %} ... {% empty %} ... {% endfor %}`：空列表时显示empty内容\n- `{% url 'name' %}`：生成URL\n- `{% static '路径' %}`：生成静态文件URL\n- `{% extends 'base.html' %}`：模板继承\n- `{% block name %}{% endblock %}`：定义/填充块\n- `{% include 'xxx.html' %}`：包含其他模板\n- `{% with var=xxx %}`：定义变量别名\n- `{% csrf_token %}`：CSRF令牌（表单必备）\n- `{% load xxx %}`：加载模板标签库\n\n**循环中的特殊变量：**\n- `forloop.counter`：当前循环次数（从1开始）\n- `forloop.counter0`：从0开始\n- `forloop.revcounter`：倒序计数（到1结束）\n- `forloop.first`：是否是第一次循环\n- `forloop.last`：是否是最后一次"
+          },
+          {
+            "title": "3.6 标签代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "{# if条件判断 #}\n{% if age >= 18 %}\n    <p>成年了</p>\n{% elif age >= 12 %}\n    <p>青少年</p>\n{% else %}\n    <p>儿童</p>\n{% endif %}\n\n{% if user.is_authenticated and user.is_staff %}\n    <a href=\"/admin/\">进入后台</a>\n{% endif %}\n\n{# for循环 #}\n<ul>\n{% for article in articles %}\n    <li>\n        {{ forloop.counter }}. {{ article.title }}\n        {% if forloop.first %} (最新){% endif %}\n        {% if forloop.last %} (最早){% endif %}\n    </li>\n{% empty %}\n    <li>暂无文章</li>\n{% endfor %}\n</ul>\n\n{# 嵌套循环 #}\n{% for category in categories %}\n    <h3>{{ category.name }}</h3>\n    <ul>\n    {% for article in category.articles %}\n        <li>{{ article.title }}</li>\n    {% endfor %}\n    </ul>\n{% endfor %}\n\n{# with定义变量 #}\n{% with total=articles|length %}\n    <p>共有 {{ total }} 篇文章</p>\n    <p>第一页显示 {{ first_page_count }} / {{ total }}</p>\n{% endwith %}\n\n{# url标签生成链接 #}\n<a href=\"{% url 'blog:index' %}\">博客首页</a>\n<a href=\"{% url 'blog:detail' article.id %}\">{{ article.title }}</a>\n\n{# comment多行注释 #}\n{% comment %}\n    这是多行注释\n    不会输出到HTML\n{% endcomment %}"
+          },
+          {
+            "title": "3.7 模板继承",
+            "content": "模板继承是Django模板系统最强大的功能之一。它允许你创建一个基础模板（骨架），然后子模板继承基础模板并填充不同的内容块。\n\n**模板继承的好处：**\n- 减少重复代码：公共部分（头部、尾部、导航栏）只写一次\n- 便于维护：修改公共部分只需改基础模板\n- 结构清晰：每个页面专注于自己的内容\n\n**使用方法：**\n1. 创建基础模板（base.html），定义公共部分和`{% block %}`占位块\n2. 子模板用`{% extends 'base.html' %}`继承基础模板\n3. 子模板用`{% block name %}内容{% endblock %}`填充对应的块\n\n**块的嵌套：**\nblock可以嵌套使用。子模板可以选择填充哪些块，不填充的块使用基础模板的默认内容。\n用`{{ block.super }}`可以调用父模板中该块的内容。"
+          },
+          {
+            "title": "3.8 模板继承代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- 基础模板 templates/base.html -->\n<!DOCTYPE html>\n<html lang=\"zh-CN\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>{% block title %}我的网站{% endblock %}</title>\n    <style>\n        /* 公共样式 */\n        body { margin: 0; font-family: Arial, sans-serif; }\n        .header { background: #333; color: white; padding: 10px; }\n        .nav a { color: white; margin-right: 15px; text-decoration: none; }\n        .footer { background: #f5f5f5; padding: 20px; text-align: center; margin-top: 30px; }\n        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }\n    </style>\n    {% block extra_head %}{% endblock %}\n</head>\n<body>\n    <!-- 公共头部 -->\n    <header class=\"header\">\n        <div class=\"container\">\n            <h1>我的网站</h1>\n            <nav class=\"nav\">\n                <a href=\"/\">首页</a>\n                <a href=\"/blog/\">博客</a>\n                <a href=\"/about/\">关于</a>\n            </nav>\n        </div>\n    </header>\n    \n    <!-- 内容区域（子模板填充） -->\n    <main class=\"container\">\n        {% block content %}{% endblock %}\n    </main>\n    \n    <!-- 公共底部 -->\n    <footer class=\"footer\">\n        <div class=\"container\">\n            <p>&copy; 2024 我的网站. All rights reserved.</p>\n        </div>\n    </footer>\n    \n    {% block extra_js %}{% endblock %}\n</body>\n</html>\n\n<!-- 子模板 templates/blog/index.html -->\n{% extends 'base.html' %}\n\n{% block title %}博客首页 - 我的网站{% endblock %}\n\n{% block content %}\n<h2>博客文章列表</h2>\n<ul>\n    {% for article in articles %}\n    <li>\n        <h3>{{ article.title }}</h3>\n        <p>{{ article.content|truncatechars:100 }}</p>\n    </li>\n    {% endfor %}\n</ul>\n{% endblock %}\n\n{% block extra_js %}\n<script>\n    console.log('博客页面专属JS');\n</script>\n{% endblock %}"
+          },
+          {
+            "title": "3.9 模板包含",
+            "content": "除了模板继承，Django还提供了模板包含（include）功能，用于将其他模板文件包含进来。\n\n**include vs extends：**\n- `extends`：模板继承，是子模板填充父模板的块（一对一，骨架模式）\n- `include`：模板包含，是把另一个模板完整嵌入当前位置（可以多次包含）\n\n**适合用include的场景：**\n- 可复用的组件：比如评论框、分页组件、卡片组件等\n- 重复的代码片段：比如广告位、侧边栏等\n- 把大模板拆分成小模块，便于维护\n\n**传递变量给include的模板：**\n默认情况下，include的模板可以访问当前模板的所有上下文变量。也可以用`with`只传递指定变量。"
+          },
+          {
+            "title": "3.10 模板包含代码示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- 文章卡片组件 templates/blog/_article_card.html -->\n<div class=\"article-card\">\n    <h3><a href=\"{% url 'blog:detail' article.id %}\">{{ article.title }}</a></h3>\n    <p class=\"meta\">\n        作者：{{ article.author }} | \n        日期：{{ article.pub_date|date:'Y-m-d' }} |\n        阅读：{{ article.views }}次\n    </p>\n    <p class=\"summary\">{{ article.summary|truncatechars:150 }}</p>\n    <a href=\"{% url 'blog:detail' article.id %}\" class=\"read-more\">阅读更多 →</a>\n</div>\n\n<!-- 分页组件 templates/_pagination.html -->\n{% if is_paginated %}\n<div class=\"pagination\">\n    {% if page_obj.has_previous %}\n        <a href=\"?page=1\">首页</a>\n        <a href=\"?page={{ page_obj.previous_page_number }}\">上一页</a>\n    {% endif %}\n    \n    <span class=\"current\">\n        第 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} 页\n    </span>\n    \n    {% if page_obj.has_next %}\n        <a href=\"?page={{ page_obj.next_page_number }}\">下一页</a>\n        <a href=\"?page={{ page_obj.paginator.num_pages }}\">末页</a>\n    {% endif %}\n</div>\n{% endif %}\n\n<!-- 在列表页中使用 -->\n{% extends 'base.html' %}\n\n{% block content %}\n<h2>文章列表</h2>\n\n<div class=\"article-list\">\n    {% for article in articles %}\n        {% include 'blog/_article_card.html' %}\n    {% empty %}\n        <p>暂无文章</p>\n    {% endfor %}\n</div>\n\n{% include '_pagination.html' %}\n{% endblock %}\n\n<!-- with指定变量 -->\n{% include 'blog/_article_card.html' with article=featured_article %}"
+          },
+          {
+            "title": "3.11 静态文件",
+            "content": "静态文件包括CSS、JavaScript、图片、字体等，这些文件不需要Django动态处理。\n\n**静态文件存放位置：**\n- 每个应用下的`static/`目录（应用专属静态文件）\n- 项目根目录的`static/`目录（公共静态文件）\n\n**配置静态文件：**\nsettings.py中已有默认配置：\n- `STATIC_URL = 'static/'`：静态文件的URL前缀\n- 开发时Django自动处理静态文件\n\n生产环境需要运行`collectstatic`命令收集所有静态文件到一个目录，然后用Web服务器（Nginx）直接提供。\n\n**使用静态文件：**\n模板中需要先`{% load static %}`，然后用`{% static '路径' %}`生成URL。\n\n**媒体文件（用户上传）：**\n用户上传的文件叫媒体文件，配置`MEDIA_URL`和`MEDIA_ROOT`。开发时需要在urls.py中加媒体文件的路由。"
+          },
+          {
+            "title": "3.12 静态文件代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# settings.py 配置\nSTATIC_URL = '/static/'\n\n# 公共静态文件目录（可选）\nSTATICFILES_DIRS = [\n    BASE_DIR / 'static',  # 项目根目录的static文件夹\n]\n\n# 生产环境收集静态文件的目录（部署时用）\nSTATIC_ROOT = BASE_DIR / 'staticfiles'\n\n# 媒体文件配置\nMEDIA_URL = '/media/'\nMEDIA_ROOT = BASE_DIR / 'media'\n\n\n# 项目 urls.py - 开发时提供媒体文件访问\nfrom django.conf import settings\nfrom django.conf.urls.static import static\nfrom django.contrib import admin\nfrom django.urls import path, include\n\nurlpatterns = [\n    path('admin/', admin.site.urls),\n    path('', include('blog.urls')),\n]\n\n# 开发环境才添加媒体文件路由\nif settings.DEBUG:\n    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)"
+          },
+          {
+            "title": "3.13 静态文件模板示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- 使用静态文件前要先加载static标签库 -->\n{% load static %}\n\n<!DOCTYPE html>\n<html>\n<head>\n    <link rel=\"stylesheet\" href=\"{% static 'css/style.css' %}?v=1.0\">\n    <link rel=\"shortcut icon\" href=\"{% static 'images/favicon.ico' %}\" type=\"image/x-icon\">\n    <title>我的网站</title>\n    <style>\n        .banner {\n            background-image: url('{% static \"images/banner.jpg\" %}');\n            height: 300px;\n            background-size: cover;\n        }\n    </style>\n</head>\n<body>\n    <img src=\"{% static 'images/logo.png' %}\" alt=\"Logo\" width=\"100\">\n    \n    <div class=\"banner\"></div>\n    \n    <!-- 用户上传的媒体文件（模型的ImageField） -->\n    {% if user.avatar %}\n        <img src=\"{{ user.avatar.url }}\" alt=\"头像\">\n    {% else %}\n        <img src=\"{% static 'images/default-avatar.png' %}\" alt=\"默认头像\">\n    {% endif %}\n    \n    <script src=\"{% static 'js/main.js' %}\"></script>\n</body>\n</html>\n\n<!-- 目录结构参考\n项目根目录/\n├── static/          # 公共静态文件\n│   ├── css/\n│   │   └── style.css\n│   ├── js/\n│   │   └── main.js\n│   └── images/\n│       ├── logo.png\n│       └── banner.jpg\n├── blog/\n│   └── static/      # blog应用专属静态文件\n│       └── blog/\n│           └── css/\n│               └── blog.css\n└── media/           # 用户上传的文件（运行时生成）\n    └── avatars/\n        └── user1.jpg\n-->"
+          },
+          {
+            "title": "3.14 动手练习",
+            "type": "exercise",
+            "content": "完成以下练习：\n\n1. 创建基础模板 base.html，包含公共的头部、导航栏、底部，定义 title、content、extra_css、extra_js 四个block\n2. 创建博客列表页模板，继承base.html，循环显示文章列表（用模拟数据）\n3. 创建文章详情页模板，显示文章标题、作者、日期、内容\n4. 抽取文章卡片为单独的模板文件，用include在列表页中使用\n5. 配置静态文件，创建CSS文件美化页面（导航栏、卡片样式等），在模板中引用\n6. 尝试使用各种过滤器：日期格式化、字符串截断、列表长度等\n7. 给列表页加上分页组件（用模拟数据和include）\n\n提示：用render()函数渲染模板，传context字典。静态文件用{% load static %}和{% static %}标签。"
+          }
+        ],
+        "summary": "本章我们学习了Django的模板系统，包括模板语法、变量与过滤器、模板标签、模板继承、模板包含和静态文件。模板继承是DRY原则的体现，可以大大减少重复代码。下一章我们学习模型与数据库。",
+        "quiz": {
+          "question": "在Django模板中，实现模板继承应该使用哪个标签？",
+          "options": [
+            "{% include %}",
+            "{% extends %}",
+            "{% block %}",
+            "{% load %}"
+          ],
+          "answer": 1,
+          "explanation": "{% extends %}标签用于继承基础模板，{% block %}用于定义和填充内容块，{% include %}用于包含其他模板，{% load %}用于加载标签库。"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "模型与数据库",
+      "duration": "130分钟",
+      "content": {
+        "introduction": "模型（Model）是Django MVT模式中的数据层，负责与数据库交互。Django提供了强大的ORM（对象关系映射）系统，让我们可以用Python类来定义数据库表结构，用Python代码来操作数据库，而不用写SQL语句。本章我们学习ORM、模型定义、字段类型、数据库迁移和Admin后台。",
+        "sections": [
+          {
+            "title": "4.1 ORM介绍",
+            "content": "ORM（Object-Relational Mapping，对象关系映射）是一种编程技术，它把数据库中的表映射成Python中的类，表的每一行映射成类的一个实例（对象）。\n\n**ORM的优点：**\n- 不用写SQL语句，用Python代码操作数据库，开发效率高\n- 自动防SQL注入，更安全\n- 支持多种数据库（SQLite、MySQL、PostgreSQL等），切换数据库只需改配置\n- 数据库迁移方便\n\n**ORM的缺点：**\n- 复杂查询性能可能不如原生SQL\n- 特别复杂的查询用ORM写起来反而麻烦\n- 有一定的学习成本\n\n总的来说，ORM利大于弊，绝大多数场景用ORM都够用了，而且代码更简洁易维护。Django的ORM非常强大，支持非常多的查询方式。"
+          },
+          {
+            "title": "4.2 模型定义基础",
+            "content": "Django模型是一个Python类，继承自`django.db.models.Model`。类的每个属性代表一个数据库字段。Django会自动为每个模型生成数据库表。\n\n**模型的基本结构：**\n- 类名：表名（Django会自动转换为小写加下划线，前面加应用名前缀）\n- 属性：字段（列）\n- Meta类（可选）：模型的元数据（表名、排序方式等）\n- `__str__()`方法：对象的字符串表示（Admin后台和调试用）\n\n**表名规则：**\n默认表名是 `应用名_模型名小写`，比如blog应用的Article模型，表名是`blog_article`。\n可以在Meta类中用`db_table`自定义表名。\n\n**主键：**\nDjango会自动创建一个名为`id`的自增主键字段，不需要手动定义。当然也可以自定义主键。"
+          },
+          {
+            "title": "4.3 第一个模型代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# blog/models.py\nfrom django.db import models\nfrom django.contrib.auth.models import User\n\nclass Article(models.Model):\n    # 字段定义\n    title = models.CharField(max_length=200, verbose_name='标题')\n    content = models.TextField(verbose_name='内容')\n    summary = models.CharField(max_length=300, blank=True, verbose_name='摘要')\n    views = models.IntegerField(default=0, verbose_name='阅读量')\n    is_published = models.BooleanField(default=True, verbose_name='是否发布')\n    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='发布日期')\n    update_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')\n    \n    # 外键（关联用户表）\n    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')\n    \n    # 元数据\n    class Meta:\n        db_table = 'blog_articles'  # 自定义表名（可选）\n        ordering = ['-pub_date']  # 默认按发布日期倒序排列\n        verbose_name = '文章'  # 单数名称\n        verbose_name_plural = verbose_name  # 复数名称\n        \n    # 对象的字符串表示\n    def __str__(self):\n        return self.title\n    \n    # 自定义方法\n    def increase_views(self):\n        self.views += 1\n        self.save(update_fields=['views'])\n\n\nclass Category(models.Model):\n    name = models.CharField(max_length=50, verbose_name='分类名称')\n    description = models.TextField(blank=True, verbose_name='描述')\n    created_at = models.DateTimeField(auto_now_add=True)\n    \n    class Meta:\n        ordering = ['name']\n        verbose_name = '分类'\n        verbose_name_plural = verbose_name\n    \n    def __str__(self):\n        return self.name\n    \n    def article_count(self):\n        return self.article_set.count()"
+          },
+          {
+            "title": "4.4 常用字段类型",
+            "content": "Django提供了丰富的字段类型，几乎覆盖所有需求。\n\n**字符串类型：**\n- `CharField(max_length)`：短字符串，必须指定max_length\n- `TextField`：长文本（大段内容）\n- `EmailField`：邮箱（自动验证格式）\n- `URLField`：URL地址\n- `SlugField`：短标签（字母数字连字符下划线）\n- `IPAddressField`：IP地址\n\n**数值类型：**\n- `IntegerField`：整数\n- `FloatField`：浮点数\n- `DecimalField(max_digits, decimal_places)`：高精度小数（金融用）\n- `BooleanField`：布尔值（True/False）\n- `SmallIntegerField` / `BigIntegerField`：小整数/大整数\n\n**日期时间类型：**\n- `DateField`：日期\n- `TimeField`：时间\n- `DateTimeField`：日期时间\n  - `auto_now_add=True`：创建时自动设为当前时间\n  - `auto_now=True`：每次保存时自动更新为当前时间\n\n**文件和图片：**\n- `FileField(upload_to)`：文件上传\n- `ImageField(upload_to)`：图片上传（需要Pillow库）"
+          },
+          {
+            "title": "4.5 字段选项参数",
+            "content": "每个字段都有一些通用的选项参数：\n\n**通用选项：**\n- `null=True`：数据库中该字段可以为NULL（默认False）\n- `blank=True`：表单中该字段可以为空（默认False，只影响表单验证，不影响数据库）\n- `default`：默认值\n- `primary_key=True`：设为主键（默认False，Django自动创建id主键）\n- `unique=True`：值唯一（默认False）\n- `db_index=True`：创建索引（默认False）\n- `verbose_name`：字段的可读名称（Admin后台用）\n- `help_text`：帮助文本（Admin后台显示）\n- `choices`：可选值（枚举）\n- `editable`：是否可编辑（默认True，设为False的话Admin后台不显示）\n\n**注意 null vs blank：**\n- `null`是数据库层面的，决定字段是否允许NULL值\n- `blank`是表单验证层面的，决定表单是否允许空值\n- 对于CharField和TextField，一般用blank=True而不用null=True，因为空字符串已经表示空了，用NULL反而麻烦。"
+          },
+          {
+            "title": "4.6 关系字段",
+            "content": "数据库表之间的关系有三种：一对多、多对多、一对一。Django提供了对应的字段。\n\n**一对多（ForeignKey）：**\n- 最常用的关系，比如一个作者有多篇文章\n- `ForeignKey(关联模型, on_delete=...)`\n- `on_delete`参数（必填）：关联的对象被删除时怎么办\n  - `models.CASCADE`：级联删除（作者删了，文章也删）\n  - `models.PROTECT`：保护，有文章就不让删作者\n  - `models.SET_NULL`：设为NULL（需要null=True）\n  - `models.SET_DEFAULT`：设为默认值\n  - `models.SET(...)`：设为指定值\n  - `models.DO_NOTHING`：什么都不做（自己处理）\n\n**多对多（ManyToManyField）：**\n- 比如文章和标签：一篇文章有多个标签，一个标签对应多篇文章\n- Django会自动创建中间表\n\n**一对一（OneToOneField）：**\n- 比如用户和用户资料：一个用户对应一份资料\n- 相当于ForeignKey加unique=True"
+          },
+          {
+            "title": "4.7 关系字段代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from django.db import models\nfrom django.contrib.auth.models import User\n\nclass Category(models.Model):\n    name = models.CharField(max_length=50)\n    def __str__(self):\n        return self.name\n\nclass Tag(models.Model):\n    name = models.CharField(max_length=30)\n    def __str__(self):\n        return self.name\n\nclass Article(models.Model):\n    title = models.CharField(max_length=200)\n    content = models.TextField()\n    \n    # 一对多：一个分类有多篇文章，一篇文章属于一个分类\n    category = models.ForeignKey(\n        Category,\n        on_delete=models.SET_NULL,  # 分类删了，文章的分类设为NULL\n        null=True, blank=True,\n        related_name='articles',  # 反向访问的名称，默认是 model名_set\n        verbose_name='分类'\n    )\n    \n    # 多对多：一篇文章有多个标签，一个标签有多篇文章\n    tags = models.ManyToManyField(\n        Tag,\n        blank=True,\n        related_name='articles',\n        verbose_name='标签'\n    )\n    \n    # 一对多：一个作者有多篇文章\n    author = models.ForeignKey(\n        User,\n        on_delete=models.CASCADE,  # 用户删了，文章也删\n        related_name='articles',\n        verbose_name='作者'\n    )\n\nclass UserProfile(models.Model):\n    # 一对一：一个用户对应一份资料\n    user = models.OneToOneField(\n        User,\n        on_delete=models.CASCADE,\n        related_name='profile',\n        verbose_name='用户'\n    )\n    phone = models.CharField(max_length=20, blank=True)\n    avatar = models.ImageField(upload_to='avatars/', blank=True)\n    bio = models.TextField(blank=True, verbose_name='个人简介')\n\n    def __str__(self):\n        return f'{self.user.username}的资料'"
+          },
+          {
+            "title": "4.8 数据库迁移",
+            "content": "定义好模型后，需要通过数据库迁移（migration）来创建或修改数据库表。\n\n**迁移的概念：**\n- 迁移是Django对模型变更的一种记录方式\n- 每次修改模型后，生成迁移文件，然后执行迁移来更新数据库\n- 迁移文件存放在每个应用的`migrations/`目录下\n- 迁移文件是可以版本控制的，团队协作时一起提交\n\n**迁移命令：**\n- `python manage.py makemigrations`：根据模型变更生成迁移文件\n- `python manage.py migrate`：执行迁移，更新数据库\n- `python manage.py showmigrations`：查看迁移状态\n- `python manage.py sqlmigrate 应用名 迁移名`：查看迁移对应的SQL语句\n- `python manage.py migrate --fake`：假迁移（只记录，不实际执行）\n\n**工作流程：**\n1. 修改models.py中的模型\n2. 运行 `makemigrations` 生成迁移文件\n3. 运行 `migrate` 应用到数据库\n\n每次修改模型都要重复这个过程。"
+          },
+          {
+            "title": "4.9 迁移命令示例",
+            "type": "code",
+            "language": "bash",
+            "code": "# 1. 生成迁移文件（检测模型变化）\npython manage.py makemigrations\n\n# 只对某个应用生成迁移\npython manage.py makemigrations blog\n\n# 给迁移起个名字（方便识别）\npython manage.py makemigrations blog --name add_article_model\n\n# 2. 查看迁移对应的SQL（不执行，只是预览）\npython manage.py sqlmigrate blog 0001_initial\n\n# 3. 执行迁移（更新数据库）\npython manage.py migrate\n\n# 只迁移某个应用\npython manage.py migrate blog\n\n# 迁移到指定版本（回滚）\npython manage.py migrate blog 0001\n\n# 4. 查看迁移状态\npython manage.py showmigrations\npython manage.py showmigrations blog\n\n# 5. 检查项目是否有问题\npython manage.py check\n\n# 6. 数据库迁移流程示例\n# 修改 models.py 添加新字段\n# python manage.py makemigrations  # 生成 0002_xxx.py\n# python manage.py migrate         # 应用到数据库\n# git add migrations/              # 提交迁移文件到版本控制"
+          },
+          {
+            "title": "4.10 Admin后台",
+            "content": "Django最吸引人的功能之一就是自动生成的Admin管理后台。只需简单配置，就能拥有一个功能完善的后台管理系统。\n\n**使用Admin的步骤：**\n1. 创建超级用户：`python manage.py createsuperuser`\n2. 在应用的admin.py中注册模型\n3. 访问 `/admin/` 登录后台\n\n**Admin的功能：**\n- 数据的增删改查\n- 搜索、过滤、排序\n- 批量操作\n- 权限管理\n- 历史记录\n\n**自定义Admin：**\n可以通过继承`admin.ModelAdmin`来自定义Admin界面：\n- `list_display`：列表页显示哪些字段\n- `list_filter`：右侧过滤器\n- `search_fields`：搜索字段\n- `ordering`：默认排序\n- `fields` / `fieldsets`：编辑页字段布局\n- `readonly_fields`：只读字段\n- `list_per_page`：每页显示多少条\n- `inlines`：内联编辑关联数据"
+          },
+          {
+            "title": "4.11 Admin配置代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# blog/admin.py\nfrom django.contrib import admin\nfrom .models import Article, Category, Tag\n\nclass ArticleAdmin(admin.ModelAdmin):\n    # 列表页显示的字段\n    list_display = ('title', 'category', 'author', 'views', 'is_published', 'pub_date')\n    \n    # 可点击进入编辑页的字段\n    list_display_links = ('title',)\n    \n    # 列表页可直接编辑的字段\n    list_editable = ('is_published', 'category')\n    \n    # 右侧过滤器\n    list_filter = ('category', 'is_published', 'pub_date', 'tags')\n    \n    # 搜索字段\n    search_fields = ('title', 'content', 'author__username')\n    \n    # 日期层次导航\n    date_hierarchy = 'pub_date'\n    \n    # 每页显示条数\n    list_per_page = 20\n    \n    # 默认排序\n    ordering = ['-pub_date']\n    \n    # 只读字段\n    readonly_fields = ('views', 'pub_date', 'update_time')\n    \n    # 编辑页字段分组\n    fieldsets = (\n        ('基本信息', {\n            'fields': ('title', 'summary', 'content')\n        }),\n        ('分类与标签', {\n            'fields': ('category', 'tags')\n        }),\n        ('其他信息', {\n            'fields': ('author', 'views', 'is_published'),\n            'classes': ('collapse',)  # 可折叠\n        }),\n    )\n    \n    # 保存时自动设置作者为当前登录用户\n    def save_model(self, request, obj, form, change):\n        if not obj.author_id:\n            obj.author = request.user\n        super().save_model(request, obj, form, change)\n\n\n# 注册模型\nadmin.site.register(Article, ArticleAdmin)\nadmin.site.register(Category)\nadmin.site.register(Tag)\n\n# 创建超级用户命令\n# python manage.py createsuperuser\n# 输入用户名、邮箱、密码\n# 访问 /admin/ 登录"
+          },
+          {
+            "title": "4.12 Django Shell操作数据",
+            "content": "在写视图之前，我们可以先用Django Shell来测试模型操作。Django Shell是一个增强的Python Shell，自动加载了Django环境，可以直接操作模型。\n\n**进入Shell：**\n`python manage.py shell`\n\n**基本增删改查：**\n- 创建：`obj = Model(字段=值)` → `obj.save()` 或 `Model.objects.create(...)`\n- 查询：`Model.objects.all()`, `Model.objects.get(...)`, `Model.objects.filter(...)`\n- 更新：修改属性 → `obj.save()` 或 `QuerySet.update(...)`\n- 删除：`obj.delete()` 或 `QuerySet.delete()`\n\n下一章我们会详细学习ORM查询，这里先简单了解一下。"
+          },
+          {
+            "title": "4.13 Shell操作示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 进入Django Shell\n# python manage.py shell\n\n# 导入模型\nfrom blog.models import Article, Category, Tag\nfrom django.contrib.auth.models import User\n\n# 1. 创建数据\n# 方式一：实例化后save\ncat = Category(name='Python')\ncat.save()\n\n# 方式二：create方法（一步到位）\ncat2 = Category.objects.create(name='Django', description='Django相关文章')\nTag.objects.create(name='Web开发')\n\n# 创建用户（实际项目中用User.objects.create_user）\nuser = User.objects.create_user(username='testuser', password='123456')\n\n# 创建文章\narticle = Article.objects.create(\n    title='Django入门',\n    content='Django是一个强大的Web框架...',\n    category=cat2,\n    author=user\n)\n\n# 2. 查询\nall_categories = Category.objects.all()  # 所有分类\nprint(all_categories)\n\nfirst_article = Article.objects.first()  # 第一篇文章\nprint(first_article.title)\n\n# 3. 更新\narticle.title = 'Django入门教程（修订版）'\narticle.save()\n\n# 4. 删除\n# article.delete()\n\n# 5. 查看SQL\nprint(Article.objects.all().query)\n\nexit()  # 退出shell"
+          },
+          {
+            "title": "4.14 动手练习",
+            "type": "exercise",
+            "content": "完成以下练习：\n\n1. 在blog应用中创建以下模型：\n   - Article（文章）：标题、内容、摘要、阅读量、是否发布、发布时间、更新时间\n   - Category（分类）：名称、描述、创建时间\n   - Tag（标签）：名称\n   - Comment（评论）：文章（外键）、用户名、邮箱、内容、创建时间、是否审核\n   - 文章和分类是一对多，文章和标签是多对多，文章和评论是一对多\n2. 生成迁移文件并执行迁移\n3. 在admin.py中注册所有模型，自定义ArticleAdmin：\n   - 列表显示标题、分类、作者、阅读量、是否发布、发布日期\n   - 按分类、是否发布过滤\n   - 搜索标题和内容\n   - 按发布日期倒序排列\n   - 每页显示15条\n4. 创建超级用户，登录Admin后台，添加一些测试数据\n5. 用Django Shell测试增删改查操作\n\n提示：注意外键的on_delete参数，文本类型用blank=True不用null=True。"
+          }
+        ],
+        "summary": "本章我们学习了Django的ORM系统、模型定义、常用字段类型、关系字段、数据库迁移和Admin后台。ORM是Django的核心功能之一，大大提高了开发效率。下一章我们深入学习ORM的各种查询方法。",
+        "quiz": {
+          "question": "在Django模型中，定义一对多关系应该使用哪个字段？",
+          "options": [
+            "OneToOneField",
+            "ManyToManyField",
+            "ForeignKey",
+            "CharField"
+          ],
+          "answer": 2,
+          "explanation": "ForeignKey用于定义一对多关系（多对一），比如多篇文章属于一个分类。OneToOneField是一对一关系，ManyToManyField是多对多关系。"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "ORM查询详解",
+      "duration": "140分钟",
+      "content": {
+        "introduction": "Django的ORM提供了非常丰富的查询API，可以满足绝大多数查询需求。本章我们将系统学习单表查询、条件查询、排序分页、聚合查询、关联查询等高级查询方法。掌握好ORM查询是Django开发的核心技能。",
+        "sections": [
+          {
+            "title": "5.1 QuerySet简介",
+            "content": "Django ORM的查询结果是一个QuerySet对象。QuerySet是惰性的——创建它不会立即执行数据库查询，只有当你真正使用数据时才会执行。\n\n**QuerySet的特点：**\n- 惰性求值：创建时不查数据库，迭代/切片/取len等才执行\n- 可链式调用：多个过滤条件可以串联起来\n- 可缓存：第一次求值后缓存结果，再次使用不重复查询\n\n**常用查询方法（返回QuerySet）：**\n- `all()`：所有对象\n- `filter(**kwargs)`：条件过滤（满足条件的）\n- `exclude(**kwargs)`：排除（不满足条件的）\n- `order_by(*fields)`：排序\n- `reverse()`：反转顺序\n- `distinct()`：去重\n- `values(*fields)`：返回字典列表\n- `values_list(*fields)`：返回元组列表\n- `none()`：空QuerySet\n\n**常用方法（不返回QuerySet，立即执行）：**\n- `get(**kwargs)`：获取单个对象（找不到或多个都会报错）\n- `first()` / `last()`：第一个/最后一个\n- `count()`：数量\n- `exists()`：是否存在\n- `create(**kwargs)`：创建对象\n- `bulk_create(objs)`：批量创建\n- `update(**kwargs)`：批量更新\n- `delete()`：批量删除"
+          },
+          {
+            "title": "5.2 基本查询代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# python manage.py shell\nfrom blog.models import Article, Category\nfrom django.contrib.auth.models import User\n\n# ---- 返回QuerySet的方法 ----\n\n# all() - 所有文章\nall_articles = Article.objects.all()\nprint(all_articles)  # 这里才执行查询\n\n# filter() - 过滤\npublished = Article.objects.filter(is_published=True)\npython_articles = Article.objects.filter(category__name='Python')\n\n# exclude() - 排除\ndraft = Article.objects.exclude(is_published=True)  # 未发布的\n\n# 链式调用（QuerySet可以继续调用方法）\nresult = Article.objects.filter(\n    is_published=True\n).filter(\n    category_id=1\n).order_by('-pub_date')\n\n# order_by() - 排序\nby_date = Article.objects.order_by('pub_date')   # 升序（旧到新）\nby_date_desc = Article.objects.order_by('-pub_date')  # 降序（新到旧）\nmulti_order = Article.objects.order_by('category', '-pub_date')  # 先按分类升序，再按日期降序\n\n# values() - 返回字典列表（只取指定字段，性能更好）\ntitles = Article.objects.values('id', 'title', 'pub_date')\n# <QuerySet [{'id': 1, 'title': '...', 'pub_date': datetime(...)}, ...]>\n\n# values_list() - 返回元组列表\ntitles_list = Article.objects.values_list('id', 'title')\n# <QuerySet [(1, '标题1'), (2, '标题2'), ...]>\n\n# flat=True - 单字段时返回扁平列表\nids = Article.objects.values_list('id', flat=True)\n# <QuerySet [1, 2, 3, ...]>"
+          },
+          {
+            "title": "5.3 获取单个对象",
+            "content": "有些时候我们只需要获取单个对象，Django提供了几种方法。\n\n**get()方法：**\n- 返回匹配条件的单个对象\n- 找不到对象：抛出 `DoesNotExist` 异常\n- 找到多个对象：抛出 `MultipleObjectsReturned` 异常\n- 适用于根据唯一字段查询（如id、主键）\n\n**first() / last()方法：**\n- 返回QuerySet中的第一个/最后一个对象\n- 没有数据返回None（不会报错）\n- 比get()更安全，但需要注意排序\n\n**get_object_or_404()快捷函数：**\n- 视图中常用，找不到对象返回404错误页面\n- 不用自己捕获异常，代码更简洁\n- 来自 `django.shortcuts` 模块\n\n**get_or_create()方法：**\n- 查找对象，找到了返回(obj, False)\n- 没找到就创建，返回(obj, True)\n- 很实用的方法，避免先查后写的竞争问题"
+          },
+          {
+            "title": "5.4 单个对象查询代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from blog.models import Article\nfrom django.shortcuts import get_object_or_404\n\n# ---- get() - 查找单个对象 ----\ntry:\n    article = Article.objects.get(id=1)\n    print(article.title)\nexcept Article.DoesNotExist:\n    print('文章不存在')\nexcept Article.MultipleObjectsReturned:\n    print('找到多篇文章')\n\n# ---- first() / last() ----\nfirst_article = Article.objects.first()  # 第一篇（按默认排序）\nlast_article = Article.objects.last()    # 最后一篇\n\n# 按条件查找，取第一个\nlatest_python = Article.objects.filter(category__name='Python').first()\n\nif first_article:\n    print('有文章：', first_article.title)\nelse:\n    print('没有文章')\n\n# ---- get_object_or_404() - 视图中常用 ----\ndef article_detail(request, article_id):\n    # 找不到自动返回404页面\n    article = get_object_or_404(Article, id=article_id, is_published=True)\n    return render(request, 'blog/detail.html', {'article': article})\n\n# ---- get_or_create() - 查找或创建 ----\nobj, created = Article.objects.get_or_create(\n    title='Django入门',  # 查找条件\n    defaults={           # 创建时的默认值（查找字段不需要写在这里）\n        'content': '内容...',\n        'author_id': 1,\n    }\n)\nif created:\n    print('创建了新文章:', obj.title)\nelse:\n    print('文章已存在:', obj.title)"
+          },
+          {
+            "title": "5.5 条件查询（字段查找）",
+            "content": "filter()等方法支持强大的字段查找（Field Lookups），通过双下划线`__`语法实现。\n\n**常用查找类型：**\n- `exact`：精确等于（默认，可省略）\n- `iexact`：不区分大小写等于\n- `contains`：包含（区分大小写）\n- `icontains`：包含（不区分大小写）\n- `startswith` / `istartswith`：以...开头\n- `endswith` / `iendswith`：以...结尾\n- `in`：在列表中\n- `gt` / `gte`：大于 / 大于等于\n- `lt` / `lte`：小于 / 小于等于\n- `range`：在...范围之间\n- `isnull`：是否为NULL\n- `regex` / `iregex`：正则表达式匹配\n- `date` / `year` / `month` / `day` / `week_day` / `hour` / `minute`：日期时间字段的各部分\n\n语法：`字段名__查找类型=值`，如 `title__contains='Django'`。\n如果不加查找类型，默认是 `__exact`（精确等于）。"
+          },
+          {
+            "title": "5.6 条件查询代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from blog.models import Article\nfrom datetime import datetime, date\n\n# ---- 字符串查找 ----\n# 精确等于（默认exact）\nArticle.objects.filter(title='Django入门')\nArticle.objects.filter(title__exact='Django入门')  # 同上\n\n# 不区分大小写\nArticle.objects.filter(title__iexact='django入门')\n\n# 包含\nArticle.objects.filter(title__contains='Django')\nArticle.objects.filter(content__icontains='教程')  # 不区分大小写\n\n# 开头/结尾\nArticle.objects.filter(title__startswith='Python')\nArticle.objects.filter(title__iendswith='教程')\n\n# ---- 比较运算 ----\n# 大于/小于\nArticle.objects.filter(views__gt=100)   # views > 100\nArticle.objects.filter(views__gte=100)  # views >= 100\nArticle.objects.filter(views__lt=50)    # views < 50\nArticle.objects.filter(views__lte=50)   # views <= 50\n\n# 在列表中\nArticle.objects.filter(id__in=[1, 3, 5, 7])\nArticle.objects.filter(category_id__in=Category.objects.filter(name__contains='Py').values_list('id', flat=True))\n\n# 范围\nArticle.objects.filter(views__range=[50, 200])  # views between 50 and 200\n\n# ---- 空值判断 ----\nArticle.objects.filter(category__isnull=True)   # 分类为NULL的\nArticle.objects.filter(category__isnull=False)  # 分类不为NULL的\n\n# ---- 日期时间 ----\n# 日期部分\nArticle.objects.filter(pub_date__year=2024)\nArticle.objects.filter(pub_date__month=1)\nArticle.objects.filter(pub_date__day=1)\nArticle.objects.filter(pub_date__week_day=1)  # 1=周日, 2=周一...\nArticle.objects.filter(pub_date__date=date(2024, 1, 1))\n\n# 日期范围\nstart_date = date(2024, 1, 1)\nend_date = date(2024, 12, 31)\nArticle.objects.filter(pub_date__range=(start_date, end_date))\n\n# ---- 正则 ----\nArticle.objects.filter(title__regex=r'^[0-9].*')  # 以数字开头"
+          },
+          {
+            "title": "5.7 Q对象：复杂查询",
+            "content": "默认情况下，filter()的多个参数是AND的关系。如果需要OR的关系，或者更复杂的逻辑，就需要用Q对象。\n\n**Q对象：**\n- 来自 `django.db.models`\n- 可以用 `&` 表示AND，`|` 表示OR，`~` 表示NOT\n- 可以组合嵌套使用\n- 可以和普通的关键字参数混合使用（Q对象要放在前面）\n\n**使用场景：**\n- OR条件查询\n- 复杂的逻辑组合\n- 动态构建查询条件（比如搜索功能，根据用户输入动态添加条件）\n\nQ对象非常实用，特别是做搜索和高级筛选功能的时候。"
+          },
+          {
+            "title": "5.8 Q对象代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from blog.models import Article\nfrom django.db.models import Q\n\n# ---- OR 查询 ----\n# 标题包含Django OR 内容包含Django\narticles = Article.objects.filter(\n    Q(title__icontains='Django') | Q(content__icontains='Django')\n)\n\n# ---- AND 查询（用Q也可以，和直接写多个参数效果一样） ----\nArticle.objects.filter(Q(is_published=True) & Q(views__gt=100))\n# 等价于\nArticle.objects.filter(is_published=True, views__gt=100)\n\n# ---- NOT 查询 ----\n# 除了id=1之外的文章\nArticle.objects.filter(~Q(id=1))\n\n# ---- 复杂组合 ----\n# (标题含Python OR 标题含Django) AND 已发布 AND 阅读量>50\nArticle.objects.filter(\n    Q(title__icontains='Python') | Q(title__icontains='Django'),\n    is_published=True,\n    views__gt=50\n)\n\n# 更复杂的：(A OR B) AND (C OR D)\nArticle.objects.filter(\n    (Q(title__icontains='Django') | Q(content__icontains='Django')) &\n    (Q(views__gt=100) | Q(is_published=True))\n)\n\n# ---- 动态构建查询（搜索功能示例） ----\ndef search_articles(keyword, category_id=None, is_published=None):\n    q = Q()\n    \n    if keyword:\n        q &= Q(title__icontains=keyword) | Q(content__icontains=keyword)\n    \n    if category_id:\n        q &= Q(category_id=category_id)\n    \n    if is_published is not None:\n        q &= Q(is_published=is_published)\n    \n    return Article.objects.filter(q)\n\n# 使用\nresults = search_articles('Django', category_id=1, is_published=True)"
+          },
+          {
+            "title": "5.9 排序与分页",
+            "content": "**排序：**\n- `order_by(*fields)`：按指定字段排序\n- 字段名前加 `-` 表示降序\n- 可以多个字段，按先后顺序排序\n- 可以用 `?` 随机排序（大数据量慎用！）\n- `reverse()`：反转排序\n- 在模型Meta中定义`ordering`可以设置默认排序\n\n**分页：**\nDjango提供了`Paginator`类来做分页。\n- `Paginator(object_list, per_page)`：创建分页器\n- `paginator.page(num)`：获取第num页的Page对象\n- Page对象的方法：`has_previous()`, `has_next()`, `previous_page_number()`, `next_page_number()`, `number`, `paginator`\n\nQuerySet也支持切片，和Python列表一样，但要注意：对QuerySet切片会转换成SQL的LIMIT/OFFSET，数据库层面分页，效率高。"
+          },
+          {
+            "title": "5.10 排序与分页代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from blog.models import Article\nfrom django.core.paginator import Paginator, PageNotAnInteger, EmptyPage\n\n# ---- 排序 ----\n# 按发布日期升序（旧到新）\nArticle.objects.all().order_by('pub_date')\n\n# 按发布日期降序（新到旧）\nArticle.objects.all().order_by('-pub_date')\n\n# 多字段排序：先按分类升序，同分类的按阅读量降序\nArticle.objects.all().order_by('category', '-views')\n\n# 随机排序（慎用，大数据量慢）\nArticle.objects.all().order_by('?')[:5]  # 随机取5篇\n\n# 反转排序\nqs = Article.objects.order_by('pub_date')\nqs_reversed = qs.reverse()  # 变成降序\n\n# ---- 分页 ----\ndef article_list(request):\n    all_articles = Article.objects.filter(is_published=True).order_by('-pub_date')\n    \n    # 创建分页器，每页10条\n    paginator = Paginator(all_articles, 10)\n    \n    # 获取当前页码\n    page = request.GET.get('page', 1)\n    \n    try:\n        page_obj = paginator.page(page)\n    except PageNotAnInteger:\n        # 如果page不是整数，返回第一页\n        page_obj = paginator.page(1)\n    except EmptyPage:\n        # 如果页码超出范围，返回最后一页\n        page_obj = paginator.page(paginator.num_pages)\n    \n    context = {\n        'articles': page_obj.object_list,  # 当前页的文章列表\n        'page_obj': page_obj,              # Page对象，模板里用来显示分页\n        'is_paginated': page_obj.has_other_pages(),\n    }\n    return render(request, 'blog/list.html', context)\n\n# Page对象常用属性和方法：\n# page_obj.number              当前页码\n# page_obj.paginator.num_pages 总页数\n# page_obj.has_previous()      是否有上一页\n# page_obj.has_next()          是否有下一页\n# page_obj.previous_page_number() 上一页页码\n# page_obj.next_page_number()  下一页页码\n# page_obj.object_list         当前页的数据列表"
+          },
+          {
+            "title": "5.11 聚合查询",
+            "content": "聚合查询用于计算统计数据，比如总数、平均值、最大值、最小值等。\n\n**聚合函数（都在django.db.models中）：**\n- `Count`：计数\n- `Sum`：求和\n- `Avg`：平均值\n- `Max`：最大值\n- `Min`：最小值\n\n**aggregate()方法：**\n- 返回一个字典，key是聚合字段名，value是聚合结果\n- 对整个QuerySet做聚合\n\n**annotate()方法：**\n- 给QuerySet的每个对象添加一个聚合属性\n- 相当于给每条数据附加一个计算出来的字段\n- 常用于分组统计，比如统计每个分类下的文章数\n\n两者的区别：aggregate返回单个结果（一个字典），annotate返回每个对象都带聚合字段的QuerySet。"
+          },
+          {
+            "title": "5.12 聚合查询代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from blog.models import Article, Category\nfrom django.db.models import Count, Sum, Avg, Max, Min\n\n# ---- aggregate() - 整体聚合 ----\n\n# 统计文章总数\nresult = Article.objects.aggregate(total=Count('id'))\nprint(result['total'])  # 结果是一个字典\n\n# 多个聚合一起算\nstats = Article.objects.aggregate(\n    total_count=Count('id'),\n    total_views=Sum('views'),\n    avg_views=Avg('views'),\n    max_views=Max('views'),\n    min_views=Min('views'),\n)\nprint(f'总文章数：{stats[\"total_count\"]}')\nprint(f'总阅读量：{stats[\"total_views\"]}')\nprint(f'平均阅读量：{stats[\"avg_views\"]:.1f}')\nprint(f'最高阅读：{stats[\"max_views\"]}')\n\n# 可以先filter再聚合\npublished_stats = Article.objects.filter(is_published=True).aggregate(\n    count=Count('id'),\n    total_views=Sum('views')\n)\n\n# ---- annotate() - 分组聚合 / 给每条数据加字段 ----\n\n# 统计每个分类下的文章数量\ncategories = Category.objects.annotate(\n    article_count=Count('articles')  # articles是反向关联名\n).order_by('-article_count')\n\nfor cat in categories:\n    print(f'{cat.name}: {cat.article_count} 篇文章')\n\n# 按发布年份分组，统计每年的文章数和总阅读量\nfrom django.db.models.functions import ExtractYear\nyearly_stats = Article.objects.annotate(\n    year=ExtractYear('pub_date')\n).values('year').annotate(\n    count=Count('id'),\n    total_views=Sum('views')\n).order_by('year')\n\nfor item in yearly_stats:\n    print(f'{item[\"year\"]}年：{item[\"count\"]}篇，总阅读{item[\"total_views\"]}')\n\n# values() + annotate() 相当于 GROUP BY"
+          },
+          {
+            "title": "5.13 关联查询",
+            "content": "Django ORM的关联查询非常方便，用双下划线`__`可以跨表查询，也可以通过对象属性访问关联数据。\n\n**正向查询（从外键所在表查关联表）：**\n- `article.category.name`：通过外键属性访问\n- `Article.objects.filter(category__name='Python')`：双下划线跨表过滤\n\n**反向查询（从被关联表查外键表）：**\n- 默认用 `模型名小写_set`，如 `category.article_set.all()`\n- 可以通过`related_name`自定义反向访问名\n\n**select_related 和 prefetch_related：**\n这两个是优化关联查询的重要方法，解决N+1查询问题。\n- `select_related`：一对一、一对多的正向（ForeignKey、OneToOne），用JOIN，一次查询搞定\n- `prefetch_related`：多对多、反向一对多，用两次查询（先查主表，再查关联表，Python中组装）\n\n优化查询很重要，不然循环中访问关联字段会产生大量查询，性能很差。"
+          },
+          {
+            "title": "5.14 关联查询代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from blog.models import Article, Category, Tag\n\n# ---- 正向访问（对象属性） ----\narticle = Article.objects.first()\nprint(article.title)\nprint(article.category.name)       # 访问外键对象的属性（正向）\nprint(article.author.username)     # 访问用户的用户名\nprint(article.tags.all())          # 多对多，返回QuerySet\n\n# ---- 反向访问（对象属性） ----\ncategory = Category.objects.first()\nprint(category.article_set.all())  # 默认：模型名_set（一对多反向）\n# 如果设置了related_name='articles'，就用 category.articles.all()\n\n# ---- 跨表过滤（双下划线） ----\n# 查询分类名为Python的文章\nArticle.objects.filter(category__name='Python')\n\n# 查询作者是testuser的文章\nArticle.objects.filter(author__username='testuser')\n\n# 查询标签包含Python的文章（多对多）\nArticle.objects.filter(tags__name='Python').distinct()  # 注意去重！\n\n# 深层跨表（可以一直__下去）\nArticle.objects.filter(author__groups__name='编辑')  # 用户所在的组\n\n# ---- select_related 优化（一对多正向、一对一） ----\n# 不优化的话，循环访问article.category会产生N+1次查询\narticles = Article.objects.all()\nfor a in articles:\n    print(a.title, a.category.name)  # 每次循环都查一次category表！\n\n# 优化后：用select_related，一次JOIN查询搞定\narticles = Article.objects.select_related('category', 'author').all()\nfor a in articles:\n    print(a.title, a.category.name, a.author.username)  # 不再产生查询\n\n# ---- prefetch_related 优化（多对多、反向一对多） ----\n# 查询所有分类及其下的文章\ncategories = Category.objects.prefetch_related('articles').all()\nfor cat in categories:\n    print(cat.name)\n    for article in cat.articles.all():  # 不再产生额外查询\n        print(' -', article.title)\n\n# 可以同时用\nArticle.objects.select_related('category').prefetch_related('tags').all()"
+          },
+          {
+            "title": "5.15 F对象和原生SQL",
+            "content": "**F对象：**\nF对象用于引用数据库字段的值，可以在查询中使用字段本身的值进行比较或计算，而不需要先把数据取到Python中。\n\n用途：\n- 字段之间的比较（如：阅读量 > 评论数）\n- 批量更新时基于原值计算（如：阅读量+1）\n\n**原生SQL：**\n特别复杂的查询ORM可能不好写，这时候可以用原生SQL。\n- `raw()`方法：执行原生SQL，返回模型实例\n- `cursor`：更底层，执行任意SQL（不用ORM映射）\n\n大多数情况ORM都够用，实在不行再用原生SQL。注意原生SQL要自己防注入！"
+          },
+          {
+            "title": "5.16 F对象和原生SQL示例",
+            "type": "code",
+            "language": "python",
+            "code": "from blog.models import Article\nfrom django.db.models import F\n\n# ---- F对象 ----\n\n# 比较两个字段：查询 阅读量 > 1000 的文章（单字段比较用普通filter就行）\n# F对象常用于字段和字段比较，假设有个字段叫 comment_count\n# Article.objects.filter(views__gt=F('comment_count'))\n\n# 更实用的：批量更新，基于原值计算\n# 所有文章阅读量 +1（比循环一个个save高效多了！）\nArticle.objects.all().update(views=F('views') + 1)\n\n# 条件更新：id为1的文章阅读量+1\nArticle.objects.filter(id=1).update(views=F('views') + 1)\n\n# 多字段计算\n# Article.objects.annotate(\n#     total = F('views') + F('likes')\n# ).filter(total__gt=1000)\n\n# ---- 原生SQL ----\n\n# 方式一：raw() - 返回模型实例\narticles = Article.objects.raw('SELECT * FROM blog_articles WHERE is_published = 1 ORDER BY pub_date DESC LIMIT 10')\nfor article in articles:\n    print(article.title)\n\n# 参数化查询（防注入！）\ncat_id = 1\narticles = Article.objects.raw(\n    'SELECT * FROM blog_articles WHERE category_id = %s',\n    [cat_id]\n)\n\n# 方式二：用cursor（执行任意SQL）\nfrom django.db import connection\n\ndef custom_query():\n    with connection.cursor() as cursor:\n        cursor.execute(\"\"\"\n            SELECT c.name, COUNT(a.id) as cnt\n            FROM blog_category c\n            LEFT JOIN blog_articles a ON c.id = a.category_id\n            GROUP BY c.id, c.name\n            ORDER BY cnt DESC\n        \"\"\")\n        rows = cursor.fetchall()  # 所有结果（列表套元组）\n        # row = cursor.fetchone()  # 一行\n        return rows\n\nresults = custom_query()\nfor name, count in results:\n    print(f'{name}: {count}篇')"
+          },
+          {
+            "title": "5.17 动手练习",
+            "type": "exercise",
+            "content": "完成以下练习：\n\n1. 查询练习（用Django Shell测试）：\n   - 查询所有已发布的文章，按发布日期倒序排列\n   - 查询标题包含\"Django\"且已发布的文章\n   - 查询阅读量大于100的文章\n   - 查询2024年发布的文章\n   - 查询分类为\"Python\"的所有文章\n   - 查询作者为testuser的文章数量\n   - 统计所有文章的总阅读量、平均阅读量\n   - 统计每个分类下的文章数量\n\n2. 分页练习：\n   - 写一个文章列表视图，实现分页功能，每页显示5篇\n   - 模板中显示分页导航\n\n3. 查询优化：\n   - 给文章列表查询加上select_related和prefetch_related优化\n\n4. 搜索功能：\n   - 实现一个简单的文章搜索，支持关键词搜索标题和内容\n   - 支持按分类筛选\n   - 用Q对象动态构建查询条件\n\n提示：多写多练，ORM查询用多了就熟了。注意N+1查询问题，记得用select_related和prefetch_related优化。"
+          }
+        ],
+        "summary": "本章我们系统学习了Django ORM的各种查询方法，包括基本查询、条件查询、Q对象、排序分页、聚合查询、关联查询、F对象和原生SQL。ORM查询是Django开发中最常用的技能，一定要多加练习熟练掌握。下一章我们学习表单处理。",
+        "quiz": {
+          "question": "在Django ORM中，要优化一对多正向查询（避免N+1问题），应该使用哪个方法？",
+          "options": [
+            "prefetch_related",
+            "select_related",
+            "annotate",
+            "aggregate"
+          ],
+          "answer": 1,
+          "explanation": "select_related用于一对多正向（ForeignKey）和一对一关系，通过SQL JOIN一次查询出关联数据。prefetch_related用于多对多和反向一对多，用两次查询在Python中组装。"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "表单处理",
+      "duration": "120分钟",
+      "content": {
+        "introduction": "表单是Web应用中用户交互的重要方式，用于收集和提交数据。Django提供了强大的表单处理功能，可以自动生成表单HTML、验证用户输入、处理错误提示等。本章我们学习Django Forms、表单验证、ModelForm、表单渲染和文件上传。",
+        "sections": [
+          {
+            "title": "6.1 Django表单基础",
+            "content": "Django表单系统的核心是Form类，它定义了表单的字段和验证规则。\n\n**Django表单的功能：**\n- 自动生成HTML表单元素\n- 数据验证（检查格式、必填等）\n- 错误提示\n- 数据清洗（转换格式）\n- 安全保护（CSRF防护）\n\n**表单类和模型类很像：**\n- 都是继承基类（Form / ModelForm）\n- 都是定义字段（forms.xxxField / models.xxxField）\n- 都有验证机制\n\n**表单字段类型（和模型字段对应）：**\n- `CharField`：文本输入\n- `EmailField`：邮箱\n- `IntegerField`：整数\n- `FloatField`：浮点数\n- `DecimalField`：小数\n- `BooleanField`：复选框\n- `ChoiceField`：下拉选择\n- `MultipleChoiceField`：多选\n- `DateField` / `DateTimeField`：日期/时间\n- `FileField` / `ImageField`：文件/图片上传\n- `Textarea`：多行文本（用widget指定）"
+          },
+          {
+            "title": "6.2 第一个表单示例",
+            "type": "code",
+            "language": "python",
+            "code": "# blog/forms.py（手动创建这个文件）\nfrom django import forms\n\nclass ContactForm(forms.Form):\n    # 表单字段定义\n    name = forms.CharField(\n        max_length=50,\n        label='姓名',\n        required=True,\n        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '请输入姓名'})\n    )\n    \n    email = forms.EmailField(\n        label='邮箱',\n        required=True,\n        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '请输入邮箱'})\n    )\n    \n    subject = forms.CharField(\n        max_length=100,\n        label='主题',\n        required=True,\n        widget=forms.TextInput(attrs={'class': 'form-control'})\n    )\n    \n    message = forms.CharField(\n        label='留言内容',\n        required=True,\n        widget=forms.Textarea(\n            attrs={'class': 'form-control', 'rows': 5, 'placeholder': '请输入留言内容'}\n        )\n    )\n    \n    cc_myself = forms.BooleanField(\n        label='给自己也发一份',\n        required=False,\n        initial=False\n    )\n\n# blog/views.py\nfrom django.shortcuts import render, redirect\nfrom django.http import HttpResponse\nfrom .forms import ContactForm\n\ndef contact(request):\n    if request.method == 'POST':\n        # 提交表单：用POST数据创建表单实例\n        form = ContactForm(request.POST)\n        if form.is_valid():  # 验证数据\n            # 验证通过，cleaned_data是清洗后的数据\n            name = form.cleaned_data['name']\n            email = form.cleaned_data['email']\n            subject = form.cleaned_data['subject']\n            message = form.cleaned_data['message']\n            cc_myself = form.cleaned_data['cc_myself']\n            \n            # 这里可以发送邮件、保存数据库等\n            print(f'收到留言：{name} - {email} - {subject}')\n            \n            return HttpResponse('留言提交成功！')\n    else:\n        # GET请求：创建空表单\n        form = ContactForm()\n    \n    return render(request, 'blog/contact.html', {'form': form})"
+          },
+          {
+            "title": "6.3 表单渲染",
+            "content": "Django表单提供了几种快捷的渲染方式，可以快速生成表单HTML。\n\n**渲染方式：**\n- `{{ form.as_p }}`：用 `<p>` 标签包裹每个字段\n- `{{ form.as_table }}`：用 `<table>` 表格布局（需要自己包<table>标签）\n- `{{ form.as_ul }}`：用 `<li>` 列表布局（需要自己包<ul>标签）\n- 手动渲染：自己写每个字段的HTML，完全可控\n\n**手动渲染更灵活，可以自定义样式：**\n- `{{ field.label_tag }}`：字段的label标签\n- `{{ field }}`：字段的input/select等\n- `{{ field.errors }}`：字段的错误信息\n- `{{ field.help_text }}`：帮助文本\n- `{{ form.non_field_errors }}`：不是字段相关的错误（全局错误）\n\n**CSRF防护：**\n表单里必须加 `{% csrf_token %}` 标签，否则Django会拒绝POST请求（403错误）。这是Django的跨站请求伪造防护机制。"
+          },
+          {
+            "title": "6.4 表单渲染模板示例",
+            "type": "code",
+            "language": "html",
+            "code": "<!-- 方式一：快速渲染（as_p） -->\n<h1>联系我们</h1>\n<form method=\"post\">\n    {% csrf_token %}\n    {{ form.as_p }}\n    <button type=\"submit\">提交</button>\n</form>\n\n<!-- 方式二：手动逐字段渲染（推荐，样式可控） -->\n<h1>联系我们</h1>\n<form method=\"post\" novalidate>\n    {% csrf_token %}\n    \n    {% if form.non_field_errors %}\n        <div class=\"alert alert-danger\">\n            {% for error in form.non_field_errors %}\n                {{ error }}\n            {% endfor %}\n        </div>\n    {% endif %}\n    \n    <div class=\"form-group\">\n        {{ form.name.label_tag }}\n        {{ form.name }}\n        {% if form.name.errors %}\n            <div class=\"text-danger\">\n                {% for error in form.name.errors %}\n                    {{ error }}\n                {% endfor %}\n            </div>\n        {% endif %}\n        {% if form.name.help_text %}\n            <small class=\"form-text text-muted\">{{ form.name.help_text }}</small>\n        {% endif %}\n    </div>\n    \n    <div class=\"form-group\">\n        {{ form.email.label_tag }}\n        {{ form.email }}\n        {% if form.email.errors %}\n            <div class=\"text-danger\">{{ form.email.errors.0 }}</div>\n        {% endif %}\n    </div>\n    \n    <div class=\"form-group\">\n        {{ form.subject.label_tag }}\n        {{ form.subject }}\n        {% if form.subject.errors %}\n            <div class=\"text-danger\">{{ form.subject.errors.0 }}</div>\n        {% endif %}\n    </div>\n    \n    <div class=\"form-group\">\n        {{ form.message.label_tag %}}\n        {{ form.message }}\n        {% if form.message.errors %}\n            <div class=\"text-danger\">{{ form.message.errors.0 }}</div>\n        {% endif %}\n    </div>\n    \n    <div class=\"form-check\">\n        {{ form.cc_myself }} {{ form.cc_myself.label_tag }}\n    </div>\n    \n    <button type=\"submit\" class=\"btn btn-primary\">提交留言</button>\n</form>\n\n<!-- 方式三：用循环渲染所有字段 -->\n<form method=\"post\">\n    {% csrf_token %}\n    {% for field in form %}\n        <div class=\"form-group\">\n            {{ field.label_tag }}\n            {{ field }}\n            {% if field.errors %}\n                <div class=\"text-danger\">{{ field.errors.0 }}</div>\n            {% endif %}\n        </div>\n    {% endfor %}\n    <button type=\"submit\">提交</button>\n</form>"
+          },
+          {
+            "title": "6.5 表单验证",
+            "content": "Django表单提供了多层次的验证机制。\n\n**验证流程：**\n1. 字段自带的验证（根据字段类型自动验证，如EmailField验证邮箱格式）\n2. 字段的validators（可以加多个验证器函数）\n3. `clean_字段名()`方法：单个字段的自定义验证\n4. `clean()`方法：多个字段的联合验证（全局验证）\n\n**验证失败：**\n抛出 `ValidationError` 异常，Django会把错误信息显示出来。\n\n**常用内置验证器（django.core.validators）：**\n- `MaxValueValidator` / `MinValueValidator`：数值范围\n- `MaxLengthValidator` / `MinLengthValidator`：长度范围\n- `RegexValidator`：正则表达式验证\n- `EmailValidator`：邮箱验证\n- `URLValidator`：URL验证\n- `validate_slug`：slug格式验证\n\n也可以写自己的验证器函数。"
+          },
+          {
+            "title": "6.6 表单验证代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "from django import forms\nfrom django.core.exceptions import ValidationError\nfrom django.core.validators import MinLengthValidator, MaxLengthValidator, RegexValidator\n\nclass RegisterForm(forms.Form):\n    username = forms.CharField(\n        label='用户名',\n        min_length=3,\n        max_length=20,\n        validators=[\n            RegexValidator(\n                regex=r'^[a-zA-Z0-9_]+$',\n                message='用户名只能包含字母、数字和下划线'\n            )\n        ],\n        widget=forms.TextInput(attrs={'class': 'form-control'})\n    )\n    \n    password = forms.CharField(\n        label='密码',\n        min_length=6,\n        max_length=20,\n        widget=forms.PasswordInput(attrs={'class': 'form-control'})\n    )\n    \n    confirm_password = forms.CharField(\n        label='确认密码',\n        widget=forms.PasswordInput(attrs={'class': 'form-control'})\n    )\n    \n    phone = forms.CharField(\n        label='手机号',\n        required=False,\n        validators=[\n            RegexValidator(\n                regex=r'^1[3-9]\\d{9}$',\n                message='请输入正确的手机号'\n            )\n        ],\n        widget=forms.TextInput(attrs={'class': 'form-control'})\n    )\n    \n    # 单个字段验证：clean_字段名\n    def clean_username(self):\n        username = self.cleaned_data.get('username')\n        # 检查用户名是否已存在（示例）\n        if username == 'admin':\n            raise ValidationError('用户名已被占用')\n        return username  # 注意要返回清洗后的值\n    \n    # 全局验证：多个字段联合校验\n    def clean(self):\n        cleaned_data = super().clean()\n        password = cleaned_data.get('password')\n        confirm_password = cleaned_data.get('confirm_password')\n        \n        if password and confirm_password:\n            if password != confirm_password:\n                # 添加到confirm_password字段的错误\n                self.add_error('confirm_password', '两次输入的密码不一致')\n                # 或者抛出全局错误\n                # raise ValidationError('两次输入的密码不一致')\n        \n        return cleaned_data  # 返回所有清洗后的数据"
+          },
+          {
+            "title": "6.7 ModelForm",
+            "content": "如果表单和模型对应（比如添加文章、注册用户这种需要保存到数据库的表单），用ModelForm更方便，它会根据模型自动生成表单字段。\n\n**ModelForm的优点：**\n- 不用重复定义字段（模型里已经定义过了）\n- 自带save()方法，可以直接保存到数据库\n- 自动使用模型的验证规则\n\n**使用方法：**\n1. 继承 `forms.ModelForm`\n2. 定义 `class Meta`，指定model和fields（或exclude）\n3. 可以重写字段、添加额外字段、自定义验证\n\n**Meta类的常用选项：**\n- `model`：对应的模型类\n- `fields`：包含哪些字段（`'__all__'`表示所有字段）\n- `exclude`：排除哪些字段（和fields二选一）\n- `labels`：自定义字段标签\n- `help_texts`：自定义帮助文本\n- `widgets`：自定义widget\n- `error_messages`：自定义错误消息"
+          },
+          {
+            "title": "6.8 ModelForm代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# blog/forms.py\nfrom django import forms\nfrom .models import Article, Comment\n\nclass ArticleForm(forms.ModelForm):\n    # 可以在这里添加额外的字段，或者重写模型字段\n    # 比如添加一个确认字段，或者修改widget\n    \n    class Meta:\n        model = Article\n        fields = ['title', 'summary', 'content', 'category', 'tags', 'is_published']\n        # 或者 fields = '__all__' （不推荐，可能暴露不该有的字段）\n        # 或者 exclude = ['author', 'views', 'pub_date', 'update_time']\n        \n        # 自定义标签\n        labels = {\n            'title': '文章标题',\n            'content': '文章内容',\n            'is_published': '立即发布',\n        }\n        \n        # 自定义widget\n        widgets = {\n            'title': forms.TextInput(attrs={'class': 'form-control'}),\n            'summary': forms.TextInput(attrs={'class': 'form-control'}),\n            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 15}),\n            'category': forms.Select(attrs={'class': 'form-control'}),\n            'tags': forms.CheckboxSelectMultiple(),  # 多选复选框\n        }\n        \n        # 自定义帮助文本\n        help_texts = {\n            'title': '标题不超过200字',\n            'tags': '按住Ctrl可多选',\n        }\n\n# 视图中使用\ndef article_create(request):\n    if request.method == 'POST':\n        form = ArticleForm(request.POST)\n        if form.is_valid():\n            # save()返回保存的对象，commit=False表示先不保存到数据库\n            article = form.save(commit=False)\n            article.author = request.user  # 设置当前登录用户为作者\n            article.save()  # 保存主对象\n            form.save_m2m()  # 多对多字段需要单独保存（用了commit=False的话）\n            return redirect('blog:detail', article_id=article.id)\n    else:\n        form = ArticleForm()\n    \n    return render(request, 'blog/article_form.html', {'form': form})\n\n# 编辑文章\ndef article_edit(request, article_id):\n    article = get_object_or_404(Article, id=article_id)\n    \n    if request.method == 'POST':\n        # 传入instance表示更新已有对象\n        form = ArticleForm(request.POST, instance=article)\n        if form.is_valid():\n            form.save()  # 直接保存\n            return redirect('blog:detail', article_id=article.id)\n    else:\n        # 编辑时传入instance，表单会填充现有数据\n        form = ArticleForm(instance=article)\n    \n    return render(request, 'blog/article_form.html', {'form': form})\n\n# 评论表单\nclass CommentForm(forms.ModelForm):\n    class Meta:\n        model = Comment\n        fields = ['name', 'email', 'content']\n        widgets = {\n            'name': forms.TextInput(attrs={'class': 'form-control'}),\n            'email': forms.EmailInput(attrs={'class': 'form-control'}),\n            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),\n        }"
+          },
+          {
+            "title": "6.9 文件上传",
+            "content": "Django处理文件上传需要注意几点：\n\n**表单设置：**\n- form标签必须加 `enctype=\"multipart/form-data\"`\n- 表单字段用 `FileField` 或 `ImageField`\n\n**视图处理：**\n- 上传的文件在 `request.FILES` 中\n- 创建表单实例时要传入 `request.FILES`\n- ModelForm的话直接save()就行\n\n**配置：**\n- settings.py中配置 `MEDIA_URL` 和 `MEDIA_ROOT`\n- 开发时urls.py中加媒体文件路由\n- ImageField需要安装Pillow库：`pip install pillow`\n\n**文件存储：**\n- 默认存在本地文件系统的MEDIA_ROOT目录下\n- 上传字段的`upload_to`参数指定子目录（可以是字符串或函数）\n- 生产环境可以配置存储到云存储（如阿里云OSS、AWS S3等）"
+          },
+          {
+            "title": "6.10 文件上传代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 1. 安装Pillow（图片处理需要）\n# pip install pillow\n\n# 2. models.py\nfrom django.db import models\n\ndef user_avatar_path(instance, filename):\n    # 动态生成上传路径：avatars/user_id/文件名\n    return f'avatars/{instance.user.id}/{filename}'\n\nclass UserProfile(models.Model):\n    user = models.OneToOneField('auth.User', on_delete=models.CASCADE)\n    avatar = models.ImageField(\n        upload_to='avatars/',  # 简单写法：直接传目录字符串\n        # upload_to=user_avatar_path,  # 高级写法：传函数动态生成\n        blank=True,\n        null=True,\n        verbose_name='头像'\n    )\n    bio = models.TextField(blank=True, verbose_name='简介')\n\n# 3. forms.py\nfrom django import forms\nfrom .models import UserProfile\n\nclass ProfileForm(forms.ModelForm):\n    class Meta:\n        model = UserProfile\n        fields = ['avatar', 'bio']\n        widgets = {\n            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),\n        }\n\n# 4. views.py\nfrom django.shortcuts import render, redirect, get_object_or_404\nfrom django.contrib.auth.decorators import login_required\nfrom .forms import ProfileForm\n\n@login_required\ndef profile_edit(request):\n    profile, created = UserProfile.objects.get_or_create(user=request.user)\n    \n    if request.method == 'POST':\n        # 注意：文件上传必须传 request.FILES！\n        form = ProfileForm(request.POST, request.FILES, instance=profile)\n        if form.is_valid():\n            form.save()\n            return redirect('profile')\n    else:\n        form = ProfileForm(instance=profile)\n    \n    return render(request, 'profile_edit.html', {'form': form})\n\n# 5. 模板（注意enctype）\n# <form method=\"post\" enctype=\"multipart/form-data\">\n#     {% csrf_token %}\n#     {{ form.as_p }}\n#     <button type=\"submit\">保存</button>\n# </form>\n\n# 6. 显示上传的图片\n# {% if profile.avatar %}\n#     <img src=\"{{ profile.avatar.url }}\" alt=\"头像\" width=\"100\">\n# {% endif %}"
+          },
+          {
+            "title": "6.11 动手练习",
+            "type": "exercise",
+            "content": "完成以下练习：\n\n1. 创建一个注册表单 RegisterForm（普通Form），包含以下字段：\n   - 用户名（3-20位，字母数字下划线）\n   - 邮箱（验证格式）\n   - 密码（至少6位）\n   - 确认密码\n   - 手机号（选填，验证格式）\n   - 自定义验证：两次密码一致、用户名不能为admin\n\n2. 使用ModelForm创建文章表单：\n   - 包含标题、摘要、内容、分类、标签、是否发布字段\n   - 自定义widget添加CSS类\n   - 创建文章视图和编辑文章视图\n\n3. 实现评论功能：\n   - Comment模型和CommentForm\n   - 文章详情页显示评论列表和评论表单\n   - 提交评论后刷新页面\n\n4. 实现用户头像上传功能：\n   - 扩展用户资料模型（OneToOne关联User）\n   - 头像上传表单和页面\n   - 显示用户头像\n\n提示：注意ModelForm的save()方法，commit=False的用法，以及多对多字段的保存。文件上传记得加enctype和request.FILES。"
+          }
+        ],
+        "summary": "本章我们学习了Django的表单处理，包括Form类、表单验证、ModelForm、表单渲染和文件上传。Django表单大大简化了表单开发的工作量，提供了便捷的验证机制。下一章我们学习用户认证系统。",
+        "quiz": {
+          "question": "在Django中处理文件上传时，表单标签必须添加哪个属性？",
+          "options": [
+            "method=\"post\"",
+            "enctype=\"multipart/form-data\"",
+            "action=\"\"",
+            "type=\"file\""
+          ],
+          "answer": 1,
+          "explanation": "文件上传必须设置enctype=\"multipart/form-data\"，否则浏览器不会上传文件数据。method=\"post\"也是必须的，但它是所有POST表单都需要的，不是文件上传特有的。"
+        }
+      }
+    }
+  ]
+}
