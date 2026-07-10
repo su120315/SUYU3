@@ -5,17 +5,17 @@
   "icon": "🐍",
   "color": "green",
   "description": "Python是世界上最流行的编程语言之一，语法简洁优雅，容易上手，却又功能强大。从Web开发、数据分析、人工智能到自动化脚本，Python无所不能。本课程从零基础开始，带你一步步走进Python的世界。",
-  "duration": "20小时",
-  "lessons": 16,
-  "level": "入门级",
+  "duration": "25小时",
+  "lessons": 12,
+  "level": "入门到中级",
   "whatYouLearn": [
-    "Python基础语法和数据类型",
+    "Python基础语法和变量",
     "条件判断和循环",
     "函数和模块",
-    "列表、字典、元组、集合",
-    "面向对象编程",
+    "列表、字典等数据结构",
+    "面向对象编程基础",
     "文件操作和异常处理",
-    "三个实战项目"
+    "实战项目：猜数字、待办事项"
   ],
   "chapters": [
     {
@@ -608,6 +608,215 @@
           ],
           "answer": 1,
           "explanation": "append(x)是在列表末尾添加一个元素。insert(i, x)是在指定位置插入。extend()是扩展，把另一个列表的元素都加进来。list没有add方法（set才有）。"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "函数进阶：参数、返回值与作用域",
+      "duration": "50分钟",
+      "content": {
+        "introduction": "上一章我们学习了函数的基本定义和调用。这一章我们来深入学习函数的更多知识：参数的各种类型、返回值、作用域、匿名函数等，掌握这些，你就能写出更灵活更强大的函数了。",
+        "sections": [
+          {
+            "title": "6.1 函数参数的类型",
+            "content": "Python函数的参数有好几种类型，各有各的用处：\n\n**1. 位置参数（必选参数）**\n最普通的参数，调用时必须按顺序传值，数量也要对应。\n\n**2. 默认参数**\n定义函数时给参数一个默认值，调用时可以不传，不传就用默认值。注意：默认参数要放在位置参数后面。\n\n**3. 关键字参数**\n调用函数时用`参数名=值`的方式传参，可以不按顺序。\n\n**4. 可变参数（不定长参数）**\n不确定会传多少个参数时用的。有两种：\n- `*args`：接收任意多个位置参数，变成一个元组\n- `**kwargs`：接收任意多个关键字参数，变成一个字典"
+          },
+          {
+            "title": "6.2 参数类型代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 1. 位置参数\ndef greet(name, age):\n    print(f\"你好，我是{name}，今年{age}岁\")\n\ngreet(\"小明\", 18)  # 必须按顺序传\n\n# 2. 默认参数\ndef greet2(name, age=18, city=\"北京\"):\n    print(f\"我是{name}，{age}岁，来自{city}\")\n\ngreet2(\"小红\")           # age和city用默认值\ngreet2(\"小刚\", 20)       # city用默认值\ngreet2(\"小美\", city=\"上海\")  # 用关键字指定参数\n\n# 3. 关键字参数调用（顺序可以乱）\ndef show_info(name, age, city):\n    print(f\"{name} - {age}岁 - {city}\")\n\nshow_info(age=22, city=\"深圳\", name=\"小华\")\n\n# 4. 可变参数 *args\ndef sum_all(*args):\n    total = 0\n    for num in args:\n        total += num\n    return total\n\nprint(sum_all(1, 2, 3))        # 6\nprint(sum_all(1, 2, 3, 4, 5))  # 15\n\n# 5. 关键字可变参数 **kwargs\ndef print_info(**kwargs):\n    for key, value in kwargs.items():\n        print(f\"{key}: {value}\")\n\nprint_info(name=\"小明\", age=18, city=\"北京\")"
+          },
+          {
+            "title": "6.3 返回值的更多用法",
+            "content": "函数的返回值也有一些进阶用法：\n\n**1. 返回多个值**\nPython函数可以返回多个值，实际上是返回一个元组。\n\n**2. 返回None**\n没有return语句的函数，或者return后面什么都不写，返回的是None（空值）。\n\n**3. 提前返回**\n函数执行到return就会立刻结束，后面的代码不会执行。可以用这个特性在满足条件时提前退出函数。"
+          },
+          {
+            "title": "6.4 返回值代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 返回多个值\ndef calculate(a, b):\n    add = a + b\n    sub = a - b\n    mul = a * b\n    div = a / b\n    return add, sub, mul, div  # 返回多个值，其实是元组\n\nresult = calculate(10, 3)\nprint(result)  # (13, 7, 30, 3.333...)\n\n# 也可以直接解包\nadd, sub, mul, div = calculate(10, 3)\nprint(f\"和：{add}，差：{sub}，积：{mul}，商：{div:.2f}\")\n\n# 返回None的函数\ndef say_hello(name):\n    print(f\"你好，{name}\")\n    # 没有return，自动返回None\n\nresult = say_hello(\"小明\")\nprint(result)  # None\n\n# 提前返回\ndef get_grade(score):\n    if score < 0 or score > 100:\n        return \"分数无效\"  # 提前返回，函数结束\n    if score >= 90:\n        return \"A\"\n    elif score >= 80:\n        return \"B\"\n    elif score >= 60:\n        return \"C\"\n    else:\n        return \"D\"\n\nprint(get_grade(85))   # B\nprint(get_grade(-10))  # 分数无效"
+          },
+          {
+            "title": "6.5 变量作用域",
+            "content": "变量作用域就是变量能生效的范围。Python中有两种主要的作用域：\n\n**1. 全局作用域**\n在函数外面定义的变量，整个文件都能访问，叫全局变量。\n\n**2. 局部作用域**\n在函数里面定义的变量，只能在函数内部用，叫局部变量。函数执行完，局部变量就消失了。\n\n**规则：**\n- 函数内部可以读取全局变量\n- 但不能直接修改全局变量（如果要修改，需要用global关键字声明）\n- 函数内部的变量和外部同名时，函数内部优先（局部变量覆盖全局）"
+          },
+          {
+            "title": "6.6 作用域代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "name = \"全局小明\"  # 全局变量\n\ndef test1():\n    # 读取全局变量，可以直接读\n    print(name)\n\ntest1()  # 全局小明\n\ndef test2():\n    name = \"局部小红\"  # 这是局部变量，和外面的name没关系\n    print(name)\n\ntest2()  # 局部小红\nprint(name)  # 全局小明（外面的没变）\n\ndef test3():\n    global name  # 声明要用全局变量\n    name = \"修改后的小明\"  # 修改的是全局的\n    print(name)\n\ntest3()  # 修改后的小明\nprint(name)  # 修改后的小明（外面的真的变了！）\n\n# 注意：尽量少用global，容易把代码搞乱。\n# 更好的做法是：函数接收参数，返回结果。\n\n# 嵌套函数（函数里面定义函数）\ndef outer():\n    x = 10  # 外层函数的变量\n    def inner():\n        nonlocal x  # 声明要用外层函数的变量\n        x = 20\n        print(\"inner:\", x)\n    inner()\n    print(\"outer:\", x)\n\nouter()"
+          },
+          {
+            "title": "6.7 lambda匿名函数",
+            "content": "Python中有个`lambda`关键字，可以用来创建匿名函数（没有名字的函数）。\n\n语法：\n```python\nlambda 参数: 返回值\n```\n\nlambda函数适用于一些简单的、只需要用一次的小函数，比如作为参数传给其他函数。复杂的函数还是用def定义比较好。"
+          },
+          {
+            "title": "6.8 lambda代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 普通函数\ndef add(a, b):\n    return a + b\n\n# lambda写法（效果一样）\nadd2 = lambda a, b: a + b\n\nprint(add(3, 5))   # 8\nprint(add2(3, 5))  # 8\n\n# lambda常用场景：作为sorted的key\nstudents = [\n    {\"name\": \"小明\", \"score\": 85},\n    {\"name\": \"小红\", \"score\": 92},\n    {\"name\": \"小刚\", \"score\": 78},\n]\n\n# 按分数排序\nsorted_students = sorted(students, key=lambda x: x[\"score\"], reverse=True)\nfor s in sorted_students:\n    print(s[\"name\"], s[\"score\"])\n\n# map函数：对列表每个元素做操作\nnums = [1, 2, 3, 4, 5]\ndoubled = list(map(lambda x: x * 2, nums))\nprint(doubled)  # [2, 4, 6, 8, 10]\n\n# filter函数：筛选符合条件的元素\nevens = list(filter(lambda x: x % 2 == 0, nums))\nprint(evens)  # [2, 4]"
+          },
+          {
+            "title": "6.9 动手练习",
+            "type": "exercise",
+            "content": "练习：写一个计算器函数！\n\n要求：\n1. 写一个函数`calculator(a, b, op)`，接收两个数和一个运算符\n2. 支持加减乘除四种运算（op是'+', '-', '*', '/'）\n3. 除法如果除数是0，返回\"错误：除数不能为0\"\n4. 如果运算符不对，返回\"不支持的运算符\"\n5. 再写一个函数`calc_many(*args, op)`，可以接收任意多个数做运算\n\n提示：用可变参数*args处理多个数。"
+          }
+        ],
+        "summary": "这节课我们深入学习了Python函数的进阶知识，包括各种参数类型（位置参数、默认参数、关键字参数、可变参数）、返回值的多种用法、变量作用域、以及lambda匿名函数。函数是Python中非常重要的概念，掌握好这些，你的代码会写得越来越优雅。下一章我们学习面向对象编程。",
+        "quiz": {
+          "question": "在Python函数中，以下哪种参数可以接收任意多个位置参数？",
+          "options": [
+            "默认参数",
+            "关键字参数",
+            "*args",
+            "**kwargs"
+          ],
+          "answer": 2,
+          "explanation": "*args可以接收任意多个位置参数，打包成一个元组；**kwargs接收任意多个关键字参数，打包成字典。"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "面向对象编程入门",
+      "duration": "60分钟",
+      "content": {
+        "introduction": "前面我们写的代码都是\"面向过程\"的——就是一步一步按顺序执行。这一章我们来学习\"面向对象编程\"（Object-Oriented Programming，简称OOP），这是编程中非常重要的一种思想，Python是完全面向对象的语言。",
+        "sections": [
+          {
+            "title": "7.1 什么是面向对象？",
+            "content": "面向对象就是把现实世界中的事物抽象成程序中的\"对象\"，每个对象有自己的属性（特征）和方法（能做的事）。\n\n比如：\n- 一只猫：属性有名字、年龄、颜色；方法有叫、跑、吃东西\n- 一辆车：属性有品牌、颜色、速度；方法有启动、刹车、加速\n- 一个学生：属性有姓名、学号、成绩；方法有学习、考试、吃饭\n\n面向对象的核心概念：\n- **类（Class）**：是模板、蓝图，定义了一类事物共同的属性和方法。比如\"人类\"就是一个类。\n- **对象（Object）**：是类的具体实例，一个具体的人。比如\"小明\"就是人类的一个对象。\n\n类和对象的关系就像：图纸和房子的关系，模具和蛋糕的关系。一个类可以创造出很多个对象。"
+          },
+          {
+            "title": "7.2 定义类和创建对象",
+            "content": "Python中用`class`关键字来定义类。类名一般用大驼峰命名法（每个单词首字母大写）。\n\n`__init__`方法是初始化方法（构造方法），创建对象时会自动调用。`self`代表对象自己，必须是第一个参数。"
+          },
+          {
+            "title": "7.3 类和对象代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 定义一个人类\nclass Person:\n    # 初始化方法，创建对象时自动调用\n    def __init__(self, name, age, gender):\n        # self.xxx 是对象的属性\n        self.name = name\n        self.age = age\n        self.gender = gender\n    \n    # 方法：说话\n    def say_hello(self):\n        print(f\"你好，我叫{self.name}，今年{self.age}岁\")\n    \n    # 方法：吃饭\n    def eat(self, food):\n        print(f\"{self.name}正在吃{food}\")\n\n# 创建对象（实例化）\np1 = Person(\"小明\", 18, \"男\")\np2 = Person(\"小红\", 17, \"女\")\n\n# 访问属性\nprint(p1.name)  # 小明\nprint(p2.age)   # 17\n\n# 调用方法\np1.say_hello()  # 你好，我叫小明，今年18岁\np2.say_hello()  # 你好，我叫小红，今年17岁\np1.eat(\"米饭\")   # 小明正在吃米饭\n\n# 修改属性\np1.age = 19\np1.say_hello()  # 你好，我叫小明，今年19岁"
+          },
+          {
+            "title": "7.4 更多类的例子",
+            "content": "我们再来看一个更实用的例子：学生类。\n\n面向对象的好处：\n1. **封装**：把数据和方法打包在一起，更清晰\n2. **复用**：一个类可以创建多个对象，不用重复写代码\n3. **易扩展**：要加功能直接在类里加就行"
+          },
+          {
+            "title": "7.5 学生类代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "class Student:\n    def __init__(self, name, student_id):\n        self.name = name\n        self.student_id = student_id\n        self.scores = {}  # 字典：科目 -> 分数\n    \n    # 添加分数\n    def add_score(self, subject, score):\n        self.scores[subject] = score\n    \n    # 计算平均分\n    def get_average(self):\n        if not self.scores:\n            return 0\n        return sum(self.scores.values()) / len(self.scores)\n    \n    # 获取等级\n    def get_grade(self, subject):\n        if subject not in self.scores:\n            return \"没有这科成绩\"\n        score = self.scores[subject]\n        if score >= 90:\n            return \"A\"\n        elif score >= 80:\n            return \"B\"\n        elif score >= 60:\n            return \"C\"\n        else:\n            return \"D\"\n    \n    # 打印成绩单\n    def print_report(self):\n        print(f\"===== {self.name}的成绩单 =====\")\n        print(f\"学号：{self.student_id}\")\n        for subject, score in self.scores.items():\n            grade = self.get_grade(subject)\n            print(f\"{subject}: {score}分 ({grade})\")\n        print(f\"平均分：{self.get_average():.1f}分\")\n        print(\"==============================\")\n\n# 使用\ns1 = Student(\"小明\", \"2024001\")\ns1.add_score(\"语文\", 85)\ns1.add_score(\"数学\", 92)\ns1.add_score(\"英语\", 78)\ns1.print_report()\n\ns2 = Student(\"小红\", \"2024002\")\ns2.add_score(\"语文\", 95)\ns2.add_score(\"数学\", 88)\ns2.add_score(\"英语\", 91)\ns2.print_report()"
+          },
+          {
+            "title": "7.6 继承",
+            "content": "继承是面向对象的三大特性之一（另外两个是封装和多态）。\n\n继承就是子类继承父类的属性和方法，还可以添加自己的新功能，或者修改父类的功能。\n\n比如：\n- 父类：动物（有名字、年龄，会吃东西）\n- 子类：猫（继承动物，还会喵喵叫、抓老鼠）\n- 子类：狗（继承动物，还会汪汪叫、看家）\n\n继承的好处：代码复用，不用重复写相同的代码。"
+          },
+          {
+            "title": "7.7 继承代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 父类：动物\nclass Animal:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n    \n    def eat(self, food):\n        print(f\"{self.name}在吃{food}\")\n    \n    def sleep(self):\n        print(f\"{self.name}在睡觉zzz\")\n\n# 子类：猫，继承自动物\nclass Cat(Animal):\n    def __init__(self, name, age, color):\n        # 调用父类的初始化方法\n        super().__init__(name, age)\n        self.color = color  # 猫自己的属性\n    \n    # 猫自己的方法\n    def meow(self):\n        print(f\"{self.name}：喵～喵～\")\n    \n    # 重写父类的方法（覆盖）\n    def eat(self, food):\n        print(f\"{self.name}优雅地吃着{food}\")\n\n# 子类：狗，继承自动物\nclass Dog(Animal):\n    def bark(self):\n        print(f\"{self.name}：汪汪汪！\")\n    \n    def fetch(self):\n        print(f\"{self.name}叼着球跑回来了\")\n\n# 使用\ncat = Cat(\"咪咪\", 2, \"橘色\")\ncat.eat(\"猫粮\")    # 咪咪优雅地吃着猫粮（重写后的方法）\ncat.meow()         # 咪咪：喵～喵～（自己的方法）\ncat.sleep()        # 咪咪在睡觉zzz（继承的方法）\nprint(cat.color)   # 橘色\n\ndog = Dog(\"旺财\", 3)\ndog.eat(\"骨头\")    # 旺财在吃骨头（继承的方法）\ndog.bark()         # 旺财：汪汪汪！（自己的方法）\ndog.fetch()        # 旺财叼着球跑回来了"
+          },
+          {
+            "title": "7.8 特殊方法（魔术方法）",
+            "content": "Python中还有一些特殊的方法，名字前后都有两个下划线，叫魔术方法（magic methods）。这些方法在特定情况下会自动调用。\n\n常用的：\n- `__str__`：打印对象时调用，返回对象的字符串表示\n- `__len__`：len()函数调用时的返回值\n- `__eq__`：判断两个对象是否相等（==）\n- `__lt__`、`__gt__`：比较大小（<、>）\n\n这些方法可以让你的对象用起来更方便、更像Python内置的数据类型。"
+          },
+          {
+            "title": "7.9 魔术方法代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "class Book:\n    def __init__(self, title, author, price, pages):\n        self.title = title\n        self.author = author\n        self.price = price\n        self.pages = pages\n    \n    # 打印对象时显示的内容\n    def __str__(self):\n        return f\"《{self.title}》- {self.author}\"\n    \n    # len(book) 返回页数\n    def __len__(self):\n        return self.pages\n    \n    # 两本书是否相等（按书名和作者判断）\n    def __eq__(self, other):\n        return self.title == other.title and self.author == other.author\n    \n    # 比较大小（按价格）\n    def __lt__(self, other):\n        return self.price < other.price\n\nb1 = Book(\"Python入门\", \"小明\", 59.9, 300)\nb2 = Book(\"Python进阶\", \"小红\", 79.9, 450)\nb3 = Book(\"Python入门\", \"小明\", 69.9, 320)\n\n# 打印对象\nprint(b1)  # 《Python入门》- 小明\n\n# len()\nprint(len(b1))  # 300\n\n# == 比较\nprint(b1 == b2)  # False\nprint(b1 == b3)  # True（书名和作者一样）\n\n# 排序（按价格）\nbooks = [b1, b2, b3]\nbooks.sort()\nfor book in books:\n    print(f\"{book.title}: {book.price}元\")"
+          },
+          {
+            "title": "7.10 动手练习",
+            "type": "exercise",
+            "content": "练习：做一个简单的银行账户类！\n\n要求：\n1. 定义`BankAccount`类，属性有：账户名、余额\n2. 方法：\n   - `deposit(amount)`：存款，余额增加\n   - `withdraw(amount)`：取款，如果余额不足提示\"余额不足\"\n   - `check_balance()`：查询余额\n   - `transfer(other, amount)`：给另一个账户转账\n3. 用`__str__`方法友好地显示账户信息\n4. 再定义一个子类`SavingsAccount`（储蓄账户），继承自BankAccount，多一个属性`interest_rate`（利率），还有一个方法`add_interest()`来计算并添加利息\n\n提示：转账要检查余额够不够哦～"
+          }
+        ],
+        "summary": "这节课我们学习了Python面向对象编程的入门知识，包括类和对象的概念、如何定义类和创建对象、属性和方法、继承、以及特殊的魔术方法。面向对象是一个很大的话题，这里只是入门，但你已经可以用类来组织你的代码了。多练习，慢慢体会面向对象的思想。下一章我们学习文件操作。",
+        "quiz": {
+          "question": "在Python中，定义类使用哪个关键字？",
+          "options": [
+            "def",
+            "class",
+            "function",
+            "object"
+          ],
+          "answer": 1,
+          "explanation": "Python中用class关键字定义类；def用来定义函数。类是创建对象的模板/蓝图。"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "文件操作与异常处理",
+      "duration": "55分钟",
+      "content": {
+        "introduction": "这一章我们学习两个非常实用的技能：文件操作和异常处理。文件操作让你的程序可以读写硬盘上的文件，数据可以保存下来，不会程序一关掉就没了。异常处理让你的程序更健壮，遇到错误不会直接崩溃。",
+        "sections": [
+          {
+            "title": "8.1 为什么要操作文件？",
+            "content": "我们之前写的程序，数据都在内存里，程序一关就没了。如果想把数据保存下来下次再用，就需要把数据写到文件里，存在硬盘上。\n\n文件操作的用途：\n- 保存用户数据（比如游戏存档、待办事项）\n- 读取配置文件\n- 处理文本文件、CSV表格等\n- 日志记录\n\nPython操作文件非常简单，主要用内置的`open()`函数。"
+          },
+          {
+            "title": "8.2 读取文件",
+            "content": "读取文件的基本步骤：\n1. 用`open(文件名, 'r')`打开文件（'r'是read读模式）\n2. 用`.read()`、`.readlines()`等方法读取内容\n3. 用`.close()`关闭文件\n\n更好的方式是用`with`语句，它会自动帮你关闭文件，不用手动close，也不用担心忘关。"
+          },
+          {
+            "title": "8.3 读取文件代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 方式1：手动打开和关闭（不推荐，容易忘关）\nf = open(\"test.txt\", \"r\", encoding=\"utf-8\")\ncontent = f.read()\nprint(content)\nf.close()\n\n# 方式2：with语句（推荐！自动关闭文件）\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    content = f.read()\n    print(content)\n# 出了with块，文件自动关闭\n\n# 读取整个文件为一个字符串\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    text = f.read()\n    print(\"全文长度：\", len(text))\n\n# 按行读取，返回列表（每行是一个元素）\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    lines = f.readlines()\n    print(f\"共{len(lines)}行\")\n    for i, line in enumerate(lines):\n        print(f\"第{i+1}行：{line.strip()}\")\n\n# 逐行遍历（大文件推荐，省内存）\nwith open(\"test.txt\", \"r\", encoding=\"utf-8\") as f:\n    for line in f:\n        print(line.strip())  # strip去掉换行符"
+          },
+          {
+            "title": "8.4 写入文件",
+            "content": "写入文件用写模式，有两种：\n- `'w'`：覆盖写入（如果文件已经存在，会被清空重写！小心用）\n- `'a'`：追加写入（在文件末尾添加内容，原来的还在）\n\n写文件也推荐用`with`语句。\n\n写入方法：\n- `write(字符串)`：写一个字符串\n- `writelines(列表)`：写一个列表的字符串（不自动加换行，要自己加）"
+          },
+          {
+            "title": "8.5 写入文件代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 覆盖写入（w模式）\nwith open(\"output.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.write(\"你好，世界！\\n\")\n    f.write(\"这是第二行\\n\")\n    f.write(\"Python文件操作真简单\\n\")\nprint(\"写入完成！\")\n\n# 追加写入（a模式）\nwith open(\"output.txt\", \"a\", encoding=\"utf-8\") as f:\n    f.write(\"\\n--- 追加的内容 ---\\n\")\n    f.write(\"这行是追加的\\n\")\nprint(\"追加完成！\")\n\n# 写入列表（手动加换行）\nlines = [\"苹果\\n\", \"香蕉\\n\", \"橘子\\n\"]\nwith open(\"fruits.txt\", \"w\", encoding=\"utf-8\") as f:\n    f.writelines(lines)\n\n# 或者用循环写\nfruits = [\"苹果\", \"香蕉\", \"橘子\", \"葡萄\"]\nwith open(\"fruits2.txt\", \"w\", encoding=\"utf-8\") as f:\n    for fruit in fruits:\n        f.write(fruit + \"\\n\")\n\n# 读取看看\nwith open(\"fruits2.txt\", \"r\", encoding=\"utf-8\") as f:\n    print(f.read())"
+          },
+          {
+            "title": "8.6 实战：待办事项（文件版）",
+            "content": "我们来做一个能保存数据的待办事项程序——数据存在文件里，程序关掉再打开数据还在！\n\n思路：\n- 数据存在todo.txt里，每行一个待办\n- 程序启动时读取文件，加载到列表\n- 添加/删除时更新列表，同时更新文件"
+          },
+          {
+            "title": "8.7 待办事项代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "TODO_FILE = \"my_todos.txt\"\n\ndef load_todos():\n    \"\"\"从文件加载待办列表\"\"\"\n    todos = []\n    try:\n        with open(TODO_FILE, \"r\", encoding=\"utf-8\") as f:\n            for line in f:\n                todo = line.strip()\n                if todo:  # 跳过空行\n                    todos.append(todo)\n    except FileNotFoundError:\n        # 文件不存在就返回空列表\n        pass\n    return todos\n\ndef save_todos(todos):\n    \"\"\"把待办列表保存到文件\"\"\"\n    with open(TODO_FILE, \"w\", encoding=\"utf-8\") as f:\n        for todo in todos:\n            f.write(todo + \"\\n\")\n\ndef show_todos(todos):\n    if not todos:\n        print(\"暂无待办事项～\")\n        return\n    print(\"===== 待办事项 =====\")\n    for i, todo in enumerate(todos, 1):\n        print(f\"{i}. {todo}\")\n    print(f\"共 {len(todos)} 项\")\n\ndef main():\n    todos = load_todos()\n    print(f\"已加载 {len(todos)} 条待办\")\n    \n    while True:\n        print(\"\\n===== 待办菜单 =====\")\n        print(\"1. 查看待办\")\n        print(\"2. 添加待办\")\n        print(\"3. 删除待办\")\n        print(\"4. 退出\")\n        choice = input(\"请选择：\")\n        \n        if choice == \"1\":\n            show_todos(todos)\n        elif choice == \"2\":\n            todo = input(\"输入待办内容：\")\n            if todo:\n                todos.append(todo)\n                save_todos(todos)\n                print(\"添加成功！\")\n        elif choice == \"3\":\n            show_todos(todos)\n            if todos:\n                num = int(input(\"要删除第几项？\"))\n                if 1 <= num <= len(todos):\n                    deleted = todos.pop(num - 1)\n                    save_todos(todos)\n                    print(f\"已删除：{deleted}\")\n                else:\n                    print(\"编号不对\")\n        elif choice == \"4\":\n            print(\"再见！\")\n            break\n        else:\n            print(\"无效选择\")\n\nif __name__ == \"__main__\":\n    main()"
+          },
+          {
+            "title": "8.8 异常处理",
+            "content": "写程序时经常会遇到各种错误：文件不存在、用户输入了奇怪的东西、除数为0、列表下标越界……\n\n如果不处理这些错误，程序会直接崩溃退出，用户体验很差。\n\nPython用`try...except`来捕获和处理异常，让程序遇到错误时不会崩，而是优雅地处理。"
+          },
+          {
+            "title": "8.9 异常处理代码示例",
+            "type": "code",
+            "language": "python",
+            "code": "# 基本的try...except\ntry:\n    num = int(input(\"输入一个数字：\"))\n    result = 10 / num\n    print(f\"10 / {num} = {result}\")\nexcept ValueError:\n    print(\"错误：你输入的不是数字！\")\nexcept ZeroDivisionError:\n    print(\"错误：不能除以0！\")\nexcept Exception as e:\n    print(f\"发生了其他错误：{e}\")\nelse:\n    # 没有异常时执行\n    print(\"计算成功！\")\nfinally:\n    # 无论有没有异常都会执行（一般用来清理资源）\n    print(\"程序结束\")\n\n# 常见异常类型：\n# - ValueError：值错误（比如把abc转成int）\n# - TypeError：类型错误（比如字符串和数字相加）\n# - ZeroDivisionError：除以0\n# - IndexError：列表索引越界\n# - KeyError：字典的key不存在\n# - FileNotFoundError：文件不存在\n# - Exception：所有异常的父类\n\n# 手动抛出异常\ndef divide(a, b):\n    if b == 0:\n        raise ValueError(\"除数不能为0\")  # 主动抛出异常\n    return a / b\n\ntry:\n    divide(10, 0)\nexcept ValueError as e:\n    print(f\"错误：{e}\")"
+          },
+          {
+            "title": "8.10 动手练习",
+            "type": "exercise",
+            "content": "练习：做一个简单的学生成绩管理系统！\n\n要求：\n1. 数据存在文件里（比如scores.csv，每行格式：姓名,语文,数学,英语）\n2. 功能：\n   - 添加学生成绩\n   - 查看所有学生成绩\n   - 查询某个学生的成绩\n   - 计算全班每科的平均分\n3. 用异常处理来处理各种错误（比如文件不存在、输入格式不对等）\n4. 程序退出后数据还在，下次打开还能看到\n\n提示：CSV就是逗号分隔的文本文件，用字符串的split(',')来拆分每行。"
+          }
+        ],
+        "summary": "这节课我们学习了文件操作和异常处理。文件操作让程序可以持久化存储数据，异常处理让程序更健壮更友好。这两个都是实用技能，以后写程序经常会用到。结合前面学的知识，你现在已经可以写出很多实用的小程序了！下一章我们学习模块和包。",
+        "quiz": {
+          "question": "Python中，读取文件时推荐使用以下哪种方式？",
+          "options": [
+            "f = open(); f.read(); f.close()",
+            "with open() as f: f.read()",
+            "file.read()",
+            "read_file()"
+          ],
+          "answer": 1,
+          "explanation": "with语句会自动管理文件的打开和关闭，即使发生异常也能正确关闭文件，是Python推荐的最佳实践。"
         }
       }
     }

@@ -272,6 +272,60 @@ body {
 }
 
 /* ===== 课程卡片 ===== */
+
+/* 难度标签 */
+.level-tabs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.level-tab {
+  padding: 10px 24px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.level-tab:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+.level-tab.active {
+  background: var(--gradient-short);
+  color: white;
+  border-color: transparent;
+}
+
+/* 课程分组 */
+.course-section {
+  margin-bottom: 48px;
+}
+.course-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.course-section-icon {
+  font-size: 28px;
+}
+.course-section-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+.course-section-desc {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
 .courses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -339,6 +393,18 @@ body {
   gap: 5px;
 }
 .course-meta i { width: 14px; height: 14px; }
+
+/* 即将上线标签 */
+.coming-soon-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+}
 
 /* ===== 教程精选 ===== */
 .featured-grid {
@@ -473,13 +539,103 @@ body {
   height: fit-content;
   position: sticky;
   top: 100px;
+  transition: all 0.3s ease;
+}
+.chapter-sidebar.collapsed {
+  padding: 12px;
+}
+.chapter-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
 }
 .chapter-sidebar h3 {
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-color);
+  margin: 0;
+}
+.sidebar-toggle {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.sidebar-toggle:hover {
+  background: var(--border-color);
+}
+.chapter-sidebar.collapsed .chapter-list {
+  display: none;
+}
+.chapter-sidebar.collapsed .chapter-sidebar-header {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* 移动端目录悬浮按钮 */
+.mobile-toc-btn {
+  display: none;
+  position: fixed;
+  left: 16px;
+  bottom: 80px;
+  z-index: 900;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--gradient-short);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.4);
+  cursor: pointer;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 移动端目录遮罩 */
+.toc-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1500;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.toc-overlay.show {
+  display: block;
+  opacity: 1;
+}
+
+/* 移动端目录抽屉 */
+@media (max-width: 900px) {
+  .chapter-sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    z-index: 1600;
+    border-radius: 0;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+  }
+  .chapter-sidebar.mobile-open {
+    left: 0;
+  }
+  .mobile-toc-btn {
+    display: flex;
+  }
 }
 .chapter-list { list-style: none; }
 .chapter-item {
@@ -815,15 +971,15 @@ body {
         </p>
         <div class="hero-stats">
           <div class="stat-item">
-            <div class="stat-number">4+</div>
+            <div class="stat-number">10+</div>
             <div class="stat-label">精品课程</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">50+</div>
+            <div class="stat-number">60+</div>
             <div class="stat-label">详细章节</div>
           </div>
           <div class="stat-item">
-            <div class="stat-number">20万+</div>
+            <div class="stat-number">30万+</div>
             <div class="stat-label">文字内容</div>
           </div>
           <div class="stat-item">
@@ -843,7 +999,25 @@ body {
         <h2 class="section-title">课程分类</h2>
         <p class="section-desc">选择你感兴趣的方向，开始你的编程学习之旅</p>
       </div>
-      <div class="courses-grid" id="coursesGrid">
+      
+      <!-- 难度筛选标签 -->
+      <div class="level-tabs" id="levelTabs">
+        <button class="level-tab active" onclick="filterByLevel('all')">
+          🌟 全部课程
+        </button>
+        <button class="level-tab" onclick="filterByLevel('beginner')">
+          🌱 入门
+        </button>
+        <button class="level-tab" onclick="filterByLevel('intermediate')">
+          🚀 中级
+        </button>
+        <button class="level-tab" onclick="filterByLevel('advanced')">
+          🔥 进阶
+        </button>
+      </div>
+      
+      <!-- 按难度分类展示 -->
+      <div id="coursesContainer">
         <!-- 动态生成 -->
       </div>
     </div>
@@ -897,12 +1071,25 @@ body {
   <div class="container">
     <div class="course-layout">
       <!-- 章节目录 -->
-      <aside class="chapter-sidebar">
-        <h3>章节目录</h3>
+      <aside class="chapter-sidebar" id="chapterSidebar">
+        <div class="chapter-sidebar-header">
+          <h3>📚 章节目录</h3>
+          <button class="sidebar-toggle" onclick="toggleSidebar()" title="收起目录">
+            <i data-lucide="panel-left-close" id="sidebarToggleIcon"></i>
+          </button>
+        </div>
         <ul class="chapter-list" id="chapterList">
           <!-- 动态生成 -->
         </ul>
       </aside>
+      
+      <!-- 移动端目录遮罩 -->
+      <div class="toc-overlay" id="tocOverlay" onclick="closeMobileToc()"></div>
+      
+      <!-- 移动端目录按钮 -->
+      <button class="mobile-toc-btn" id="mobileTocBtn" onclick="toggleMobileToc()" style="display:none;">
+        📑
+      </button>
 
       <!-- 学习内容 -->
       <main class="lesson-content" id="lessonContent">
@@ -916,6 +1103,13 @@ body {
 </div>
 
 <script>
+// ===== 课程难度分类 =====
+const courseLevels = [
+  { id: 'beginner', name: '入门', icon: '🌱', desc: '零基础友好，从零开始学' },
+  { id: 'intermediate', name: '中级', icon: '🚀', desc: '有基础后进阶，深入学习' },
+  { id: 'advanced', name: '进阶', icon: '🔥', desc: '高手挑战，实战项目' }
+];
+
 // ===== 课程数据（基础元数据） =====
 const coursesMeta = [
   {
@@ -924,10 +1118,11 @@ const coursesMeta = [
     subtitle: '从零开始学习网页开发，打造属于你自己的网站',
     icon: '🌐',
     color: 'html',
+    levelType: 'beginner',
     description: 'HTML是网页的骨架，CSS是网页的衣服。学会这两样，你就能做出漂亮的网页了！本课程从零基础开始，一步步教你创建属于自己的网站。',
-    duration: '12小时',
-    lessons: 12,
-    level: '入门级',
+    duration: '25小时',
+    lessons: 16,
+    level: '入门到中级',
     dataFile: 'data/html-course.json'
   },
   {
@@ -936,10 +1131,11 @@ const coursesMeta = [
     subtitle: '最适合初学者的编程语言，简单又强大',
     icon: '🐍',
     color: 'python',
+    levelType: 'beginner',
     description: 'Python是世界上最流行的编程语言之一，语法简洁优雅，容易上手，却又功能强大。从Web开发、数据分析、人工智能到自动化脚本，Python无所不能。',
-    duration: '20小时',
-    lessons: 16,
-    level: '入门级',
+    duration: '25小时',
+    lessons: 8,
+    level: '入门到中级',
     dataFile: 'data/python-course.json'
   },
   {
@@ -948,8 +1144,9 @@ const coursesMeta = [
     subtitle: '网页交互必备，从基础到DOM操作',
     icon: '⚡',
     color: 'javascript',
+    levelType: 'beginner',
     description: 'JavaScript是网页的灵魂，让网页动起来！从基础语法到DOM操作、事件处理、异步编程，全面掌握前端开发必备技能。',
-    duration: '18小时',
+    duration: '15小时',
     lessons: 15,
     level: '入门级',
     dataFile: 'data/js-course.json'
@@ -960,11 +1157,90 @@ const coursesMeta = [
     subtitle: '用AI辅助编程，掌握人工智能基础',
     icon: '🤖',
     color: 'ai',
+    levelType: 'beginner',
     description: 'AI时代已经到来！学会使用AI工具辅助编程，了解人工智能的基本概念，掌握提示词工程，让AI成为你的编程助手。',
     duration: '10小时',
     lessons: 8,
     level: '入门级',
     dataFile: 'data/ai-course.json'
+  },
+  {
+    id: 'python-intermediate',
+    title: 'Python 进阶编程',
+    subtitle: '面向对象、模块、文件操作、异常处理',
+    icon: '📦',
+    color: 'python',
+    levelType: 'intermediate',
+    description: '掌握Python进阶知识：面向对象编程、模块和包、文件操作、异常处理、正则表达式、迭代器生成器等核心技能。',
+    duration: '18小时',
+    lessons: 12,
+    level: '中级',
+    dataFile: null
+  },
+  {
+    id: 'css-advanced',
+    title: 'CSS 进阶与动画',
+    subtitle: 'CSS动画、变换、过渡、高级选择器',
+    icon: '🎨',
+    color: 'html',
+    levelType: 'intermediate',
+    description: '深入学习CSS动画、transform变换、transition过渡、keyframes关键帧动画、高级选择器、CSS变量等进阶技巧。',
+    duration: '10小时',
+    lessons: 8,
+    level: '中级',
+    dataFile: null
+  },
+  {
+    id: 'js-dom',
+    title: 'JavaScript DOM 实战',
+    subtitle: '深入DOM操作、事件处理、网页特效',
+    icon: '🎮',
+    color: 'javascript',
+    levelType: 'intermediate',
+    description: '深入学习DOM操作、事件冒泡和捕获、事件委托、拖拽、动画、网页特效、本地存储等前端核心技能。',
+    duration: '16小时',
+    lessons: 10,
+    level: '中级',
+    dataFile: null
+  },
+  {
+    id: 'react',
+    title: 'React 前端框架',
+    subtitle: '最流行的前端框架，组件化开发',
+    icon: '⚛️',
+    color: 'ai',
+    levelType: 'advanced',
+    description: '学习React框架，掌握组件化开发思想、JSX、Hooks、状态管理、路由等，成为真正的前端工程师。',
+    duration: '25小时',
+    lessons: 14,
+    level: '进阶',
+    dataFile: null
+  },
+  {
+    id: 'django',
+    title: 'Django Web开发',
+    subtitle: 'Python后端框架，快速搭建网站',
+    icon: '🌍',
+    color: 'python',
+    levelType: 'advanced',
+    description: '用Django框架快速开发Web应用，MTV模式、ORM、Admin后台、用户认证、RESTful API等全栈开发技能。',
+    duration: '22小时',
+    lessons: 12,
+    level: '进阶',
+    dataFile: null
+  },
+  {
+    id: 'ai-project',
+    title: 'AI项目实战',
+    subtitle: '用Python做AI应用，聊天机器人、图像识别',
+    icon: '🧠',
+    color: 'ai',
+    levelType: 'advanced',
+    description: '实战AI项目：调用大模型API做聊天机器人、图像识别、文本生成、语音合成，打造属于你的AI应用。',
+    duration: '20小时',
+    lessons: 10,
+    level: '进阶',
+    dataFile: null
   }
 ];
 
@@ -988,25 +1264,108 @@ function $(selector) { return document.querySelector(selector); }
 function $$(selector) { return document.querySelectorAll(selector); }
 
 // ===== 渲染首页 =====
+let currentLevelFilter = 'all';
+
 function renderCourses() {
-  const grid = $('#coursesGrid');
-  grid.innerHTML = coursesMeta.map(course => `
-    <div class="course-card" onclick="openCourse('${course.id}')">
-      <div class="course-image ${course.color}">
-        <span>${course.icon}</span>
-      </div>
-      <div class="course-content">
-        <h3 class="course-title">${course.title}</h3>
-        <p class="course-desc">${course.description.slice(0, 60)}...</p>
-        <div class="course-meta">
-          <span><i data-lucide="book-open"></i> ${course.lessons}章</span>
-          <span><i data-lucide="clock"></i> ${course.duration}</span>
-          <span><i data-lucide="bar-chart-2"></i> ${course.level}</span>
+  const container = $('#coursesContainer');
+  let html = '';
+  
+  const levels = currentLevelFilter === 'all' 
+    ? courseLevels 
+    : courseLevels.filter(l => l.id === currentLevelFilter);
+  
+  levels.forEach(level => {
+    const levelCourses = coursesMeta.filter(c => c.levelType === level.id);
+    if (levelCourses.length === 0) return;
+    
+    html += `
+      <div class="course-section" id="section-${level.id}">
+        <div class="course-section-header">
+          <div class="course-section-icon">${level.icon}</div>
+          <div>
+            <h3 class="course-section-title">${level.name}教程</h3>
+            <div class="course-section-desc">${level.desc} · 共 ${levelCourses.length} 门课程</div>
+          </div>
+        </div>
+        <div class="courses-grid">
+          ${levelCourses.map(course => `
+            <div class="course-card" onclick="${course.dataFile ? `openCourse('${course.id}')` : `showComingSoon('${course.title}')`}">
+              <div class="course-image ${course.color}">
+                <span>${course.icon}</span>
+              </div>
+              <div class="course-content">
+                <h3 class="course-title">${course.title}</h3>
+                <p class="course-desc">${course.description.slice(0, 60)}...</p>
+                <div class="course-meta">
+                  <span><i data-lucide="book-open"></i> ${course.lessons}章</span>
+                  <span><i data-lucide="clock"></i> ${course.duration}</span>
+                  <span><i data-lucide="bar-chart-2"></i> ${course.level}</span>
+                </div>
+                ${!course.dataFile ? '<div class="coming-soon-badge">🚧 即将上线</div>' : ''}
+              </div>
+            </div>
+          `).join('')}
         </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  });
+  
+  container.innerHTML = html;
   lucide.createIcons();
+}
+
+function filterByLevel(level) {
+  currentLevelFilter = level;
+  
+  // 更新标签激活状态
+  $$('.level-tab').forEach(tab => tab.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  renderCourses();
+}
+
+function showComingSoon(title) {
+  alert(`「${title}」课程正在紧张筹备中，敬请期待！🎉`);
+}
+
+// ===== 目录控制 =====
+let sidebarCollapsed = false;
+let mobileTocOpen = false;
+
+function toggleSidebar() {
+  sidebarCollapsed = !sidebarCollapsed;
+  const sidebar = $('#chapterSidebar');
+  const icon = $('#sidebarToggleIcon');
+  sidebar.classList.toggle('collapsed', sidebarCollapsed);
+  
+  if (sidebarCollapsed) {
+    icon.setAttribute('data-lucide', 'panel-left-open');
+  } else {
+    icon.setAttribute('data-lucide', 'panel-left-close');
+  }
+  lucide.createIcons();
+}
+
+function toggleMobileToc() {
+  mobileTocOpen = !mobileTocOpen;
+  const sidebar = $('#chapterSidebar');
+  const overlay = $('#tocOverlay');
+  sidebar.classList.toggle('mobile-open', mobileTocOpen);
+  overlay.classList.toggle('show', mobileTocOpen);
+}
+
+function closeMobileToc() {
+  mobileTocOpen = false;
+  const sidebar = $('#chapterSidebar');
+  const overlay = $('#tocOverlay');
+  sidebar.classList.remove('mobile-open');
+  overlay.classList.remove('show');
+}
+
+// 打开课程时显示目录按钮
+function updateMobileTocBtn(show) {
+  const btn = $('#mobileTocBtn');
+  btn.style.display = show ? 'flex' : 'none';
 }
 
 function renderFeatured() {
@@ -1028,6 +1387,12 @@ function navigateTo(page) {
   $$('.page-container').forEach(p => p.classList.remove('active'));
   $(`#page-${page}`).classList.add('active');
   window.scrollTo(0, 0);
+  
+  // 非课程页面隐藏移动端目录按钮
+  if (page !== 'course') {
+    updateMobileTocBtn(false);
+    closeMobileToc();
+  }
 }
 
 function scrollToSection(id) {
@@ -1045,6 +1410,7 @@ async function openCourse(courseId) {
   
   currentCourse = meta;
   navigateTo('course');
+  updateMobileTocBtn(true);
   
   // 更新课程头部信息
   $('#courseDetailTitleText').textContent = meta.title;
@@ -1102,6 +1468,11 @@ function renderChapterList() {
 function openChapter(index) {
   if (!currentCourseData || !currentCourseData.chapters) return;
   if (index < 0 || index >= currentCourseData.chapters.length) return;
+  
+  // 移动端点击章节后关闭目录
+  if (window.innerWidth <= 900) {
+    closeMobileToc();
+  }
   
   currentChapterIndex = index;
   const chapter = currentCourseData.chapters[index];
