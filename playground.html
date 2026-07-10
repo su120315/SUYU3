@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="在线编程编辑器 - 边学边练，实时运行HTML/CSS/JavaScript代码">
+  <meta name="keywords" content="在线编程,代码编辑器,HTML,CSS,JavaScript,实时预览">
+  <title>在线编程 | 蘇魚编程教学</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.460.0"></script>
+  <style>
+:root {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-code: #1e1e2e;
+  --accent-primary: #6366f1;
+  --accent-secondary: #22d3ee;
+  --accent-tertiary: #f472b6;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-color: #e2e8f0;
+  --gradient: linear-gradient(135deg, #6366f1, #22d3ee, #f472b6);
+  --gradient-short: linear-gradient(135deg, #6366f1, #22d3ee);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+  --font-heading: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  --font-body: 'Noto Sans SC', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+.dark-mode {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-tertiary: #1a1a24;
+  --bg-code: #161620;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-color: #2a2a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ===== 导航栏 ===== */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 12px 0;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color);
+  height: 56px;
+}
+.dark-mode .navbar { background: rgba(10,10,15,0.85); }
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+.nav-logo {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--gradient-short);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  cursor: pointer;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.nav-links a:hover { color: var(--accent-primary); }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.back-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--gradient-short);
+  color: white !important;
+  border-radius: 20px;
+  font-size: 13px !important;
+  text-decoration: none;
+}
+.theme-toggle {
+  width: 36px; height: 36px;
+  border: none;
+  background: var(--bg-tertiary);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.theme-toggle:hover { background: var(--border-color); }
+.nav-toggle { display: none; }
+
+/* ===== 主布局 ===== */
+.main-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr 1fr;
+  height: calc(100vh - 56px);
+  margin-top: 56px;
+  gap: 0;
+}
+
+/* ===== 左侧课程面板 ===== */
+.course-panel {
+  border-right: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.panel-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.panel-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.panel-close {
+  width: 28px; height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.panel-close:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.course-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+.course-content h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+.course-content p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  white-space: pre-line;
+}
+.course-content .code-block {
+  background: var(--bg-code);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 12px 0;
+}
+.course-content .code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.course-content .code-lang {
+  color: #94a3b8;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+.course-content .code-load-btn {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.course-content pre {
+  padding: 14px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  font-family: var(--font-mono);
+}
+.course-content code { font-family: var(--font-mono); }
+.empty-lesson {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 40px;
+}
+.empty-lesson-icon { font-size: 48px; margin-bottom: 16px; }
+.empty-lesson p { font-size: 14px; }
+
+/* ===== 中间编辑器面板 ===== */
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  overflow: hidden;
+}
+.editor-tabs {
+  display: flex;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 8px;
+}
+.editor-tab {
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  font-family: var(--font-mono);
+}
+.editor-tab:hover { color: var(--text-primary); }
+.editor-tab.active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+  background: var(--bg-secondary);
+}
+.editor-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.editor-area {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  background: var(--bg-code);
+  color: #e2e8f0;
+  tab-size: 2;
+  display: none;
+}
+.editor-area.active { display: block; }
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-tertiary);
+  border-top: 1px solid var(--border-color);
+}
+.toolbar-left { display: flex; gap: 8px; }
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.toolbar-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+.run-btn {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+.run-btn:hover {
+  background: #4f46e5;
+  color: white;
+}
+
+/* ===== 右侧预览面板 ===== */
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  overflow: hidden;
+}
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+.preview-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.preview-actions { display: flex; gap: 8px; }
+.preview-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: white;
+}
+
+/* ===== 模板选择弹窗 ===== */
+.templates-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+.templates-overlay.active { display: flex; }
+.templates-modal {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+.templates-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.templates-modal-title { font-size: 18px; font-weight: 600; }
+.templates-close {
+  width: 32px; height: 32px;
+  border: none;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.templates-list {
+  padding: 16px;
+  overflow-y: auto;
+  max-height: calc(80vh - 80px);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.template-card {
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--bg-secondary);
+}
+.template-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.template-icon { font-size: 32px; margin-bottom: 8px; }
+.template-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.template-desc { font-size: 12px; color: var(--text-muted); }
+
+/* ===== 移动端适配 ===== */
+@media (max-width: 1024px) {
+  .main-layout { grid-template-columns: 260px 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .back-main { font-size: 11px; padding: 5px 10px; }
+  .back-main i { display: none; }
+  
+  /* 移动端：编辑器和预览上下排列 */
+  .main-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    height: calc(100vh - 56px);
+  }
+  
+  /* 课程面板变成抽屉 */
+  .course-panel {
+    position: fixed;
+    top: 56px;
+    left: -100%;
+    width: 85%;
+    max-width: 320px;
+    height: calc(100vh - 56px);
+    z-index: 900;
+    transition: left 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+  }
+  .course-panel.open { left: 0; }
+  
+  .editor-panel { border-right: none; border-bottom: 1px solid var(--border-color); }
+  
+  /* 移动端按钮 */
+  .mobile-toggle-btn {
+    display: inline-flex !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-logo { font-size: 16px; }
+  .editor-tab { padding: 8px 14px; font-size: 12px; }
+  .toolbar-btn { padding: 5px 10px; font-size: 12px; }
+  .templates-list { grid-template-columns: 1fr; }
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <div class="nav-content">
+    <div class="nav-logo" onclick="window.location.href='index.html'">💻 蘇魚编程</div>
+    <ul class="nav-links">
+      <li><a href="index.html">首页</a></li>
+      <li><a href="index.html#courses">课程</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="index.html" class="back-main">
+        <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
+        返回
+      </a>
+      <button class="theme-toggle" id="themeToggle" title="切换主题">
+        <i data-lucide="moon" id="themeIcon"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- 主布局 -->
+<div class="main-layout">
+  <!-- 左侧课程面板 -->
+  <div class="course-panel" id="coursePanel">
+    <div class="panel-header">
+      <span class="panel-title">📚 课程内容</span>
+      <button class="panel-close" onclick="toggleCoursePanel()" title="收起课程">
+        <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
+      </button>
+    </div>
+    <div class="course-content" id="courseContent">
+      <div class="empty-lesson">
+        <div class="empty-lesson-icon">📖</div>
+        <p>从课程中点击"在线运行"按钮<br>在这里边学边练</p>
+        <p style="margin-top:12px;font-size:13px;">或者选择一个模板开始编程 →</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 中间代码编辑器 -->
+  <div class="editor-panel">
+    <div class="editor-tabs">
+      <button class="editor-tab active" onclick="switchTab('html')">HTML</button>
+      <button class="editor-tab" onclick="switchTab('css')">CSS</button>
+      <button class="editor-tab" onclick="switchTab('js')">JavaScript</button>
+    </div>
+    <div class="editor-container">
+      <textarea class="editor-area active" id="htmlEditor" spellcheck="false" placeholder="在这里写HTML..."></textarea>
+      <textarea class="editor-area" id="cssEditor" spellcheck="false" placeholder="在这里写CSS..."></textarea>
+      <textarea class="editor-area" id="jsEditor" spellcheck="false" placeholder="在这里写JavaScript..."></textarea>
+    </div>
+    <div class="editor-toolbar">
+      <div class="toolbar-left">
+        <button class="toolbar-btn" onclick="showTemplates()">
+          <i data-lucide="layout-template" style="width:14px;height:14px;"></i>
+          模板
+        </button>
+        <button class="toolbar-btn" onclick="resetCode()">
+          <i data-lucide="rotate-ccw" style="width:14px;height:14px;"></i>
+          重置
+        </button>
+        <button class="toolbar-btn mobile-toggle-btn" onclick="toggleCoursePanel()" style="display:none;">
+          <i data-lucide="book-open" style="width:14px;height:14px;"></i>
+          课程
+        </button>
+      </div>
+      <button class="toolbar-btn run-btn" onclick="runCode()">
+        <i data-lucide="play" style="width:14px;height:14px;"></i>
+        运行
+      </button>
+    </div>
+  </div>
+
+  <!-- 右侧预览 -->
+  <div class="preview-panel">
+    <div class="preview-header">
+      <span class="preview-title">
+        <i data-lucide="monitor" style="width:16px;height:16px;"></i>
+        预览
+      </span>
+      <div class="preview-actions">
+        <button class="toolbar-btn" onclick="runCode()" title="刷新预览">
+          <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
+        </button>
+      </div>
+    </div>
+    <iframe class="preview-iframe" id="previewFrame" title="预览"></iframe>
+  </div>
+</div>
+
+<!-- 模板选择弹窗 -->
+<div class="templates-overlay" id="templatesOverlay" onclick="if(event.target===this)closeTemplates()">
+  <div class="templates-modal">
+    <div class="templates-modal-header">
+      <span class="templates-modal-title">选择模板</span>
+      <button class="templates-close" onclick="closeTemplates()">
+        <i data-lucide="x" style="width:18px;height:18px;"></i>
+      </button>
+    </div>
+    <div class="templates-list" id="templatesList">
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 模板数据 =====
+const templates = [
+  {
+    name: '空白模板',
+    icon: '📝',
+    desc: '从零开始写',
+    html: '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>我的页面</title>\n</head>\n<body>\n  <h1>Hello, World!</h1>\n  <p>开始你的编程之旅吧～</p>\n</body>\n</html>',
+    css: 'body {\n  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;\n  max-width: 800px;\n  margin: 0 auto;\n  padding: 40px 20px;\n  color: #333;\n}\n\nh1 {\n  color: #6366f1;\n}',
+    js: 'console.log("Hello, World!");'
+  },
+  {
+    name: 'Hello World',
+    icon: '👋',
+    desc: '经典入门示例',
+    html: '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n  <meta charset="UTF-8">\n  <title>Hello World</title>\n</head>\n<body>\n  <div class="container">\n    <h1>Hello, World! 👋</h1>\n    <p>欢迎来到编程的世界！</p>\n    <button id="btn">点我试试看</button>\n    <p id="msg"></p>\n  </div>\n</body>\n</html>',
+    css: 'body {\n  font-family: system-ui, sans-serif;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: 0;\n}\n\n.container {\n  background: white;\n  padding: 40px 60px;\n  border-radius: 20px;\n  text-align: center;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.3);\n}\n\nh1 {\n  color: #333;\n  margin: 0 0 10px;\n  font-size: 32px;\n}\n\np {\n  color: #666;\n  margin: 10px 0 20px;\n}\n\nbutton {\n  background: linear-gradient(135deg, #667eea, #764ba2);\n  color: white;\n  border: none;\n  padding: 12px 30px;\n  border-radius: 30px;\n  font-size: 16px;\n  cursor: pointer;\n  transition: transform 0.2s;\n}\n\nbutton:hover {\n  transform: scale(1.05);\n}\n\n#msg {\n  margin-top: 20px;\n  font-weight: bold;\n  color: #667eea;\n}',
+    js: 'const btn = document.getElementById("btn");\nconst msg = document.getElementById("msg");\nlet count = 0;\n\nbtn.addEventListener("click", function() {\n  count++;\n  msg.textContent = "你点了 " + count + " 次！🎉";\n});'
+  },
+  {
+    name: '待办清单',
+    icon: '✅',
+    desc: '简单的Todo应用',
+    html: '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n  <meta charset="UTF-8">\n  <title>待办清单</title>\n</head>\n<body>\n  <div class="app">\n    <h1>📝 待办清单</h1>\n    <div class="input-area">\n      <input type="text" id="todoInput" placeholder="添加新的待办事项...">\n      <button onclick="addTodo()">添加</button>\n    </div>\n    <ul id="todoList"></ul>\n  </div>\n</body>\n</html>',
+    css: 'body {\n  font-family: system-ui, sans-serif;\n  background: #f0f4f8;\n  min-height: 100vh;\n  display: flex;\n  align-items: flex-start;\n  justify-content: center;\n  margin: 0;\n  padding: 40px 20px;\n}\n\n.app {\n  background: white;\n  border-radius: 16px;\n  padding: 30px;\n  width: 100%;\n  max-width: 500px;\n  box-shadow: 0 10px 40px rgba(0,0,0,0.1);\n}\n\nh1 {\n  text-align: center;\n  color: #333;\n  margin: 0 0 20px;\n}\n\n.input-area {\n  display: flex;\n  gap: 10px;\n  margin-bottom: 20px;\n}\n\ninput {\n  flex: 1;\n  padding: 12px 16px;\n  border: 2px solid #e2e8f0;\n  border-radius: 10px;\n  font-size: 16px;\n  outline: none;\n  transition: border-color 0.2s;\n}\n\ninput:focus {\n  border-color: #6366f1;\n}\n\nbutton {\n  padding: 12px 20px;\n  background: #6366f1;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-size: 16px;\n  cursor: pointer;\n  transition: background 0.2s;\n}\n\nbutton:hover {\n  background: #4f46e5;\n}\n\nul {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n\nli {\n  display: flex;\n  align-items: center;\n  padding: 12px 16px;\n  background: #f8fafc;\n  border-radius: 10px;\n  margin-bottom: 8px;\n  gap: 10px;\n}\n\nli.done span {\n  text-decoration: line-through;\n  color: #94a3b8;\n}\n\nli span {\n  flex: 1;\n  color: #334155;\n}\n\n.delete-btn {\n  background: #ef4444;\n  padding: 6px 12px;\n  font-size: 14px;\n}\n\n.delete-btn:hover {\n  background: #dc2626;\n}',
+    js: 'const todoInput = document.getElementById("todoInput");\nconst todoList = document.getElementById("todoList");\n\n// 从localStorage加载\nlet todos = JSON.parse(localStorage.getItem("todos") || "[]");\n\nfunction renderTodos() {\n  todoList.innerHTML = "";\n  todos.forEach((todo, index) => {\n    const li = document.createElement("li");\n    if (todo.done) li.classList.add("done");\n    li.innerHTML = `\n      <input type="checkbox" ${todo.done ? "checked" : ""} onchange="toggleTodo(${index})">\n      <span>${todo.text}</span>\n      <button class="delete-btn" onclick="deleteTodo(${index})">删除</button>\n    `;\n    todoList.appendChild(li);\n  });\n  saveTodos();\n}\n\nfunction addTodo() {\n  const text = todoInput.value.trim();\n  if (!text) return;\n  todos.push({ text: text, done: false });\n  todoInput.value = "";\n  renderTodos();\n}\n\nfunction toggleTodo(index) {\n  todos[index].done = !todos[index].done;\n  renderTodos();\n}\n\nfunction deleteTodo(index) {\n  todos.splice(index, 1);\n  renderTodos();\n}\n\nfunction saveTodos() {\n  localStorage.setItem("todos", JSON.stringify(todos));\n}\n\n// 回车添加\ntodoInput.addEventListener("keypress", function(e) {\n  if (e.key === "Enter") addTodo();\n});\n\n// 初始渲染\nrenderTodos();'
+  },
+  {
+    name: '计算器',
+    icon: '🧮',
+    desc: '简易计算器',
+    html: '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n  <meta charset="UTF-8">\n  <title>计算器</title>\n</head>\n<body>\n  <div class="calculator">\n    <div class="display" id="display">0</div>\n    <div class="keys">\n      <button class="btn func" onclick="clearAll()">C</button>\n      <button class="btn func" onclick="backspace()">⌫</button>\n      <button class="btn func" onclick="appendOp(\'%\')">%</button>\n      <button class="btn op" onclick="appendOp(\'/\')">÷</button>\n      <button class="btn num" onclick="appendNum(\'7\')">7</button>\n      <button class="btn num" onclick="appendNum(\'8\')">8</button>\n      <button class="btn num" onclick="appendNum(\'9\')">9</button>\n      <button class="btn op" onclick="appendOp(\'*\')">×</button>\n      <button class="btn num" onclick="appendNum(\'4\')">4</button>\n      <button class="btn num" onclick="appendNum(\'5\')">5</button>\n      <button class="btn num" onclick="appendNum(\'6\')">6</button>\n      <button class="btn op" onclick="appendOp(\'-\')">−</button>\n      <button class="btn num" onclick="appendNum(\'1\')">1</button>\n      <button class="btn num" onclick="appendNum(\'2\')">2</button>\n      <button class="btn num" onclick="appendNum(\'3\')">3</button>\n      <button class="btn op" onclick="appendOp(\'+\')">+</button>\n      <button class="btn num zero" onclick="appendNum(\'0\')">0</button>\n      <button class="btn num" onclick="appendNum(\'.\')">.</button>\n      <button class="btn equals" onclick="calculate()">=</button>\n    </div>\n  </div>\n</body>\n</html>',
+    css: 'body {\n  font-family: system-ui, sans-serif;\n  background: linear-gradient(135deg, #1a1a2e, #16213e);\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  margin: 0;\n}\n\n.calculator {\n  background: #0f0f23;\n  border-radius: 20px;\n  padding: 24px;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.5);\n  width: 320px;\n}\n\n.display {\n  background: #1a1a2e;\n  color: white;\n  font-size: 48px;\n  font-weight: 300;\n  text-align: right;\n  padding: 20px 16px;\n  border-radius: 12px;\n  margin-bottom: 16px;\n  font-family: "SF Mono", monospace;\n  overflow-x: auto;\n  min-height: 80px;\n  display: flex;\n  align-items: center;\n  justify-content: flex-end;\n}\n\n.keys {\n  display: grid;\n  grid-template-columns: repeat(4, 1fr);\n  gap: 10px;\n}\n\n.btn {\n  aspect-ratio: 1;\n  border: none;\n  border-radius: 50%;\n  font-size: 22px;\n  cursor: pointer;\n  transition: all 0.15s;\n  font-weight: 500;\n}\n\n.btn:active { transform: scale(0.95); }\n\n.num { background: #333; color: white; }\n.num:hover { background: #444; }\n\n.func { background: #a5a5a5; color: black; }\n.func:hover { background: #b5b5b5; }\n\n.op { background: #ff9500; color: white; }\n.op:hover { background: #ffaa33; }\n\n.equals { background: #ff9500; color: white; }\n.equals:hover { background: #ffaa33; }\n\n.zero {\n  grid-column: span 2;\n  border-radius: 40px;\n  aspect-ratio: auto;\n  text-align: left;\n  padding-left: 28px;\n}',
+    js: 'let display = document.getElementById("display");\nlet current = "0";\nlet previous = null;\nlet operator = null;\nlet justCalculated = false;\n\nfunction updateDisplay() {\n  display.textContent = current;\n}\n\nfunction appendNum(num) {\n  if (justCalculated) {\n    current = num;\n    justCalculated = false;\n  } else {\n    if (current === "0" && num !== ".") {\n      current = num;\n    } else if (num === "." && current.includes(".")) {\n      return;\n    } else {\n      current += num;\n    }\n  }\n  updateDisplay();\n}\n\nfunction appendOp(op) {\n  if (op === "%") {\n    current = String(parseFloat(current) / 100);\n    updateDisplay();\n    return;\n  }\n  if (previous !== null && !justCalculated) {\n    calculate();\n  }\n  previous = parseFloat(current);\n  operator = op;\n  justCalculated = true;\n}\n\nfunction calculate() {\n  if (previous === null || operator === null) return;\n  let result;\n  const curr = parseFloat(current);\n  switch (operator) {\n    case "+": result = previous + curr; break;\n    case "-": result = previous - curr; break;\n    case "*": result = previous * curr; break;\n    case "/": result = curr !== 0 ? previous / curr : "Error"; break;\n    default: return;\n  }\n  current = String(result);\n  previous = null;\n  operator = null;\n  justCalculated = true;\n  updateDisplay();\n}\n\nfunction clearAll() {\n  current = "0";\n  previous = null;\n  operator = null;\n  justCalculated = false;\n  updateDisplay();\n}\n\nfunction backspace() {\n  if (current.length > 1) {\n    current = current.slice(0, -1);\n  } else {\n    current = "0";\n  }\n  updateDisplay();\n}\n\n// 键盘支持\ndocument.addEventListener("keydown", function(e) {\n  if (/[0-9.]/.test(e.key)) appendNum(e.key);\n  else if (/[+\\-*/]/.test(e.key)) appendOp(e.key);\n  else if (e.key === "Enter" || e.key === "=") calculate();\n  else if (e.key === "Escape") clearAll();\n  else if (e.key === "Backspace") backspace();\n});'
+  },
+  {
+    name: '渐变背景',
+    icon: '🎨',
+    desc: 'CSS渐变生成器',
+    html: '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n  <meta charset="UTF-8">\n  <title>渐变背景生成器</title>\n</head>\n<body>\n  <div class="gradient-box" id="gradientBox">\n    <div class="controls">\n      <h2>🎨 渐变生成器</h2>\n      <div class="control-row">\n        <label>颜色1</label>\n        <input type="color" id="color1" value="#667eea">\n      </div>\n      <div class="control-row">\n        <label>颜色2</label>\n        <input type="color" id="color2" value="#764ba2">\n      </div>\n      <div class="control-row">\n        <label>角度</label>\n        <input type="range" id="angle" min="0" max="360" value="135">\n        <span id="angleVal">135°</span>\n      </div>\n      <div class="css-code" id="cssCode"></div>\n      <button onclick="copyCSS()">复制CSS</button>\n    </div>\n  </div>\n</body>\n</html>',
+    css: 'body { margin: 0; font-family: system-ui, sans-serif; }\n\n.gradient-box {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: linear-gradient(135deg, #667eea, #764ba2);\n  transition: background 0.3s;\n}\n\n.controls {\n  background: rgba(255,255,255,0.95);\n  backdrop-filter: blur(10px);\n  padding: 30px 40px;\n  border-radius: 20px;\n  box-shadow: 0 20px 60px rgba(0,0,0,0.2);\n  width: 340px;\n}\n\nh2 {\n  margin: 0 0 20px;\n  text-align: center;\n  color: #333;\n}\n\n.control-row {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  margin-bottom: 16px;\n  gap: 12px;\n}\n\nlabel {\n  color: #555;\n  font-weight: 500;\n  min-width: 50px;\n}\n\ninput[type="color"] {\n  width: 50px;\n  height: 36px;\n  border: none;\n  border-radius: 8px;\n  cursor: pointer;\n  background: none;\n}\n\ninput[type="range"] {\n  flex: 1;\n  cursor: pointer;\n}\n\n.css-code {\n  background: #1e1e2e;\n  color: #a5d6ff;\n  padding: 14px;\n  border-radius: 10px;\n  font-family: monospace;\n  font-size: 13px;\n  margin: 16px 0;\n  word-break: break-all;\n  line-height: 1.6;\n}\n\nbutton {\n  width: 100%;\n  padding: 12px;\n  background: #667eea;\n  color: white;\n  border: none;\n  border-radius: 10px;\n  font-size: 16px;\n  cursor: pointer;\n  transition: background 0.2s;\n}\n\nbutton:hover { background: #5568d3; }',
+    js: 'const color1 = document.getElementById("color1");\nconst color2 = document.getElementById("color2");\nconst angle = document.getElementById("angle");\nconst angleVal = document.getElementById("angleVal");\nconst gradientBox = document.getElementById("gradientBox");\nconst cssCode = document.getElementById("cssCode");\n\nfunction updateGradient() {\n  const c1 = color1.value;\n  const c2 = color2.value;\n  const a = angle.value;\n  angleVal.textContent = a + "°";\n  const css = `linear-gradient(${a}deg, ${c1}, ${c2})`;\n  gradientBox.style.background = css;\n  cssCode.textContent = `background: ${css};`;\n}\n\ncolor1.addEventListener("input", updateGradient);\ncolor2.addEventListener("input", updateGradient);\nangle.addEventListener("input", updateGradient);\n\nfunction copyCSS() {\n  navigator.clipboard.writeText(cssCode.textContent);\n  const btn = event.target;\n  const orig = btn.textContent;\n  btn.textContent = "已复制！";\n  setTimeout(() => btn.textContent = orig, 1500);\n}\n\nupdateGradient();'
+  },
+  {
+    name: '动画效果',
+    icon: '✨',
+    desc: 'CSS动画演示',
+    html: '<!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n  <meta charset="UTF-8">\n  <title>CSS动画效果</title>\n</head>\n<body>\n  <div class="scene">\n    <h1>✨ CSS动画展示</h1>\n    <div class="animation-grid">\n      <div class="anim-box bounce">弹跳</div>\n      <div class="anim-box spin">旋转</div>\n      <div class="anim-box pulse">脉冲</div>\n      <div class="anim-box shake">抖动</div>\n      <div class="anim-box fade">淡入淡出</div>\n      <div class="anim-box slide">滑入</div>\n    </div>\n    <p class="tip">鼠标悬停暂停动画</p>\n  </div>\n</body>\n</html>',
+    css: 'body {\n  margin: 0;\n  font-family: system-ui, sans-serif;\n  background: #0f0f1e;\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n\n.scene {\n  text-align: center;\n  padding: 40px;\n}\n\nh1 {\n  color: white;\n  margin-bottom: 40px;\n  font-size: 32px;\n}\n\n.animation-grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 30px;\n}\n\n.anim-box {\n  width: 120px;\n  height: 120px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: white;\n  font-weight: 600;\n  border-radius: 16px;\n  cursor: pointer;\n}\n\n.anim-box:hover {\n  animation-play-state: paused;\n}\n\n.bounce {\n  background: linear-gradient(135deg, #f093fb, #f5576c);\n  animation: bounce 1s ease infinite;\n}\n\n@keyframes bounce {\n  0%, 100% { transform: translateY(0); }\n  50% { transform: translateY(-30px); }\n}\n\n.spin {\n  background: linear-gradient(135deg, #4facfe, #00f2fe);\n  animation: spin 2s linear infinite;\n}\n\n@keyframes spin {\n  from { transform: rotate(0deg); }\n  to { transform: rotate(360deg); }\n}\n\n.pulse {\n  background: linear-gradient(135deg, #43e97b, #38f9d7);\n  animation: pulse 1.5s ease-in-out infinite;\n}\n\n@keyframes pulse {\n  0%, 100% { transform: scale(1); }\n  50% { transform: scale(1.15); }\n}\n\n.shake {\n  background: linear-gradient(135deg, #fa709a, #fee140);\n  animation: shake 0.5s ease-in-out infinite;\n}\n\n@keyframes shake {\n  0%, 100% { transform: translateX(0); }\n  25% { transform: translateX(-10px); }\n  75% { transform: translateX(10px); }\n}\n\n.fade {\n  background: linear-gradient(135deg, #a18cd1, #fbc2eb);\n  animation: fade 2s ease-in-out infinite;\n}\n\n@keyframes fade {\n  0%, 100% { opacity: 1; }\n  50% { opacity: 0.3; }\n}\n\n.slide {\n  background: linear-gradient(135deg, #ff9a9e, #fecfef);\n  animation: slide 1.5s ease-in-out infinite;\n}\n\n@keyframes slide {\n  0%, 100% { transform: translateX(-20px); }\n  50% { transform: translateX(20px); }\n}\n\n.tip {\n  color: #888;\n  margin-top: 30px;\n  font-size: 14px;\n}',
+    js: '// 尝试修改动画参数看看效果！\nconsole.log("试试在CSS里调整动画的时长、缓动函数～");'
+  }
+];
+
+// ===== 状态 =====
+let currentTab = 'html';
+let autoRun = true;
+
+// ===== 初始化 =====
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  lucide.createIcons();
+  renderTemplates();
+  
+  // 加载默认模板
+  loadTemplate(0);
+  
+  // URL参数加载课程
+  loadFromURL();
+  
+  // Tab键缩进
+  ['htmlEditor', 'cssEditor', 'jsEditor'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
+        this.selectionStart = this.selectionEnd = start + 2;
+      }
+    });
+    el.addEventListener('input', function() {
+      if (autoRun) {
+        clearTimeout(window._runTimer);
+        window._runTimer = setTimeout(runCode, 500);
+      }
+    });
+  });
+});
+
+// ===== 主题切换 =====
+function initTheme() {
+  const saved = localStorage.getItem('playground-theme');
+  if (saved === 'dark') {
+    document.body.classList.add('dark-mode');
+    updateThemeIcon(true);
+  }
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('playground-theme', isDark ? 'dark' : 'light');
+    updateThemeIcon(isDark);
+  });
+}
+function updateThemeIcon(dark) {
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.setAttribute('data-lucide', dark ? 'sun' : 'moon');
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+// ===== 编辑器标签切换 =====
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.editor-tab').forEach((t, i) => {
+    const tabs = ['html', 'css', 'js'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.editor-area').forEach((el, i) => {
+    const tabs = ['html', 'css', 'js'];
+    el.classList.toggle('active', tabs[i] === tab);
+  });
+}
+
+// ===== 运行代码 =====
+function runCode() {
+  const html = document.getElementById('htmlEditor').value;
+  const css = document.getElementById('cssEditor').value;
+  const js = document.getElementById('jsEditor').value;
+  
+  const fullHtml = html.replace('</head>', `<style>${css}</style></head>`)
+    .replace('</body>', `<script>${js}<\/script></body>`);
+  
+  const iframe = document.getElementById('previewFrame');
+  iframe.srcdoc = fullHtml;
+}
+
+// ===== 模板功能 =====
+function renderTemplates() {
+  const list = document.getElementById('templatesList');
+  list.innerHTML = templates.map((t, i) => `
+    <div class="template-card" onclick="loadTemplate(${i}); closeTemplates();">
+      <div class="template-icon">${t.icon}</div>
+      <div class="template-name">${t.name}</div>
+      <div class="template-desc">${t.desc}</div>
+    </div>
+  `).join('');
+}
+
+function loadTemplate(index) {
+  const t = templates[index];
+  document.getElementById('htmlEditor').value = t.html;
+  document.getElementById('cssEditor').value = t.css;
+  document.getElementById('jsEditor').value = t.js;
+  runCode();
+}
+
+function resetCode() {
+  if (confirm('确定要重置代码吗？所有修改将丢失。')) {
+    loadTemplate(0);
+  }
+}
+
+function showTemplates() {
+  document.getElementById('templatesOverlay').classList.add('active');
+}
+function closeTemplates() {
+  document.getElementById('templatesOverlay').classList.remove('active');
+}
+
+// ===== 课程面板 =====
+function toggleCoursePanel() {
+  document.getElementById('coursePanel').classList.toggle('open');
+}
+
+// 课程ID到数据文件的映射
+const courseFileMap = {
+  'html': 'html-course.json',
+  'python': 'python-course.json',
+  'js': 'js-course.json',
+  'ai': 'ai-course.json',
+  'python-intermediate': 'python-intermediate.json',
+  'css-advanced': 'css-advanced.json',
+  'js-dom': 'js-dom.json',
+  'react': 'react.json',
+  'django': 'django.json',
+  'ai-project': 'ai-project.json'
+};
+
+// ===== 从URL加载课程 =====
+async function loadFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const courseId = params.get('course');
+  const chapter = parseInt(params.get('chapter') || '1') - 1;
+  const sectionIdx = parseInt(params.get('section') || '0');
+  
+  if (!courseId) return;
+  
+  const dataFile = courseFileMap[courseId];
+  if (!dataFile) return;
+  
+  try {
+    const res = await fetch(`data/${dataFile}`);
+    const data = await res.json();
+    if (!data.chapters || !data.chapters[chapter]) return;
+    
+    const ch = data.chapters[chapter];
+    const content = ch.content;
+    
+    let html = `
+      <h3>${ch.title}</h3>
+    `;
+    
+    if (content.introduction) {
+      html += `<p>${content.introduction}</p>`;
+    }
+    
+    // 找到第一个代码小节作为默认展示
+    let codeSection = null;
+    let codeSectionIndex = 0;
+    
+    if (content.sections && content.sections.length) {
+      const sec = content.sections[sectionIdx] || content.sections[0];
+      html += `<p><strong>${sec.title}</strong></p>`;
+      if (sec.content) {
+        html += `<p>${sec.content}</p>`;
+      }
+      if (sec.type === 'code' || sec.code) {
+        codeSection = sec;
+      }
+      
+      // 如果指定的小节不是代码，找最近的代码小节
+      if (!codeSection) {
+        for (let i = 0; i < content.sections.length; i++) {
+          if (content.sections[i].type === 'code' || content.sections[i].code) {
+            codeSection = content.sections[i];
+            codeSectionIndex = i;
+            break;
+          }
+        }
+      }
+    }
+    
+    if (codeSection) {
+      const codeStr = encodeURIComponent(codeSection.code || '');
+      const langStr = encodeURIComponent(codeSection.language || 'html');
+      html += `
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">${codeSection.language || 'code'}</span>
+            <button class="code-load-btn" onclick="loadCodeFromCourse(${chapter}, ${codeSectionIndex})">加载到编辑器</button>
+          </div>
+          <pre><code>${escapeHtml(codeSection.code || '')}</code></pre>
+        </div>
+      `;
+      
+      // 自动加载代码到编辑器
+      setTimeout(() => loadCodeFromCourse(chapter, codeSectionIndex), 300);
+    }
+    
+    document.getElementById('courseContent').innerHTML = html;
+  } catch (e) {
+    console.error('加载课程失败:', e);
+  }
+}
+
+let loadedCourseData = null;
+let loadedChapterIndex = 0;
+
+async function loadCodeFromCourse(chapterIdx, sectionIdx) {
+  const params = new URLSearchParams(window.location.search);
+  const courseId = params.get('course');
+  if (!courseId) return;
+  
+  const dataFile = courseFileMap[courseId];
+  if (!dataFile) return;
+  
+  try {
+    if (!loadedCourseData) {
+      const res = await fetch(`data/${dataFile}`);
+      loadedCourseData = await res.json();
+      loadedChapterIndex = chapterIdx;
+    }
+    
+    const ch = loadedCourseData.chapters[chapterIdx];
+    if (!ch || !ch.content.sections) return;
+    
+    let codeSection = null;
+    for (let i = 0; i < ch.content.sections.length; i++) {
+      if (ch.content.sections[i].type === 'code' || ch.content.sections[i].code) {
+        if (i >= sectionIdx || !codeSection) {
+          codeSection = ch.content.sections[i];
+          break;
+        }
+      }
+    }
+    
+    if (!codeSection && ch.content.sections.length > 0) {
+      codeSection = ch.content.sections.find(s => s.type === 'code' || s.code);
+    }
+    
+    if (codeSection) {
+      loadCodeToEditor(codeSection.code || '', codeSection.language || 'html');
+    }
+  } catch (e) {
+    console.error('加载代码失败:', e);
+  }
+}
+
+function loadCodeToEditor(code, language) {
+  const lang = (language || '').toLowerCase();
+  
+  // 先按指定语言判断
+  if (lang === 'html') {
+    document.getElementById('htmlEditor').value = code;
+    document.getElementById('cssEditor').value = '';
+    document.getElementById('jsEditor').value = '';
+    switchTab('html');
+  } else if (lang === 'css') {
+    document.getElementById('cssEditor').value = code;
+    switchTab('css');
+  } else if (lang === 'javascript' || lang === 'js') {
+    document.getElementById('jsEditor').value = code;
+    switchTab('js');
+  } else if (code.includes('<!DOCTYPE html>') || code.includes('<html')) {
+    document.getElementById('htmlEditor').value = code;
+    document.getElementById('cssEditor').value = '';
+    document.getElementById('jsEditor').value = '';
+    switchTab('html');
+  } else if (code.trim().startsWith('.') || code.trim().startsWith('#') || code.includes('{') && code.includes('}') && !code.includes('function') && !code.includes('var ') && !code.includes('let ')) {
+    document.getElementById('cssEditor').value = code;
+    switchTab('css');
+  } else {
+    document.getElementById('jsEditor').value = code;
+    switchTab('js');
+  }
+  runCode();
+  
+  // 移动端提示
+  if (window.innerWidth <= 768) {
+    toggleCoursePanel();
+  }
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+</script>
+
+</body>
+</html>
