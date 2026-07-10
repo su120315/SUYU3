@@ -884,13 +884,122 @@ body {
 }
 
 /* ===== 移动端适配 ===== */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.nav-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
 @media (max-width: 768px) {
-  .nav-links { display: none; }
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 260px;
+    height: 100vh;
+    background: var(--bg-secondary);
+    padding: 80px 24px 24px;
+    gap: 8px;
+    z-index: 1001;
+    transition: right 0.3s ease;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+    overflow-y: auto;
+  }
+  .nav-links.active { right: 0; }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    display: block;
+    padding: 14px 16px;
+    font-size: 16px;
+    border-radius: var(--radius-md);
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
   .nav-toggle { display: flex; }
-  .hero-stats { gap: 32px; }
-  .stat-number { font-size: 28px; }
+  .hero-stats { gap: 24px; }
+  .stat-number { font-size: 26px; }
   .section { padding: 50px 0; }
   .hero { padding: 50px 0 30px; }
+  .container { padding: 0 16px; }
+  .nav-right { gap: 8px; }
+  .back-main { padding: 6px 12px; font-size: 12px; }
+  .back-main i { display: none; }
+  
+  /* 课程卡片网格防止溢出 */
+  .courses-grid { grid-template-columns: 1fr !important; }
+  .featured-grid { grid-template-columns: 1fr !important; }
+  
+  /* 课程详情适配 */
+  .course-detail-title { flex-wrap: wrap; gap: 8px; }
+  .course-detail-icon { font-size: 36px; }
+  .course-detail-stats { gap: 16px; }
+  
+  /* 阅读区域适配 */
+  .lesson-content { padding: 20px; }
+  .lesson-title { font-size: 22px; }
+  .lesson-meta { flex-wrap: wrap; gap: 8px; }
+  .lesson-body p { font-size: 15px; line-height: 1.8; }
+  .lesson-body h3 { font-size: 18px; }
+  .lesson-nav { flex-wrap: wrap; gap: 12px; }
+  .lesson-nav a { font-size: 14px; }
+  
+  /* 代码块适配 */
+  .code-block pre { padding: 14px; font-size: 13px; }
+  
+  /* 章节目录按钮 */
+  .mobile-toc-btn {
+    bottom: 20px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* 课程卡片适配 */
+  .course-card { padding: 20px; }
+  .course-card-title { font-size: 18px; }
+  .course-card-desc { font-size: 13px; }
+  
+  /* footer 适配 */
+  .footer { padding: 30px 0; }
+  .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 32px !important; }
+  .hero-subtitle { font-size: 14px; }
+  .hero-badge { font-size: 12px; padding: 6px 14px; }
+  .section-title { font-size: 22px; }
+  .stat-number { font-size: 22px; }
+  .stat-label { font-size: 12px; }
+  .hero-stats { gap: 16px; }
+  .container { padding: 0 12px; }
+  .course-card { padding: 16px; }
+  .course-card-title { font-size: 16px; }
+  .lesson-content { padding: 16px; }
+  .lesson-title { font-size: 20px; }
+  .code-block pre { padding: 12px; font-size: 12px; }
+  .nav-logo { font-size: 18px; }
+  .back-main { font-size: 11px; padding: 5px 10px; }
+  .featured-card { padding: 16px; }
+  .featured-card-title { font-size: 15px; }
+  .featured-card-desc { font-size: 12px; }
+  .quiz-box { padding: 16px; }
+  .quiz-question { font-size: 15px; }
+  .quiz-option { padding: 10px 12px; font-size: 14px; }
+  .chapter-item { padding: 10px 12px; }
+  .chapter-item-title { font-size: 13px; }
+  .chapter-sidebar { width: 260px; }
 }
 
 /* 滚动条美化 */
@@ -949,8 +1058,7 @@ body {
     </div>
   </div>
 </nav>
-
-<!-- 首页 -->
+<div class="nav-overlay" id="navOverlay"></div>
 <div class="page-container active" id="page-home">
   <!-- Hero -->
   <section class="hero">
@@ -1673,8 +1781,28 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCourses();
   renderFeatured();
   lucide.createIcons();
-  
+
   $('#themeToggle').addEventListener('click', toggleTheme);
+
+  // 移动端汉堡菜单
+  const navToggle = $('#navToggle');
+  const navLinks = $('.nav-links');
+  const navOverlay = $('#navOverlay');
+  function toggleNav() {
+    navLinks.classList.toggle('active');
+    navOverlay.classList.toggle('active');
+    navToggle.classList.toggle('active');
+  }
+  function closeNav() {
+    navLinks.classList.remove('active');
+    navOverlay.classList.remove('active');
+    navToggle.classList.remove('active');
+  }
+  if (navToggle) {
+    navToggle.addEventListener('click', toggleNav);
+    navOverlay.addEventListener('click', closeNav);
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  }
 });
 </script>
 
