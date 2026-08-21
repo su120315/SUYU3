@@ -959,13 +959,7 @@ body {
         预览
       </span>
       <div class="preview-actions">
-        <button class="toolbar-btn mobile-only" onclick="setEditorMode('preview')" title="只看预览" id="mobilePreviewOnlyBtn">
-          <i data-lucide="eye" style="width:14px;height:14px;"></i>
-        </button>
-        <button class="toolbar-btn mobile-only" onclick="setEditorMode('split')" title="分屏模式" id="mobileSplitBtn">
-          <i data-lucide="columns-2" style="width:14px;height:14px;"></i>
-        </button>
-        <button class="toolbar-btn mobile-only" onclick="setEditorMode('editor')" title="全屏编辑" id="mobileEditorFullBtn">
+        <button class="toolbar-btn mobile-only" onclick="toggleEditorMode()" title="切换编辑/预览" id="mobileModeToggleBtn">
           <i data-lucide="code" style="width:14px;height:14px;"></i>
         </button>
         <button class="toolbar-btn" onclick="runCode()" title="刷新预览">
@@ -1234,13 +1228,13 @@ function runCode() {
 }
 
 // ===== 移动端预览控制 =====
-let editorMode = 'preview'; // 'preview' | 'split' | 'editor'
-let previewFullscreen = false;
+let editorMode = 'preview'; // 'preview' | 'editor'
 
 function applyEditorMode() {
   const editorPanel = document.querySelector('.editor-panel');
   const previewPanel = document.querySelector('.preview-panel');
   const mainLayout = document.querySelector('.main-layout');
+  const btnIcon = document.querySelector('#mobileModeToggleBtn i');
   if (!editorPanel || !previewPanel || !mainLayout) return;
 
   // 清除所有状态
@@ -1248,61 +1242,22 @@ function applyEditorMode() {
   previewPanel.classList.remove('fullscreen');
   mainLayout.classList.remove('preview-full');
 
-  // 更新按钮激活态
-  const btns = {
-    preview: document.getElementById('mobilePreviewOnlyBtn'),
-    split: document.getElementById('mobileSplitBtn'),
-    editor: document.getElementById('mobileEditorFullBtn')
-  };
-  Object.keys(btns).forEach(k => {
-    if (btns[k]) {
-      btns[k].classList.toggle('active', k === editorMode);
-    }
-  });
-
   if (editorMode === 'preview') {
     // 收起编辑器（只留 42px 工具条）
     editorPanel.classList.add('minimized');
     mainLayout.classList.add('preview-full');
-  } else if (editorMode === 'editor') {
+    if (btnIcon) btnIcon.setAttribute('data-lucide', 'code');
+  } else {
     // 全屏编辑器
     editorPanel.classList.add('fullscreen');
+    if (btnIcon) btnIcon.setAttribute('data-lucide', 'eye');
   }
-  // split 模式：保持 grid 上下 50/50
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-function toggleEditorMinimize() {
-  if (editorMode === 'preview') {
-    editorMode = 'editor';
-  } else {
-    editorMode = 'preview';
-  }
+function toggleEditorMode() {
+  editorMode = (editorMode === 'preview') ? 'editor' : 'preview';
   applyEditorMode();
-}
-
-function setEditorMode(mode) {
-  editorMode = mode;
-  applyEditorMode();
-}
-
-function togglePreviewFullscreen() {
-  const previewPanel = document.querySelector('.preview-panel');
-  const btnIcon = document.querySelector('#mobileFullscreenBtn i');
-  previewFullscreen = !previewFullscreen;
-  if (previewFullscreen) {
-    previewPanel.classList.add('fullscreen');
-    if (btnIcon) {
-      btnIcon.setAttribute('data-lucide', 'minimize-2');
-      lucide.createIcons();
-    }
-  } else {
-    previewPanel.classList.remove('fullscreen');
-    if (btnIcon) {
-      btnIcon.setAttribute('data-lucide', 'maximize-2');
-      lucide.createIcons();
-    }
-  }
 }
 
 // ===== 模板功能 =====
