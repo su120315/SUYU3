@@ -435,10 +435,10 @@ body {
   .back-main { font-size: 11px; padding: 5px 10px; }
   .back-main i { display: none; }
 
-  /* 移动端：编辑器和预览上下排列，预览占更多空间 */
+  /* 移动端：编辑器和预览上下排列 */
   .main-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: 38% 62%;
+    grid-template-rows: 50% 50%;
     grid-template-areas: "editor" "preview";
     height: calc(100vh - 56px);
   }
@@ -496,9 +496,27 @@ body {
     z-index: 500;
   }
 
+  /* 移动端编辑器全屏 */
+  .editor-panel.fullscreen {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+    grid-area: auto !important;
+  }
+
   /* 仅移动端显示的按钮 */
   .mobile-only {
     display: inline-flex !important;
+  }
+
+  /* 移动端模式按钮激活态 */
+  .toolbar-btn.active {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
   }
 }
 
@@ -941,11 +959,14 @@ body {
         预览
       </span>
       <div class="preview-actions">
-        <button class="toolbar-btn mobile-only" onclick="toggleEditorMinimize()" title="收起/展开编辑器" id="mobileToggleEditorBtn">
-          <i data-lucide="panel-top-close" style="width:14px;height:14px;"></i>
+        <button class="toolbar-btn mobile-only" onclick="setEditorMode('preview')" title="只看预览" id="mobilePreviewOnlyBtn">
+          <i data-lucide="eye" style="width:14px;height:14px;"></i>
         </button>
-        <button class="toolbar-btn mobile-only" onclick="togglePreviewFullscreen()" title="全屏预览" id="mobileFullscreenBtn">
-          <i data-lucide="maximize-2" style="width:14px;height:14px;"></i>
+        <button class="toolbar-btn mobile-only" onclick="setEditorMode('split')" title="分屏模式" id="mobileSplitBtn">
+          <i data-lucide="columns-2" style="width:14px;height:14px;"></i>
+        </button>
+        <button class="toolbar-btn mobile-only" onclick="setEditorMode('editor')" title="全屏编辑" id="mobileEditorFullBtn">
+          <i data-lucide="code" style="width:14px;height:14px;"></i>
         </button>
         <button class="toolbar-btn" onclick="runCode()" title="刷新预览">
           <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
@@ -1158,6 +1179,13 @@ document.addEventListener('DOMContentLoaded', () => {
       toggleAiPanel();
     }
   });
+
+  // 移动端默认收起编辑器，预览占满（用户点击按钮展开编辑）
+  if (window.innerWidth <= 768) {
+    setTimeout(() => {
+      applyEditorMode();
+    }, 50);
+  }
 });
 
 // ===== 主题切换 =====
@@ -1206,29 +1234,56 @@ function runCode() {
 }
 
 // ===== 移动端预览控制 =====
-let editorMinimized = false;
+let editorMode = 'preview'; // 'preview' | 'split' | 'editor'
 let previewFullscreen = false;
 
-function toggleEditorMinimize() {
+function applyEditorMode() {
   const editorPanel = document.querySelector('.editor-panel');
+  const previewPanel = document.querySelector('.preview-panel');
   const mainLayout = document.querySelector('.main-layout');
-  const btnIcon = document.querySelector('#mobileToggleEditorBtn i');
-  editorMinimized = !editorMinimized;
-  if (editorMinimized) {
+  if (!editorPanel || !previewPanel || !mainLayout) return;
+
+  // 清除所有状态
+  editorPanel.classList.remove('minimized', 'fullscreen');
+  previewPanel.classList.remove('fullscreen');
+  mainLayout.classList.remove('preview-full');
+
+  // 更新按钮激活态
+  const btns = {
+    preview: document.getElementById('mobilePreviewOnlyBtn'),
+    split: document.getElementById('mobileSplitBtn'),
+    editor: document.getElementById('mobileEditorFullBtn')
+  };
+  Object.keys(btns).forEach(k => {
+    if (btns[k]) {
+      btns[k].classList.toggle('active', k === editorMode);
+    }
+  });
+
+  if (editorMode === 'preview') {
+    // 收起编辑器（只留 42px 工具条）
     editorPanel.classList.add('minimized');
     mainLayout.classList.add('preview-full');
-    if (btnIcon) {
-      btnIcon.setAttribute('data-lucide', 'panel-top-open');
-      lucide.createIcons();
-    }
-  } else {
-    editorPanel.classList.remove('minimized');
-    mainLayout.classList.remove('preview-full');
-    if (btnIcon) {
-      btnIcon.setAttribute('data-lucide', 'panel-top-close');
-      lucide.createIcons();
-    }
+  } else if (editorMode === 'editor') {
+    // 全屏编辑器
+    editorPanel.classList.add('fullscreen');
   }
+  // split 模式：保持 grid 上下 50/50
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function toggleEditorMinimize() {
+  if (editorMode === 'preview') {
+    editorMode = 'editor';
+  } else {
+    editorMode = 'preview';
+  }
+  applyEditorMode();
+}
+
+function setEditorMode(mode) {
+  editorMode = mode;
+  applyEditorMode();
 }
 
 function togglePreviewFullscreen() {
