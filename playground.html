@@ -479,7 +479,341 @@ body {
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-  </style>
+
+/* ===== AI 助手面板 ===== */
+.ai-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1500;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--gradient-short);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.ai-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 40px rgba(99, 102, 241, 0.5);
+}
+.ai-fab.active {
+  transform: rotate(45deg);
+}
+.ai-fab-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ef4444;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.ai-panel {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  width: 380px;
+  max-width: calc(100vw - 48px);
+  height: 560px;
+  max-height: calc(100vh - 140px);
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 1400;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+.ai-panel.active {
+  display: flex;
+}
+.ai-panel-header {
+  padding: 14px 18px;
+  background: var(--gradient-short);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ai-panel-title {
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ai-panel-close {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ai-panel-close:hover { background: rgba(255,255,255,0.3); }
+
+.ai-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+}
+.ai-tab {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.ai-tab:hover { color: var(--text-primary); }
+.ai-tab.active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+  background: var(--bg-secondary);
+}
+
+.ai-tab-content {
+  flex: 1;
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+}
+.ai-tab-content.active { display: flex; }
+
+.ai-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ai-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+.ai-msg.user {
+  background: var(--accent-primary);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.ai-msg.ai {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  white-space: pre-wrap;
+}
+.ai-msg.loading {
+  display: flex;
+  gap: 4px;
+  padding: 10px 14px;
+}
+.ai-msg.loading span {
+  width: 8px;
+  height: 8px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  animation: aiBounce 1.4s infinite;
+}
+.ai-msg.loading span:nth-child(2) { animation-delay: 0.2s; }
+.ai-msg.loading span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes aiBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+.ai-msg pre {
+  background: var(--bg-code);
+  color: #a5d6ff;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 8px 0 4px;
+  overflow-x: auto;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+.ai-chat-input {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 8px;
+  background: var(--bg-secondary);
+}
+.ai-chat-input textarea {
+  flex: 1;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 8px 12px;
+  resize: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  min-height: 38px;
+  max-height: 80px;
+  outline: none;
+  line-height: 1.5;
+}
+.ai-chat-input textarea:focus { border-color: var(--accent-primary); }
+.ai-chat-input button {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.ai-chat-input button:hover { background: #4f46e5; }
+.ai-chat-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.ai-review-area, .ai-generate-area {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ai-review-area textarea, .ai-generate-area textarea {
+  flex: 1;
+  min-height: 120px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  resize: vertical;
+  outline: none;
+  line-height: 1.5;
+}
+.ai-review-area textarea:focus, .ai-generate-area textarea:focus {
+  border-color: var(--accent-primary);
+}
+.ai-action-row {
+  display: flex;
+  gap: 8px;
+}
+.ai-btn {
+  flex: 1;
+  padding: 10px 14px;
+  background: var(--gradient-short);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.ai-btn:hover { transform: scale(1.02); }
+.ai-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-btn.secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.ai-result-box {
+  flex: 1;
+  min-height: 80px;
+  max-height: 180px;
+  overflow-y: auto;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--text-primary);
+}
+.ai-result-box:empty::before {
+  content: 'AI 监修结果将显示在这里…';
+  color: var(--text-muted);
+}
+.ai-result-box.loading::before {
+  content: 'AI 正在分析代码中…';
+}
+.ai-result-box.ready::before { content: ''; }
+
+.ai-suggestion-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 14px 10px;
+}
+.ai-chip {
+  padding: 6px 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.ai-chip:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* 移动端 AI 面板适配 */
+@media (max-width: 768px) {
+  .ai-panel {
+    right: 12px;
+    left: 12px;
+    width: auto;
+    bottom: 80px;
+    height: 60vh;
+  }
+  .ai-fab {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -587,6 +921,98 @@ body {
   </div>
 </div>
 
+<!-- AI 助手浮动按钮 -->
+<button class="ai-fab" id="aiFab" onclick="toggleAiPanel()" title="AI 助手">
+  <i data-lucide="sparkles" style="width:24px;height:24px;"></i>
+</button>
+
+<!-- AI 助手面板 -->
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-panel-header">
+    <span class="ai-panel-title">
+      <i data-lucide="sparkles" style="width:18px;height:18px;"></i>
+      AI 编程助手
+    </span>
+    <button class="ai-panel-close" onclick="toggleAiPanel()">
+      <i data-lucide="x" style="width:16px;height:16px;"></i>
+    </button>
+  </div>
+
+  <div class="ai-tabs">
+    <button class="ai-tab active" onclick="switchAiTab('chat')">
+      <i data-lucide="message-circle" style="width:14px;height:14px;"></i>
+      聊天
+    </button>
+    <button class="ai-tab" onclick="switchAiTab('review')">
+      <i data-lucide="search-check" style="width:14px;height:14px;"></i>
+      监修
+    </button>
+    <button class="ai-tab" onclick="switchAiTab('generate')">
+      <i data-lucide="wand-2" style="width:14px;height:14px;"></i>
+      生成
+    </button>
+  </div>
+
+  <!-- AI 聊天 -->
+  <div class="ai-tab-content active" id="aiTab-chat">
+    <div class="ai-chat-messages" id="aiChatMessages"></div>
+    <div class="ai-suggestion-chips" id="aiSuggestions">
+      <span class="ai-chip" onclick="aiSendPreset('帮我解释这段代码')">💡 解释代码</span>
+      <span class="ai-chip" onclick="aiSendPreset('怎么实现一个计数器？')">📝 写计数器</span>
+      <span class="ai-chip" onclick="aiSendPreset('帮我优化这个函数性能')">⚡ 性能优化</span>
+      <span class="ai-chip" onclick="aiSendPreset('这个bug怎么修？')">🐛 修Bug</span>
+    </div>
+    <div class="ai-chat-input">
+      <textarea id="aiChatInput" placeholder="问AI任何编程问题…" onkeydown="handleAiChatKey(event)"></textarea>
+      <button onclick="aiSendChat()" title="发送">
+        <i data-lucide="send" style="width:16px;height:16px;"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- AI 代码监修 -->
+  <div class="ai-tab-content" id="aiTab-review">
+    <div class="ai-review-area">
+      <div style="font-size:13px;color:var(--text-secondary);">把代码粘贴到下方，AI 会分析问题并给出建议</div>
+      <textarea id="aiReviewCode" placeholder="粘贴要监修的代码…"></textarea>
+      <div class="ai-action-row">
+        <button class="ai-btn secondary" onclick="aiLoadCurrentCode()">
+          <i data-lucide="file-code" style="width:14px;height:14px;"></i>
+          读取当前代码
+        </button>
+        <button class="ai-btn" onclick="aiReviewCodeAction()">
+          <i data-lucide="search-check" style="width:14px;height:14px;"></i>
+          开始监修
+        </button>
+      </div>
+      <div class="ai-result-box" id="aiReviewResult"></div>
+      <button class="ai-btn secondary" onclick="aiApplyReview()" id="aiApplyReviewBtn" style="display:none;">
+        <i data-lucide="check" style="width:14px;height:14px;"></i>
+        应用建议到编辑器
+      </button>
+    </div>
+  </div>
+
+  <!-- AI 代码生成 -->
+  <div class="ai-tab-content" id="aiTab-generate">
+    <div class="ai-generate-area">
+      <div style="font-size:13px;color:var(--text-secondary);">描述你想实现的功能，AI 会帮你生成代码</div>
+      <textarea id="aiGeneratePrompt" placeholder="例如：做一个待办清单应用，支持添加、删除、完成标记…"></textarea>
+      <div class="ai-action-row">
+        <button class="ai-btn" onclick="aiGenerateCode()">
+          <i data-lucide="wand-2" style="width:14px;height:14px;"></i>
+          生成代码
+        </button>
+      </div>
+      <div class="ai-result-box" id="aiGenerateResult"></div>
+      <button class="ai-btn secondary" onclick="aiApplyGenerated()" style="display:none;">
+        <i data-lucide="arrow-right-to-line" style="width:14px;height:14px;"></i>
+        填入编辑器
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ===== 模板数据 =====
 const templates = [
@@ -674,6 +1100,14 @@ document.addEventListener('DOMContentLoaded', () => {
         window._runTimer = setTimeout(runCode, 500);
       }
     });
+  });
+
+  // AI 快捷键：Ctrl+Shift+A 打开AI面板
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      e.preventDefault();
+      toggleAiPanel();
+    }
   });
 });
 
@@ -960,6 +1394,269 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+// ===== AI 密钥解密系统 =====
+(function initSecrets() {
+  function decode(reversedB64) {
+    try {
+      const b64 = reversedB64.split('').reverse().join('');
+      return atob(b64);
+    } catch (e) { return ''; }
+  }
+  const _ = {
+    AK: '=wdX1US6t0TXhERXN2VhpEVuQDOxYGZ3YGZmdDOyI2NyIWNlBDN5MzMllTZ1cDMlJWO'
+  };
+  Object.defineProperty(window, '__PLAYGROUND_SECRETS__', {
+    value: Object.freeze({
+      apiKey: () => decode(_.AK)
+    })
+  });
+})();
+
+// ===== AI 助手 =====
+const AI_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
+const AI_MODEL = 'glm-4';
+let aiChatHistory = [
+  { role: 'system', content: '你是蘇魚编程的AI助手。帮助用户学习编程、编写代码、审查代码。回答要简洁清晰，用中文。代码用Markdown格式输出。当用户请求生成完整项目时，分别用HTML、CSS、JavaScript标签输出对应代码。' }
+];
+let aiPanelOpen = false;
+
+function toggleAiPanel() {
+  const panel = document.getElementById('aiPanel');
+  const fab = document.getElementById('aiFab');
+  aiPanelOpen = !aiPanelOpen;
+  if (aiPanelOpen) {
+    panel.classList.add('active');
+    fab.classList.add('active');
+    if (aiChatHistory.length <= 1) {
+      aiAddMessage('ai', '你好！我是你的AI编程助手 🤖\n\n我可以帮你：\n• 💡 解释代码逻辑\n• 🐛 排查和修复bug\n• ⚡ 优化代码性能\n• ✨ 生成新项目代码\n\n试试点击下方的快捷问题，或直接输入你的问题吧！');
+    }
+    setTimeout(() => { if (typeof lucide !== 'undefined') lucide.createIcons(); }, 50);
+  } else {
+    panel.classList.remove('active');
+    fab.classList.remove('active');
+  }
+}
+
+function switchAiTab(tab) {
+  document.querySelectorAll('.ai-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.ai-tab-content').forEach(c => c.classList.remove('active'));
+  const tabs = document.querySelectorAll('.ai-tab');
+  const contents = document.querySelectorAll('.ai-tab-content');
+  const idx = { chat: 0, review: 1, generate: 2 }[tab];
+  if (tabs[idx]) tabs[idx].classList.add('active');
+  if (contents[idx]) contents[idx].classList.add('active');
+}
+
+function aiAddMessage(role, content) {
+  const msgs = document.getElementById('aiChatMessages');
+  if (!msgs) return;
+  const div = document.createElement('div');
+  div.className = 'ai-msg ' + role;
+  if (role === 'ai' && content.includes('```')) {
+    div.innerHTML = aiFormatMarkdown(content);
+  } else {
+    div.textContent = content;
+  }
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+  return div;
+}
+
+function aiFormatMarkdown(text) {
+  return text
+    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+    .replace(/`([^`]+)`/g, '<code style="background:var(--bg-code);color:#a5d6ff;padding:2px 6px;border-radius:4px;font-size:12px;">$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+function aiShowLoading() {
+  const msgs = document.getElementById('aiChatMessages');
+  const div = document.createElement('div');
+  div.className = 'ai-msg ai loading';
+  div.id = 'aiLoadingMsg';
+  div.innerHTML = '<span></span><span></span><span></span>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function aiRemoveLoading() {
+  const el = document.getElementById('aiLoadingMsg');
+  if (el) el.remove();
+}
+
+async function aiCallAPI(messages) {
+  const apiKey = (window.__PLAYGROUND_SECRETS__ && window.__PLAYGROUND_SECRETS__.apiKey()) || '';
+  if (!apiKey) {
+    return { content: '⚠️ AI服务暂未配置密钥，请联系管理员。', error: true };
+  }
+  try {
+    const res = await fetch(AI_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      },
+      body: JSON.stringify({
+        model: AI_MODEL,
+        messages: messages,
+        temperature: 0.7,
+        max_tokens: 2000
+      })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.choices && data.choices[0]) {
+      return { content: data.choices[0].message.content, error: false };
+    }
+    return { content: 'AI 响应异常', error: true };
+  } catch (e) {
+    return { content: '⚠️ AI 服务暂时不可用，请稍后再试。错误: ' + e.message, error: true };
+  }
+}
+
+async function aiSendChat() {
+  const input = document.getElementById('aiChatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  aiAddMessage('user', text);
+  aiChatHistory.push({ role: 'user', content: text });
+  aiShowLoading();
+
+  const result = await aiCallAPI(aiChatHistory);
+  aiRemoveLoading();
+  aiAddMessage('ai', result.content);
+  if (!result.error) {
+    aiChatHistory.push({ role: 'assistant', content: result.content });
+  }
+}
+
+function aiSendPreset(text) {
+  const input = document.getElementById('aiChatInput');
+  input.value = text;
+  aiSendChat();
+}
+
+function handleAiChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    aiSendChat();
+  }
+}
+
+function aiLoadCurrentCode() {
+  const html = document.getElementById('htmlEditor').value;
+  const css = document.getElementById('cssEditor').value;
+  const js = document.getElementById('jsEditor').value;
+  const fullCode = `// HTML\n${html}\n\n// CSS\n${css}\n\n// JavaScript\n${js}`;
+  document.getElementById('aiReviewCode').value = fullCode;
+}
+
+async function aiReviewCodeAction() {
+  const code = document.getElementById('aiReviewCode').value.trim();
+  const resultBox = document.getElementById('aiReviewResult');
+  const applyBtn = document.getElementById('aiApplyReviewBtn');
+  if (!code) {
+    resultBox.textContent = '请先粘贴要监修的代码';
+    return;
+  }
+  resultBox.classList.remove('ready');
+  resultBox.classList.add('loading');
+  resultBox.textContent = '';
+  applyBtn.style.display = 'none';
+
+  const messages = [
+    { role: 'system', content: '你是一位资深代码审查专家。请审查以下代码，找出潜在问题、bug、性能问题和改进建议。用中文回答，格式包括：问题分析、修复建议、优化建议。如果代码没问题也要说明。' },
+    { role: 'user', content: '请审查以下代码：\n\n```\n' + code + '\n```' }
+  ];
+
+  const result = await aiCallAPI(messages);
+  resultBox.classList.remove('loading');
+  resultBox.classList.add('ready');
+  resultBox.textContent = result.content;
+  if (!result.error) {
+    try {
+      const codeBlocks = result.content.match(/```[\s\S]*?```/g);
+      if (codeBlocks && codeBlocks.length > 0) {
+        applyBtn.style.display = 'flex';
+      }
+    } catch(e) {}
+  }
+}
+
+function aiApplyReview() {
+  const resultBox = document.getElementById('aiReviewResult');
+  const text = resultBox.textContent;
+  const codeBlocks = text.match(/```(?:\w*)?\n([\s\S]*?)```/g);
+  if (!codeBlocks || codeBlocks.length === 0) {
+    alert('没有可应用的代码建议');
+    return;
+  }
+  const htmlEd = document.getElementById('htmlEditor');
+  const cssEd = document.getElementById('cssEditor');
+  const jsEd = document.getElementById('jsEditor');
+  for (const block of codeBlocks) {
+    const lang = block.match(/```(\w*)/);
+    const code = block.replace(/```\w*\n/, '').replace(/```$/, '').trim();
+    const langStr = lang ? lang[1].toLowerCase() : '';
+    if (langStr === 'html' || (code.includes('<html') || code.includes('<!DOCTYPE'))) {
+      htmlEd.value = code;
+    } else if (langStr === 'css' || (code.includes('{') && code.includes('}') && !code.includes('function'))) {
+      cssEd.value = code;
+    } else if (langStr === 'javascript' || langStr === 'js') {
+      jsEd.value = code;
+    }
+  }
+  runCode();
+  alert('已将建议代码填入编辑器！');
+}
+
+async function aiGenerateCode() {
+  const prompt = document.getElementById('aiGeneratePrompt').value.trim();
+  const resultBox = document.getElementById('aiGenerateResult');
+  const applyBtn = document.getElementById('aiGenerateResult').parentElement.querySelector('.ai-btn.secondary');
+  if (!prompt) {
+    resultBox.textContent = '请先描述你想实现的功能';
+    return;
+  }
+  resultBox.classList.remove('ready');
+  resultBox.classList.add('loading');
+  resultBox.textContent = '';
+  applyBtn.style.display = 'none';
+
+  const messages = [
+    { role: 'system', content: '你是一位专业的Web开发工程师。根据用户需求生成完整的HTML/CSS/JavaScript代码。请分别用 ```html ```css ```javascript 标签包裹各部分代码。确保代码完整可直接运行。用中文简短说明实现思路。' },
+    { role: 'user', content: '请帮我实现：' + prompt }
+  ];
+
+  const result = await aiCallAPI(messages);
+  resultBox.classList.remove('loading');
+  resultBox.classList.add('ready');
+  resultBox.textContent = result.content;
+  if (!result.error) {
+    applyBtn.style.display = 'flex';
+  }
+}
+
+function aiApplyGenerated() {
+  const resultBox = document.getElementById('aiGenerateResult');
+  const text = resultBox.textContent;
+  const htmlMatch = text.match(/```html\n([\s\S]*?)```/);
+  const cssMatch = text.match(/```css\n([\s\S]*?)```/);
+  const jsMatch = text.match(/```javascript\n([\s\S]*?)```/) || text.match(/```js\n([\s\S]*?)```/);
+
+  if (htmlMatch) document.getElementById('htmlEditor').value = htmlMatch[1].trim();
+  if (cssMatch) document.getElementById('cssEditor').value = cssMatch[1].trim();
+  if (jsMatch) document.getElementById('jsEditor').value = jsMatch[1].trim();
+  if (!htmlMatch && !cssMatch && !jsMatch) {
+    alert('未能解析出代码块，请手动复制');
+    return;
+  }
+  runCode();
+  alert('代码已填入编辑器，点击运行即可预览！');
 }
 </script>
 
