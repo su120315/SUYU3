@@ -1400,9 +1400,13 @@ function escapeHtml(text) {
 (function initSecrets() {
   function decode(reversedB64) {
     try {
-      const b64 = reversedB64.split('').reverse().join('');
+      let b64 = reversedB64.split('').reverse().join('');
+      // 修复 base64 padding
+      while (b64.length % 4 !== 0) {
+        b64 += '=';
+      }
       return atob(b64);
-    } catch (e) { return ''; }
+    } catch (e) { console.warn('密钥解密失败:', e); return ''; }
   }
   const _ = {
     AK: '=wdX1US6t0TXhERXN2VhpEVuQDOxYGZ3YGZmdDOyI2NyIWNlBDN5MzMllTZ1cDMlJWO'
