@@ -438,9 +438,12 @@ body {
   /* 移动端：编辑器和预览上下排列，预览占更多空间 */
   .main-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 38% 62%;
+    grid-template-rows: 38% 62%;
+    grid-template-areas: "editor" "preview";
     height: calc(100vh - 56px);
   }
+  .main-layout .editor-panel { grid-area: editor; }
+  .main-layout .preview-panel { grid-area: preview; }
 
   /* 课程面板变成抽屉 */
   .course-panel {
@@ -479,7 +482,8 @@ body {
     background: var(--bg-secondary);
   }
   .main-layout.preview-full {
-    grid-template-rows: auto 42px 1fr;
+    grid-template-rows: 42px 1fr;
+    grid-template-areas: "editor" "preview";
   }
 
   /* 移动端预览最大化 */
