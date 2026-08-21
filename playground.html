@@ -434,14 +434,14 @@ body {
   .nav-toggle { display: flex; }
   .back-main { font-size: 11px; padding: 5px 10px; }
   .back-main i { display: none; }
-  
-  /* 移动端：编辑器和预览上下排列 */
+
+  /* 移动端：编辑器和预览上下排列，预览占更多空间 */
   .main-layout {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr 1fr;
+    grid-template-rows: auto 38% 62%;
     height: calc(100vh - 56px);
   }
-  
+
   /* 课程面板变成抽屉 */
   .course-panel {
     position: fixed;
@@ -455,11 +455,45 @@ body {
     box-shadow: 4px 0 20px rgba(0,0,0,0.1);
   }
   .course-panel.open { left: 0; }
-  
+
   .editor-panel { border-right: none; border-bottom: 1px solid var(--border-color); }
-  
+
   /* 移动端按钮 */
   .mobile-toggle-btn {
+    display: inline-flex !important;
+  }
+
+  /* 移动端编辑器最小化 */
+  .editor-panel.minimized {
+    grid-row: 2;
+    height: 42px;
+    min-height: 42px;
+    overflow: hidden;
+  }
+  .editor-panel.minimized .editor-container,
+  .editor-panel.minimized .editor-tabs {
+    display: none;
+  }
+  .editor-panel.minimized .editor-toolbar {
+    border-top: none;
+    background: var(--bg-secondary);
+  }
+  .main-layout.preview-full {
+    grid-template-rows: auto 42px 1fr;
+  }
+
+  /* 移动端预览最大化 */
+  .preview-panel.fullscreen {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+  }
+
+  /* 仅移动端显示的按钮 */
+  .mobile-only {
     display: inline-flex !important;
   }
 }
@@ -797,6 +831,11 @@ body {
   color: var(--accent-primary);
 }
 
+/* 仅移动端显示 */
+.mobile-only {
+  display: none;
+}
+
 /* 移动端 AI 面板适配 */
 @media (max-width: 768px) {
   .ai-panel {
@@ -898,6 +937,12 @@ body {
         预览
       </span>
       <div class="preview-actions">
+        <button class="toolbar-btn mobile-only" onclick="toggleEditorMinimize()" title="收起/展开编辑器" id="mobileToggleEditorBtn">
+          <i data-lucide="panel-top-close" style="width:14px;height:14px;"></i>
+        </button>
+        <button class="toolbar-btn mobile-only" onclick="togglePreviewFullscreen()" title="全屏预览" id="mobileFullscreenBtn">
+          <i data-lucide="maximize-2" style="width:14px;height:14px;"></i>
+        </button>
         <button class="toolbar-btn" onclick="runCode()" title="刷新预览">
           <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i>
         </button>
@@ -1154,6 +1199,51 @@ function runCode() {
   
   const iframe = document.getElementById('previewFrame');
   iframe.srcdoc = fullHtml;
+}
+
+// ===== 移动端预览控制 =====
+let editorMinimized = false;
+let previewFullscreen = false;
+
+function toggleEditorMinimize() {
+  const editorPanel = document.querySelector('.editor-panel');
+  const mainLayout = document.querySelector('.main-layout');
+  const btnIcon = document.querySelector('#mobileToggleEditorBtn i');
+  editorMinimized = !editorMinimized;
+  if (editorMinimized) {
+    editorPanel.classList.add('minimized');
+    mainLayout.classList.add('preview-full');
+    if (btnIcon) {
+      btnIcon.setAttribute('data-lucide', 'panel-top-open');
+      lucide.createIcons();
+    }
+  } else {
+    editorPanel.classList.remove('minimized');
+    mainLayout.classList.remove('preview-full');
+    if (btnIcon) {
+      btnIcon.setAttribute('data-lucide', 'panel-top-close');
+      lucide.createIcons();
+    }
+  }
+}
+
+function togglePreviewFullscreen() {
+  const previewPanel = document.querySelector('.preview-panel');
+  const btnIcon = document.querySelector('#mobileFullscreenBtn i');
+  previewFullscreen = !previewFullscreen;
+  if (previewFullscreen) {
+    previewPanel.classList.add('fullscreen');
+    if (btnIcon) {
+      btnIcon.setAttribute('data-lucide', 'minimize-2');
+      lucide.createIcons();
+    }
+  } else {
+    previewPanel.classList.remove('fullscreen');
+    if (btnIcon) {
+      btnIcon.setAttribute('data-lucide', 'maximize-2');
+      lucide.createIcons();
+    }
+  }
 }
 
 // ===== 模板功能 =====
