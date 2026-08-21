@@ -539,11 +539,11 @@ body {
 /* ===== AI 助手面板 ===== */
 .ai-fab {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 80px;
+  right: 16px;
   z-index: 1500;
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--gradient-short);
   color: white;
@@ -868,10 +868,10 @@ body {
     height: 60vh;
   }
   .ai-fab {
-    bottom: 16px;
-    right: 16px;
-    width: 48px;
-    height: 48px;
+    bottom: 72px;
+    right: 12px;
+    width: 46px;
+    height: 46px;
   }
 }
 </style>
@@ -923,6 +923,10 @@ body {
       <button class="editor-tab active" onclick="switchTab('html')">HTML</button>
       <button class="editor-tab" onclick="switchTab('css')">CSS</button>
       <button class="editor-tab" onclick="switchTab('js')">JavaScript</button>
+      <button class="editor-tab mobile-only" onclick="toggleEditorMode()" title="返回预览" id="editorBackBtn" style="margin-left:auto;color:var(--accent-primary);">
+        <i data-lucide="eye" style="width:14px;height:14px;"></i>
+        返回预览
+      </button>
     </div>
     <div class="editor-container">
       <textarea class="editor-area active" id="htmlEditor" spellcheck="false" placeholder="在这里写HTML..."></textarea>
@@ -959,7 +963,7 @@ body {
         预览
       </span>
       <div class="preview-actions">
-        <button class="toolbar-btn mobile-only" onclick="toggleEditorMode()" title="切换编辑/预览" id="mobileModeToggleBtn">
+        <button class="toolbar-btn mobile-only" onclick="toggleEditorMode()" title="全屏编辑代码" id="mobileModeToggleBtn">
           <i data-lucide="code" style="width:14px;height:14px;"></i>
         </button>
         <button class="toolbar-btn" onclick="runCode()" title="刷新预览">
@@ -1235,6 +1239,7 @@ function applyEditorMode() {
   const previewPanel = document.querySelector('.preview-panel');
   const mainLayout = document.querySelector('.main-layout');
   const btnIcon = document.querySelector('#mobileModeToggleBtn i');
+  const aiFab = document.querySelector('.ai-fab');
   if (!editorPanel || !previewPanel || !mainLayout) return;
 
   // 清除所有状态
@@ -1247,10 +1252,13 @@ function applyEditorMode() {
     editorPanel.classList.add('minimized');
     mainLayout.classList.add('preview-full');
     if (btnIcon) btnIcon.setAttribute('data-lucide', 'code');
+    if (aiFab) aiFab.style.bottom = '72px';
   } else {
     // 全屏编辑器
     editorPanel.classList.add('fullscreen');
     if (btnIcon) btnIcon.setAttribute('data-lucide', 'eye');
+    // 编辑器全屏时把 AI FAB 藏起来，避免和返回按钮重叠
+    if (aiFab) aiFab.style.bottom = '76px';
   }
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
