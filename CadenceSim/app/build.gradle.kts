@@ -11,14 +11,33 @@ android {
         applicationId = "com.cadencesim"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
+        setProperty("archivesBaseName", "CadenceSim")
+    }
+
+    signingConfigs {
+        create("release") {
+            val storeFileProperty = rootProject.file("app/release.jks")
+            storeFile = storeFileProperty
+            storePassword = "cadence123"
+            keyAlias = "release"
+            keyPassword = "cadence123"
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("debug")
+            isShrinkResources = false
+            isDebuggable = false
+            isJniDebuggable = false
+            isPseudoLocalesEnabled = false
+            signingConfig = signingConfigs.getByName("release")
+            isZipAlignEnabled = true
+        }
+        debug {
+            isDebuggable = true
         }
     }
 

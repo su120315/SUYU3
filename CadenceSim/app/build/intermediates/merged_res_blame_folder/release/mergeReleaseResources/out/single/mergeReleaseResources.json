@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "com.cadencesim.app-release-33:/xml_data_extraction_rules.xml.flat",
+        "source": "com.cadencesim.app-main-34:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.cadencesim.app-release-33:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.cadencesim.app-main-34:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.cadencesim.app-release-33:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.cadencesim.app-main-34:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.cadencesim.app-release-33:/layout_activity_main.xml.flat",
+        "source": "com.cadencesim.app-main-34:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.cadencesim.app-release-33:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.cadencesim.app-main-34:/mipmap-anydpi-v26/ic_launcher.xml"
+    }
+]
