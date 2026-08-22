@@ -35,6 +35,12 @@ android {
             isPseudoLocalesEnabled = false
             signingConfig = signingConfigs.getByName("release")
             isZipAlignEnabled = true
+            // v1 + v2 + v3 全部开启，最大兼容老 ROM / 严苛的安装器策略
+            signingConfig?.let { sc ->
+                sc.enableV1Signing = true
+                sc.enableV2Signing = true
+                sc.enableV3Signing = true
+            }
         }
         debug {
             isDebuggable = true
