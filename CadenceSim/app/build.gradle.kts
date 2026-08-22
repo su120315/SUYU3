@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.cadencesim"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.cadencesim"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 2
-        versionName = "1.1"
+        targetSdk = 36
+        versionCode = 3
+        versionName = "1.2"
         setProperty("archivesBaseName", "CadenceSim")
     }
 
