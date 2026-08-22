@@ -593,6 +593,46 @@ body {
   .templates-list { grid-template-columns: 1fr; }
 }
 
+/* ===== 移动端工具栏横滑 ===== */
+@media (max-width: 768px) {
+  /* 编辑器工具栏：左右两个区域，超出可横滑（不挤压按钮） */
+  .editor-toolbar {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 8px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .editor-toolbar::-webkit-scrollbar { display: none; }
+  .toolbar-left {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+  .toolbar-left .toolbar-btn { flex-shrink: 0; }
+  .run-btn { flex-shrink: 0; }
+
+  /* 预览头部按钮：在移动端保留图标大小，并加边框色让按钮轮廓清晰 */
+  .preview-actions .toolbar-btn {
+    min-width: 36px;
+    justify-content: center;
+    padding: 6px 10px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+  }
+  .preview-actions .toolbar-btn i { color: var(--text-primary); }
+
+  /* 移动端：AI FAB 退到右下角，但避开预览区的全屏按钮 */
+  .ai-fab {
+    width: 48px;
+    height: 48px;
+    bottom: 72px;
+    right: 14px;
+  }
+}
+
 /* 滚动条美化 */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -1644,6 +1684,24 @@ function runCode() {
   const html = htmlEditor.value;
   const css = cssEditor.value;
   const js = jsEditor.value;
+
+  // 空内容：给个友好占位，避免预览区一片空白让用户以为挂了
+  if (!html.trim() && !css.trim() && !js.trim()) {
+    previewFrame.srcdoc = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><style>
+      body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;
+        background:linear-gradient(135deg,#f8fafc,#e2e8f0);
+        font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#64748b}
+      .box{text-align:center;padding:24px}
+      .emoji{font-size:48px;margin-bottom:12px}
+      h2{margin:0 0 8px;color:#475569;font-size:18px}
+      p{margin:0;font-size:14px;line-height:1.6}
+    </style></head><body><div class="box">
+      <div class="emoji">💻</div>
+      <h2>开始写代码吧</h2>
+      <p>在上方编辑器中输入 HTML / CSS / JavaScript<br>这里会实时预览效果</p>
+    </div></body></html>`;
+    return;
+  }
 
   const styleTag = css ? `<style>${css}</style>` : '';
   // 注入 console 捕获脚本（把用户代码的 console.log 输出转发到父页面）
