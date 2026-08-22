@@ -412,8 +412,10 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   background: var(--bg-secondary);
+  will-change: transform;
+  transform: translateZ(0);
 }
 .template-card:hover {
   border-color: var(--accent-primary);
@@ -554,6 +556,8 @@ body {
   justify-content: center;
   box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
   transition: transform 0.2s, box-shadow 0.2s;
+  will-change: transform;
+  transform: translateZ(0);
 }
 .ai-fab:hover {
   transform: scale(1.08);
@@ -590,12 +594,19 @@ body {
   z-index: 1400;
   overflow: hidden;
   border: 1px solid var(--border-color);
+  transition: height 0.3s ease, max-height 0.3s ease;
 }
 .ai-panel.active {
   display: flex;
 }
+/* AI 生成中：聊天框向上变长，给回答留更多空间 */
+.ai-panel.generating {
+  height: min(82vh, calc(100vh - 120px));
+  max-height: calc(100vh - 120px);
+}
 .ai-panel-header {
   padding: 14px 18px;
+  flex-shrink: 0;
   background: var(--gradient-short);
   color: white;
   display: flex;
@@ -625,6 +636,7 @@ body {
 
 .ai-tabs {
   display: flex;
+  flex-shrink: 0;
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-tertiary);
 }
@@ -653,19 +665,26 @@ body {
 
 .ai-tab-content {
   flex: 1;
+  min-height: 0; /* 让内部子元素能正确滚动 */
   overflow: hidden;
   display: none;
   flex-direction: column;
 }
 .ai-tab-content.active { display: flex; }
 
-.ai-chat-messages {
+.ai-chat-scroll {
   flex: 1;
+  min-height: 0; /* 防止被内容撑爆 */
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.ai-chat-messages {
+  flex: 0 0 auto;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 .ai-msg {
   max-width: 85%;
@@ -721,6 +740,7 @@ body {
   padding: 12px 14px;
   border-top: 1px solid var(--border-color);
   display: flex;
+  flex-shrink: 0;
   gap: 8px;
   background: var(--bg-secondary);
 }
@@ -835,8 +855,23 @@ body {
 .ai-suggestion-chips {
   display: flex;
   flex-wrap: wrap;
+  flex-shrink: 0;
   gap: 6px;
-  padding: 0 14px 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  transition: all 0.25s ease;
+  max-height: 120px;
+  overflow: hidden;
+  opacity: 1;
+}
+.ai-suggestion-chips.collapsed {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom-width: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 .ai-chip {
   padding: 6px 12px;
@@ -853,6 +888,111 @@ body {
   color: var(--accent-primary);
 }
 
+/* AI 聊天工具栏（联网 / 深度思考 开关） */
+.ai-chat-toolbar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+  padding: 0 14px 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.ai-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+.ai-toggle input { display: none; }
+.ai-toggle:hover { border-color: var(--accent-primary); color: var(--text-primary); }
+.ai-toggle:has(input:checked) {
+  background: var(--gradient-short);
+  border-color: transparent;
+  color: white;
+}
+
+/* 思考过程 / 联网引用 - 浮在消息流顶部，背景半透明不遮挡 */
+.ai-msg.reasoning {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(99, 102, 241, 0.06);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--text-secondary);
+  align-self: stretch;
+  max-width: 100%;
+  border-left: 3px solid var(--accent-primary);
+  border-bottom-left-radius: 4px;
+  border-radius: 14px;
+  font-size: 13px;
+  padding: 10px 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.ai-msg.reasoning .reasoning-title {
+  font-weight: 600;
+  color: var(--accent-primary);
+  font-size: 12px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ai-msg.reasoning .reasoning-body {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 30vh;
+  overflow-y: auto;
+  /* 半透明背景，文字仍可透过 */
+  color: var(--text-secondary);
+  opacity: 0.85;
+}
+.ai-msg.reasoning.collapsed .reasoning-body { display: none; }
+
+.ai-citations {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+}
+.ai-citation {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--accent-primary);
+  text-decoration: none;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ai-citation:hover { background: var(--bg-code); color: #a5d6ff; }
+
+/* 流式输出光标 */
+.ai-cursor {
+  display: inline-block;
+  color: var(--accent-primary);
+  animation: aiBlink 1s steps(1) infinite;
+  margin-left: 2px;
+  font-weight: 700;
+}
+@keyframes aiBlink {
+  50% { opacity: 0; }
+}
+
 /* 仅移动端显示 */
 .mobile-only {
   display: none;
@@ -866,6 +1006,9 @@ body {
     width: auto;
     bottom: 80px;
     height: 60vh;
+  }
+  .ai-panel.generating {
+    height: calc(100vh - 100px);
   }
   .ai-fab {
     bottom: 72px;
@@ -920,18 +1063,18 @@ body {
   <!-- 中间代码编辑器 -->
   <div class="editor-panel">
     <div class="editor-tabs">
-      <button class="editor-tab active" onclick="switchTab('html')">HTML</button>
-      <button class="editor-tab" onclick="switchTab('css')">CSS</button>
-      <button class="editor-tab" onclick="switchTab('js')">JavaScript</button>
+      <button class="editor-tab active" data-tab="html" onclick="switchTab('html')">HTML</button>
+      <button class="editor-tab" data-tab="css" onclick="switchTab('css')">CSS</button>
+      <button class="editor-tab" data-tab="js" onclick="switchTab('js')">JavaScript</button>
       <button class="editor-tab mobile-only" onclick="toggleEditorMode()" title="返回预览" id="editorBackBtn" style="margin-left:auto;color:var(--accent-primary);">
         <i data-lucide="eye" style="width:14px;height:14px;"></i>
         返回预览
       </button>
     </div>
     <div class="editor-container">
-      <textarea class="editor-area active" id="htmlEditor" spellcheck="false" placeholder="在这里写HTML..."></textarea>
-      <textarea class="editor-area" id="cssEditor" spellcheck="false" placeholder="在这里写CSS..."></textarea>
-      <textarea class="editor-area" id="jsEditor" spellcheck="false" placeholder="在这里写JavaScript..."></textarea>
+      <textarea class="editor-area active" data-tab="html" id="htmlEditor" spellcheck="false" placeholder="在这里写HTML..."></textarea>
+      <textarea class="editor-area" data-tab="css" id="cssEditor" spellcheck="false" placeholder="在这里写CSS..."></textarea>
+      <textarea class="editor-area" data-tab="js" id="jsEditor" spellcheck="false" placeholder="在这里写JavaScript..."></textarea>
     </div>
     <div class="editor-toolbar">
       <div class="toolbar-left">
@@ -971,7 +1114,7 @@ body {
         </button>
       </div>
     </div>
-    <iframe class="preview-iframe" id="previewFrame" title="预览"></iframe>
+    <iframe class="preview-iframe" id="previewFrame" title="预览" sandbox="allow-scripts allow-modals allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
   </div>
 </div>
 
@@ -1023,12 +1166,26 @@ body {
 
   <!-- AI 聊天 -->
   <div class="ai-tab-content active" id="aiTab-chat">
-    <div class="ai-chat-messages" id="aiChatMessages"></div>
-    <div class="ai-suggestion-chips" id="aiSuggestions">
-      <span class="ai-chip" onclick="aiSendPreset('帮我解释这段代码')">💡 解释代码</span>
-      <span class="ai-chip" onclick="aiSendPreset('怎么实现一个计数器？')">📝 写计数器</span>
-      <span class="ai-chip" onclick="aiSendPreset('帮我优化这个函数性能')">⚡ 性能优化</span>
-      <span class="ai-chip" onclick="aiSendPreset('这个bug怎么修？')">🐛 修Bug</span>
+    <div class="ai-chat-scroll" id="aiChatScroll">
+      <div class="ai-suggestion-chips" id="aiSuggestions">
+        <span class="ai-chip" onclick="aiSendPreset('帮我解释这段代码')">💡 解释代码</span>
+        <span class="ai-chip" onclick="aiSendPreset('怎么实现一个计数器？')">📝 写计数器</span>
+        <span class="ai-chip" onclick="aiSendPreset('帮我优化这个函数性能')">⚡ 性能优化</span>
+        <span class="ai-chip" onclick="aiSendPreset('这个bug怎么修？')">🐛 修Bug</span>
+      </div>
+      <div class="ai-chat-messages" id="aiChatMessages"></div>
+    </div>
+    <div class="ai-chat-toolbar">
+      <label class="ai-toggle" title="联网搜索（官方免费，启用后 AI 可访问实时网络信息）">
+        <input type="checkbox" id="aiWebSearchToggle">
+        <i data-lucide="globe" style="width:14px;height:14px;"></i>
+        <span>联网</span>
+      </label>
+      <label class="ai-toggle" title="深度思考（强制模型思考链推理）">
+        <input type="checkbox" id="aiThinkingToggle" checked>
+        <i data-lucide="brain-circuit" style="width:14px;height:14px;"></i>
+        <span>深度思考</span>
+      </label>
     </div>
     <div class="ai-chat-input">
       <textarea id="aiChatInput" placeholder="问AI任何编程问题…" onkeydown="handleAiChatKey(event)"></textarea>
@@ -1137,22 +1294,48 @@ const templates = [
 // ===== 状态 =====
 let currentTab = 'html';
 let autoRun = true;
+const STORAGE_KEY = 'playground-code-v1';
+const HISTORY_MAX_TURNS = 10; // AI 对话最多保留 N 轮（不含 system）
+
+// 缓存 DOM 引用
+const $ = id => document.getElementById(id);
+const htmlEditor = $('htmlEditor');
+const cssEditor = $('cssEditor');
+const jsEditor = $('jsEditor');
+const previewFrame = $('previewFrame');
+const themeToggleBtn = $('themeToggle');
+const themeIcon = $('themeIcon');
+const aiPanel = $('aiPanel');
+const aiFab = $('aiFab');
+const aiChatMessages = $('aiChatMessages');
+const aiChatInput = $('aiChatInput');
+const aiReviewCode = $('aiReviewCode');
+const aiReviewResult = $('aiReviewResult');
+const aiApplyReviewBtn = $('aiApplyReviewBtn');
+const aiGeneratePrompt = $('aiGeneratePrompt');
+const aiGenerateResult = $('aiGenerateResult');
+const templatesOverlay = $('templatesOverlay');
+const templatesList = $('templatesList');
+const courseContent = $('courseContent');
+const aiWebSearchToggle = $('aiWebSearchToggle');
+const aiThinkingToggle = $('aiThinkingToggle');
 
 // ===== 初始化 =====
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   lucide.createIcons();
   renderTemplates();
-  
-  // 加载默认模板
-  loadTemplate(0);
-  
-  // URL参数加载课程
-  loadFromURL();
-  
-  // Tab键缩进
-  ['htmlEditor', 'cssEditor', 'jsEditor'].forEach(id => {
-    const el = document.getElementById(id);
+
+  // 优先异步加载 URL 课程，再用模板/缓存兜底（避免闪烁）
+  loadFromURL().then(loaded => {
+    if (!loaded) {
+      // 没有课程参数 → 尝试恢复本地代码；没有则加载默认模板
+      if (!restoreCode()) loadTemplate(0);
+    }
+  });
+
+  // Tab键缩进 + Ctrl/Cmd+Enter 运行 + 自动保存
+  [htmlEditor, cssEditor, jsEditor].forEach(el => {
     el.addEventListener('keydown', function(e) {
       if (e.key === 'Tab') {
         e.preventDefault();
@@ -1160,6 +1343,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const end = this.selectionEnd;
         this.value = this.value.substring(0, start) + '  ' + this.value.substring(end);
         this.selectionStart = this.selectionEnd = start + 2;
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        runCode();
       }
     });
     el.addEventListener('input', function() {
@@ -1167,68 +1353,151 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(window._runTimer);
         window._runTimer = setTimeout(runCode, 500);
       }
+      scheduleSave();
     });
   });
 
-  // AI 快捷键：Ctrl+Shift+A 打开AI面板
+  // 全局快捷键：Ctrl+Shift+A 打开AI面板；ESC 关闭弹窗
   document.addEventListener('keydown', function(e) {
     if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
       e.preventDefault();
       toggleAiPanel();
+      return;
+    }
+    if (e.key === 'Escape') {
+      handleEscClose();
     }
   });
 
-  // 移动端默认收起编辑器，预览占满（用户点击按钮展开编辑）
+  // 课程抽屉：点击外部关闭
+  document.addEventListener('click', function(e) {
+    const panel = $('coursePanel');
+    if (!panel || !panel.classList.contains('open')) return;
+    if (panel.contains(e.target)) return;
+    if (e.target.closest('[onclick*="toggleCoursePanel"]')) return;
+    if (e.target.closest('.mobile-toggle-btn')) return;
+    panel.classList.remove('open');
+  });
+
+  // 移动端默认收起编辑器，预览占满
   if (window.innerWidth <= 768) {
-    setTimeout(() => {
-      applyEditorMode();
-    }, 50);
+    setTimeout(applyEditorMode, 50);
   }
 });
 
 // ===== 主题切换 =====
+const THEME_KEY = 'theme';
 function initTheme() {
-  const saved = localStorage.getItem('playground-theme');
+  // 优先使用统一键 theme；兼容旧键 playground-theme
+  let saved = localStorage.getItem(THEME_KEY);
+  if (!saved) {
+    const old = localStorage.getItem('playground-theme');
+    if (old) { saved = old; localStorage.setItem(THEME_KEY, old); localStorage.removeItem('playground-theme'); }
+  }
   if (saved === 'dark') {
     document.body.classList.add('dark-mode');
     updateThemeIcon(true);
   }
-  document.getElementById('themeToggle').addEventListener('click', function() {
+  themeToggleBtn.addEventListener('click', function() {
     const isDark = document.body.classList.toggle('dark-mode');
-    localStorage.setItem('playground-theme', isDark ? 'dark' : 'light');
+    localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
     updateThemeIcon(isDark);
   });
 }
 function updateThemeIcon(dark) {
-  const icon = document.getElementById('themeIcon');
-  if (icon) icon.setAttribute('data-lucide', dark ? 'sun' : 'moon');
+  if (themeIcon) themeIcon.setAttribute('data-lucide', dark ? 'sun' : 'moon');
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 // ===== 编辑器标签切换 =====
 function switchTab(tab) {
   currentTab = tab;
-  document.querySelectorAll('.editor-tab').forEach((t, i) => {
-    const tabs = ['html', 'css', 'js'];
-    t.classList.toggle('active', tabs[i] === tab);
+  document.querySelectorAll('.editor-tab[data-tab]').forEach(t => {
+    t.classList.toggle('active', t.getAttribute('data-tab') === tab);
   });
-  document.querySelectorAll('.editor-area').forEach((el, i) => {
-    const tabs = ['html', 'css', 'js'];
-    el.classList.toggle('active', tabs[i] === tab);
+  document.querySelectorAll('.editor-area[data-tab]').forEach(el => {
+    el.classList.toggle('active', el.getAttribute('data-tab') === tab);
   });
 }
 
 // ===== 运行代码 =====
 function runCode() {
-  const html = document.getElementById('htmlEditor').value;
-  const css = document.getElementById('cssEditor').value;
-  const js = document.getElementById('jsEditor').value;
-  
-  const fullHtml = html.replace('</head>', `<style>${css}</style></head>`)
-    .replace('</body>', `<script>${js}<\/script></body>`);
-  
-  const iframe = document.getElementById('previewFrame');
-  iframe.srcdoc = fullHtml;
+  const html = htmlEditor.value;
+  const css = cssEditor.value;
+  const js = jsEditor.value;
+
+  const styleTag = css ? `<style>${css}</style>` : '';
+  const scriptTag = js ? `<script>${js}<\/script>` : '';
+
+  let fullHtml;
+  if (/<\/head>/i.test(html)) {
+    // 有 </head>，注入到 head 末尾
+    fullHtml = html.replace(/<\/head>/i, `${styleTag}</head>`);
+    if (scriptTag) {
+      fullHtml = /<\/body>/i.test(fullHtml)
+        ? fullHtml.replace(/<\/body>/i, `${scriptTag}</body>`)
+        : fullHtml + scriptTag;
+    }
+  } else if (/<body[^>]*>/i.test(html)) {
+    // 有 <body> 但无 </head>：style 注入 body 前，script 注入 body 末尾
+    fullHtml = html.replace(/(<body[^>]*>)/i, `$1${styleTag}`);
+    fullHtml = /<\/body>/i.test(fullHtml)
+      ? fullHtml.replace(/<\/body>/i, `${scriptTag}</body>`)
+      : fullHtml + scriptTag;
+  } else {
+    // 无 head/body 结构：拼装最小骨架
+    fullHtml = `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">${styleTag}</head><body>${html}${scriptTag}</body></html>`;
+  }
+
+  previewFrame.srcdoc = fullHtml;
+}
+
+// ===== 代码持久化（防抖保存） =====
+let _saveTimer = null;
+function scheduleSave() {
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(saveCode, 600);
+}
+function saveCode() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      html: htmlEditor.value,
+      css: cssEditor.value,
+      js: jsEditor.value,
+      t: Date.now()
+    }));
+  } catch (e) {
+    // 配额溢出静默忽略
+  }
+}
+function restoreCode() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (!data || typeof data.html !== 'string') return false;
+    // 24 小时内的恢复视为有效（太久远的内容自动失效）
+    if (data.t && Date.now() - data.t > 24 * 60 * 60 * 1000) return false;
+    htmlEditor.value = data.html;
+    cssEditor.value = data.css || '';
+    jsEditor.value = data.js || '';
+    runCode();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// ===== 弹窗 ESC 统一关闭 =====
+function handleEscClose() {
+  // 模板弹窗
+  const tpl = $('templatesOverlay');
+  if (tpl && tpl.classList.contains('active')) { closeTemplates(); return; }
+  // AI 面板
+  if (aiPanelOpen) { toggleAiPanel(); return; }
+  // 课程抽屉
+  const panel = $('coursePanel');
+  if (panel && panel.classList.contains('open')) { panel.classList.remove('open'); return; }
 }
 
 // ===== 移动端预览控制 =====
@@ -1239,26 +1508,27 @@ function applyEditorMode() {
   const previewPanel = document.querySelector('.preview-panel');
   const mainLayout = document.querySelector('.main-layout');
   const btnIcon = document.querySelector('#mobileModeToggleBtn i');
-  const aiFab = document.querySelector('.ai-fab');
   if (!editorPanel || !previewPanel || !mainLayout) return;
 
   // 清除所有状态
   editorPanel.classList.remove('minimized', 'fullscreen');
   previewPanel.classList.remove('fullscreen');
   mainLayout.classList.remove('preview-full');
-
   if (editorMode === 'preview') {
     // 收起编辑器（只留 42px 工具条）
     editorPanel.classList.add('minimized');
     mainLayout.classList.add('preview-full');
     if (btnIcon) btnIcon.setAttribute('data-lucide', 'code');
-    if (aiFab) aiFab.style.bottom = '72px';
+    if (aiFab) { aiFab.style.display = ''; aiFab.style.bottom = '72px'; }
   } else {
     // 全屏编辑器
     editorPanel.classList.add('fullscreen');
     if (btnIcon) btnIcon.setAttribute('data-lucide', 'eye');
-    // 编辑器全屏时把 AI FAB 藏起来，避免和返回按钮重叠
-    if (aiFab) aiFab.style.bottom = '76px';
+    // 编辑器全屏时隐藏 AI FAB，避免遮挡代码；同时关闭已打开的 AI 面板
+    if (aiFab) aiFab.style.display = 'none';
+    if (aiPanel && aiPanel.classList.contains('active') && aiPanelOpen) {
+      toggleAiPanel();
+    }
   }
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
@@ -1270,7 +1540,7 @@ function toggleEditorMode() {
 
 // ===== 模板功能 =====
 function renderTemplates() {
-  const list = document.getElementById('templatesList');
+  const list = templatesList;
   list.innerHTML = templates.map((t, i) => `
     <div class="template-card" onclick="loadTemplate(${i}); closeTemplates();">
       <div class="template-icon">${t.icon}</div>
@@ -1282,9 +1552,9 @@ function renderTemplates() {
 
 function loadTemplate(index) {
   const t = templates[index];
-  document.getElementById('htmlEditor').value = t.html;
-  document.getElementById('cssEditor').value = t.css;
-  document.getElementById('jsEditor').value = t.js;
+  htmlEditor.value = t.html;
+  cssEditor.value = t.css;
+  jsEditor.value = t.js;
   runCode();
 }
 
@@ -1295,15 +1565,15 @@ function resetCode() {
 }
 
 function showTemplates() {
-  document.getElementById('templatesOverlay').classList.add('active');
+  templatesOverlay.classList.add('active');
 }
 function closeTemplates() {
-  document.getElementById('templatesOverlay').classList.remove('active');
+  templatesOverlay.classList.remove('active');
 }
 
 // ===== 课程面板 =====
 function toggleCoursePanel() {
-  document.getElementById('coursePanel').classList.toggle('open');
+  $('coursePanel').classList.toggle('open');
 }
 
 // 课程ID到数据文件的映射
@@ -1328,12 +1598,12 @@ function loadFromURL() {
     if (saved) {
       const data = JSON.parse(saved);
       renderCourseData(data);
-      return;
+      return Promise.resolve(true);
     }
   } catch(e) {}
-  
+
   // 备用：从URL参数加载（需要fetch）
-  loadFromURLFetch();
+  return loadFromURLFetch();
 }
 
 function renderCourseData(data) {
@@ -1363,7 +1633,7 @@ function renderCourseData(data) {
     `;
   }
   
-  document.getElementById('courseContent').innerHTML = html;
+  courseContent.innerHTML = html;
   
   if (data.code) {
     const btn = document.getElementById('loadCodeBtn');
@@ -1384,16 +1654,16 @@ async function loadFromURLFetch() {
   const courseId = params.get('course');
   const chapter = parseInt(params.get('chapter') || '1') - 1;
   const sectionIdx = parseInt(params.get('section') || '0');
-  
-  if (!courseId) return;
-  
+
+  if (!courseId) return false;
+
   const dataFile = courseFileMap[courseId];
-  if (!dataFile) return;
-  
+  if (!dataFile) return false;
+
   try {
     const res = await fetch(`data/${dataFile}`);
     const data = await res.json();
-    if (!data.chapters || !data.chapters[chapter]) return;
+    if (!data.chapters || !data.chapters[chapter]) return false;
     
     const ch = data.chapters[chapter];
     const content = ch.content;
@@ -1429,17 +1699,20 @@ async function loadFromURLFetch() {
         language: codeSection.language || 'html'
       };
       renderCourseData(courseData);
+      return true;
     }
+    return false;
   } catch (e) {
     console.error('加载课程失败:', e);
+    return false;
   }
 }
 
 function loadCodeToEditor(code, language) {
   const lang = (language || '').toLowerCase();
-  const htmlEd = document.getElementById('htmlEditor');
-  const cssEd = document.getElementById('cssEditor');
-  const jsEd = document.getElementById('jsEditor');
+  const htmlEd = htmlEditor;
+  const cssEd = cssEditor;
+  const jsEd = jsEditor;
   
   const baseHtml = `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -1532,27 +1805,45 @@ function escapeHtml(text) {
 
 // ===== AI 助手 =====
 const AI_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
-const AI_MODEL = 'GLM-4-Flash-250414';
+const AI_MODEL = 'glm-4.7-flash'; // 普惠模型，免费调用，200K 上下文，支持流式/联网/思考
 let aiChatHistory = [
   { role: 'system', content: '你是蘇魚编程的AI助手。帮助用户学习编程、编写代码、审查代码。回答要简洁清晰，用中文。代码用Markdown格式输出。当用户请求生成完整项目时，分别用HTML、CSS、JavaScript标签输出对应代码。' }
 ];
 let aiPanelOpen = false;
 
+function aiIsWebSearchOn() { return aiWebSearchToggle && aiWebSearchToggle.checked; }
+function aiIsThinkingOn() { return !aiThinkingToggle || aiThinkingToggle.checked; }
+
 function toggleAiPanel() {
-  const panel = document.getElementById('aiPanel');
-  const fab = document.getElementById('aiFab');
+  const fab = aiFab;
   aiPanelOpen = !aiPanelOpen;
   if (aiPanelOpen) {
-    panel.classList.add('active');
+    aiPanel.classList.add('active');
     fab.classList.add('active');
-    if (aiChatHistory.length <= 1) {
+    const isFirstOpen = aiChatHistory.length <= 1;
+    if (isFirstOpen) {
       aiAddMessage('ai', '你好！我是你的AI编程助手 🤖\n\n我可以帮你：\n• 💡 解释代码逻辑\n• 🐛 排查和修复bug\n• ⚡ 优化代码性能\n• ✨ 生成新项目代码\n\n试试点击下方的快捷问题，或直接输入你的问题吧！');
     }
-    setTimeout(() => { if (typeof lucide !== 'undefined') lucide.createIcons(); }, 50);
+    updateChipsVisibility();
+    // 首次打开：滚到顶（显示 chips + 欢迎语）；之后打开：滚到最新消息
+    setTimeout(() => {
+      const scroll = document.querySelector('.ai-chat-scroll');
+      if (scroll) scroll.scrollTop = isFirstOpen ? 0 : scroll.scrollHeight;
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }, 50);
   } else {
-    panel.classList.remove('active');
+    aiPanel.classList.remove('active');
     fab.classList.remove('active');
   }
+}
+
+// 快捷按钮显隐：只在没真正对话前显示（系统提示算 0 轮，欢迎语不计入 history）
+function updateChipsVisibility() {
+  const chips = document.getElementById('aiSuggestions');
+  if (!chips) return;
+  // aiChatHistory[0] 是 system 提示，长度 1 = 还没用户发言；>1 表示用户已经聊过
+  const hasUserTurn = aiChatHistory.length > 1;
+  chips.classList.toggle('collapsed', hasUserTurn);
 }
 
 function switchAiTab(tab) {
@@ -1566,7 +1857,7 @@ function switchAiTab(tab) {
 }
 
 function aiAddMessage(role, content) {
-  const msgs = document.getElementById('aiChatMessages');
+  const msgs = aiChatMessages;
   if (!msgs) return;
   const div = document.createElement('div');
   div.className = 'ai-msg ' + role;
@@ -1582,14 +1873,19 @@ function aiAddMessage(role, content) {
 }
 
 function aiFormatMarkdown(text) {
-  return text
+  // 先整体 escape，避免 AI 返回内容中的 HTML 被当作标签执行（XSS 防护）
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  return escaped
     .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
     .replace(/`([^`]+)`/g, '<code style="background:var(--bg-code);color:#a5d6ff;padding:2px 6px;border-radius:4px;font-size:12px;">$1</code>')
     .replace(/\n/g, '<br>');
 }
 
 function aiShowLoading() {
-  const msgs = document.getElementById('aiChatMessages');
+  const msgs = aiChatMessages;
   const div = document.createElement('div');
   div.className = 'ai-msg ai loading';
   div.id = 'aiLoadingMsg';
@@ -1599,60 +1895,285 @@ function aiShowLoading() {
 }
 
 function aiRemoveLoading() {
-  const el = document.getElementById('aiLoadingMsg');
+  const el = $('aiLoadingMsg');
   if (el) el.remove();
 }
 
-async function aiCallAPI(messages) {
+// ===== 请求去重 / 限流保护 =====
+// GLM 免费模型有 1 QPS 限制；连续点击会触发 429
+let aiRequestInFlight = false;
+let aiRequestLockTimer = null;
+const AI_MIN_INTERVAL_MS = 1100; // 两次请求最小间隔（略大于 1s）
+let lastRequestTime = 0;
+
+// 把 429/5xx 转成更友好的提示
+function aiFriendlyError(status, err) {
+  if (status === 401) return '⚠️ API 密钥无效或已过期，请检查配置。';
+  if (status === 403) return '⚠️ 没有权限访问该模型，请确认账号已开通 GLM-4.7-Flash。';
+  if (status === 429) return '⏳ 请求太频繁（限流）。请等 2-3 秒再试，免费模型限制 1 QPS。';
+  if (status === 503 || status === 502) return '⚠️ AI 服务暂时繁忙，请稍后再试。';
+  return '⚠️ AI 服务异常（HTTP ' + status + '）：' + (err || '');
+}
+
+// 流式调用，支持联网搜索 / 深度思考
+// onDelta({ content, reasoning, done }) 在每个 chunk 触发；webSearch 在完成时返回引用列表
+async function aiCallAPI(messages, opts = {}) {
   const apiKey = (window.__PLAYGROUND_SECRETS__ && window.__PLAYGROUND_SECRETS__.apiKey()) || '';
   if (!apiKey) {
-    return { content: '⚠️ AI服务暂未配置密钥，请联系管理员。', error: true };
+    return { error: true, content: '⚠️ AI服务暂未配置密钥，请联系管理员。' };
   }
-  try {
-    const res = await fetch(AI_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + apiKey
-      },
-      body: JSON.stringify({
-        model: AI_MODEL,
-        messages: messages,
-        temperature: 0.7,
-        max_tokens: 2000
-      })
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    if (data.choices && data.choices[0]) {
-      return { content: data.choices[0].message.content, error: false };
+  const useStream = opts.stream !== false;
+  const useWebSearch = !!opts.webSearch;
+  const useThinking = opts.thinking !== false;
+  const maxRetry = opts.maxRetry != null ? opts.maxRetry : 1; // 默认只重试 1 次
+
+  const body = {
+    model: AI_MODEL,
+    messages: messages,
+    temperature: 0.7,
+    max_tokens: 4096,
+    stream: useStream
+  };
+  if (useThinking) body.thinking = { type: 'enabled' };
+  if (useWebSearch) {
+    body.tools = [{ type: 'web_search', web_search: { enable: true, search_result: true } }];
+    body.tool_choice = 'auto';
+  }
+
+  // 指数退避重试（仅对 429/5xx）
+  for (let attempt = 0; attempt <= maxRetry; attempt++) {
+    try {
+      const res = await fetch(AI_API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiKey
+        },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) {
+        // 429 或 5xx 才重试
+        if ((res.status === 429 || res.status >= 500) && attempt < maxRetry) {
+          await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
+          continue;
+        }
+        let detail = '';
+        try { detail = (await res.json()).error?.message || ''; } catch (e) {}
+        return { content: aiFriendlyError(res.status, detail), error: true, status: res.status };
+      }
+      if (useStream) {
+        return await aiParseStream(res, opts.onDelta);
+      } else {
+        const data = await res.json();
+        if (data.choices && data.choices[0]) {
+          return {
+            content: data.choices[0].message.content,
+            reasoning: data.choices[0].message.reasoning_content || '',
+            webSearch: data.web_search || [],
+            error: false
+          };
+        }
+        return { content: 'AI 响应异常', error: true };
+      }
+    } catch (e) {
+      if (attempt < maxRetry) {
+        await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
+        continue;
+      }
+      return { content: '⚠️ AI 服务暂时不可用，请稍后再试。错误: ' + e.message, error: true };
     }
-    return { content: 'AI 响应异常', error: true };
-  } catch (e) {
-    return { content: '⚠️ AI 服务暂时不可用，请稍后再试。错误: ' + e.message, error: true };
   }
 }
 
+// 解析 SSE 流：逐 chunk 调用 onDelta
+async function aiParseStream(res, onDelta) {
+  const reader = res.body && res.body.getReader();
+  if (!reader) return { content: '流式响应不可用', error: true };
+  const decoder = new TextDecoder('utf-8');
+  let buffer = '';
+  let fullContent = '';
+  let fullReasoning = '';
+  let webSearch = [];
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop(); // 暂留不完整行
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed.startsWith('data:')) continue;
+      const payload = trimmed.slice(5).trim();
+      if (payload === '[DONE]') continue;
+      try {
+        const obj = JSON.parse(payload);
+        const choice = obj.choices && obj.choices[0];
+        if (!choice) continue;
+        const delta = choice.delta || {};
+        const c = delta.content || '';
+        const r = delta.reasoning_content || '';
+        if (c) fullContent += c;
+        if (r) fullReasoning += r;
+        if (onDelta) onDelta({ content: c, reasoning: r, done: false });
+      } catch (e) { /* 忽略非 JSON 行 */ }
+    }
+  }
+  if (onDelta) onDelta({ content: '', reasoning: '', done: true });
+  return { content: fullContent, reasoning: fullReasoning, webSearch, error: false };
+}
+
+// 截断历史：保留 system + 最近 N 轮对话
+function trimHistory(history) {
+  if (history.length <= 1) return history;
+  const system = history[0];
+  const turns = history.slice(1);
+  const maxMessages = HISTORY_MAX_TURNS * 2; // 1 轮 = 1 user + 1 assistant
+  const trimmed = turns.length > maxMessages ? turns.slice(-maxMessages) : turns;
+  return [system, ...trimmed];
+}
+
 async function aiSendChat() {
-  const input = document.getElementById('aiChatInput');
+  // 请求锁：防止用户连点触发 429
+  if (aiRequestInFlight) {
+    console.warn('AI 请求正在进行中，请等待...');
+    return;
+  }
+  const interval = Date.now() - lastRequestTime;
+  if (interval < AI_MIN_INTERVAL_MS) {
+    const wait = AI_MIN_INTERVAL_MS - interval;
+    const input = $('aiChatInput');
+    input.placeholder = `限流保护中，请等 ${Math.ceil(wait/1000)} 秒…`;
+    input.disabled = true;
+    setTimeout(() => {
+      input.disabled = false;
+      input.placeholder = '问AI任何编程问题…';
+    }, wait);
+    return;
+  }
+
+  const input = $('aiChatInput');
   const text = input.value.trim();
   if (!text) return;
   input.value = '';
   aiAddMessage('user', text);
   aiChatHistory.push({ role: 'user', content: text });
-  aiShowLoading();
+  updateChipsVisibility();
 
-  const result = await aiCallAPI(aiChatHistory);
+  // 滚到 scroll 容器底部（chips 在 messages 之前，自动被推上去）
+  requestAnimationFrame(() => {
+    const scroll = document.querySelector('.ai-chat-scroll');
+    if (scroll) scroll.scrollTop = scroll.scrollHeight;
+  });
+
+  aiRequestInFlight = true;
+  lastRequestTime = Date.now();
+  aiShowLoading();
+  // 开始生成：聊天框向上变长
+  aiPanel && aiPanel.classList.add('generating');
+
+  // 预先创建空的思考块 + AI 答案块
   aiRemoveLoading();
-  aiAddMessage('ai', result.content);
-  if (!result.error) {
-    aiChatHistory.push({ role: 'assistant', content: result.content });
+  const useThinking = aiIsThinkingOn();
+  let reasoningDiv = null, reasoningBody = null;
+  if (useThinking) {
+    reasoningDiv = document.createElement('div');
+    reasoningDiv.className = 'ai-msg reasoning collapsed';
+    const title = document.createElement('div');
+    title.className = 'reasoning-title';
+    title.textContent = '🧠 思考过程（点击折叠/展开）';
+    reasoningBody = document.createElement('div');
+    reasoningBody.className = 'reasoning-body';
+    reasoningBody.textContent = '思考中…';
+    reasoningDiv.appendChild(title);
+    reasoningDiv.appendChild(reasoningBody);
+    aiChatMessages.appendChild(reasoningDiv);
   }
+  const answerDiv = aiAddMessage('ai', '');
+  answerDiv.innerHTML = '<span class="ai-cursor">▌</span>';
+
+  let fullContent = '';
+  let fullReasoning = '';
+  const onDelta = ({ content, reasoning }) => {
+    if (content) {
+      fullContent += content;
+      // 增量渲染 markdown（带代码块用 innerHTML；纯文本用 textContent 更安全）
+      if (fullContent.includes('```')) {
+        answerDiv.innerHTML = aiFormatMarkdown(fullContent) + '<span class="ai-cursor">▌</span>';
+      } else {
+        // 转义后保留光标
+        const safe = fullContent.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        answerDiv.innerHTML = safe + '<span class="ai-cursor">▌</span>';
+      }
+      // chips 现在位于 messages 之前，滚到 scrollHeight 即可让 chip 滚出视野
+      answerDiv.parentElement.parentElement.scrollTop = answerDiv.parentElement.parentElement.scrollHeight;
+    }
+    if (reasoning && reasoningBody) {
+      fullReasoning += reasoning;
+      reasoningDiv.classList.remove('collapsed');
+      reasoningBody.textContent = fullReasoning;
+      // 思考中：温和滚动（保留底部 60px 让用户能看到 input）
+      const scrollEl = reasoningDiv.parentElement.parentElement;
+      const nearBottom = scrollEl.scrollHeight - scrollEl.clientHeight - scrollEl.scrollTop < 80;
+      if (nearBottom) {
+        scrollEl.scrollTop = scrollEl.scrollHeight;
+      }
+    }
+  };
+
+  // 发送前先截断历史，避免 token 爆炸
+  const sendHistory = trimHistory(aiChatHistory);
+  const result = await aiCallAPI(sendHistory, {
+    stream: true,
+    thinking: useThinking,
+    webSearch: aiIsWebSearchOn(),
+    onDelta
+  });
+
+  // 替换掉光标，输出最终内容
+  if (result.error) {
+    answerDiv.textContent = result.content;
+    // 失败时回滚 history（移除刚才 push 的 user），避免污染上下文
+    if (result.status === 429 || result.status === 401) {
+      aiChatHistory.pop(); // 移除 user
+      answerDiv.textContent = result.content + '\n（消息未保留到历史）';
+    }
+  } else {
+    answerDiv.innerHTML = aiFormatMarkdown(fullContent || result.content);
+    // 追加联网引用
+    const cites = result.webSearch || [];
+    if (cites.length > 0) {
+      const citeEl = document.createElement('div');
+      citeEl.className = 'ai-citations';
+      cites.slice(0, 5).forEach(c => {
+        const a = document.createElement('a');
+        a.className = 'ai-citation';
+        a.href = c.link || '#';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.title = c.title || c.link || '';
+        a.innerHTML = '🔗 ' + (c.title || c.link || '来源');
+        citeEl.appendChild(a);
+      });
+      answerDiv.appendChild(citeEl);
+    }
+  }
+  if (reasoningDiv) reasoningDiv.onclick = () => reasoningDiv.classList.toggle('collapsed');
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+  if (!result.error) {
+    aiChatHistory.push({ role: 'assistant', content: fullContent || result.content });
+  }
+  // 回答完成：滚到容器底部（chips 在 messages 之前，自动滚出）
+  requestAnimationFrame(() => {
+    const scroll = document.querySelector('.ai-chat-scroll');
+    if (scroll) scroll.scrollTop = scroll.scrollHeight;
+  });
+  // 生成完成：聊天框恢复原高度
+  aiPanel && aiPanel.classList.remove('generating');
+  aiRequestInFlight = false;
 }
 
 function aiSendPreset(text) {
-  const input = document.getElementById('aiChatInput');
-  input.value = text;
+  aiChatInput.value = text;
   aiSendChat();
 }
 
@@ -1664,17 +2185,14 @@ function handleAiChatKey(e) {
 }
 
 function aiLoadCurrentCode() {
-  const html = document.getElementById('htmlEditor').value;
-  const css = document.getElementById('cssEditor').value;
-  const js = document.getElementById('jsEditor').value;
-  const fullCode = `// HTML\n${html}\n\n// CSS\n${css}\n\n// JavaScript\n${js}`;
-  document.getElementById('aiReviewCode').value = fullCode;
+  const fullCode = `// HTML\n${htmlEditor.value}\n\n// CSS\n${cssEditor.value}\n\n// JavaScript\n${jsEditor.value}`;
+  aiReviewCode.value = fullCode;
 }
 
 async function aiReviewCodeAction() {
-  const code = document.getElementById('aiReviewCode').value.trim();
-  const resultBox = document.getElementById('aiReviewResult');
-  const applyBtn = document.getElementById('aiApplyReviewBtn');
+  const code = aiReviewCode.value.trim();
+  const resultBox = aiReviewResult;
+  const applyBtn = aiApplyReviewBtn;
   if (!code) {
     resultBox.textContent = '请先粘贴要监修的代码';
     return;
@@ -1693,6 +2211,7 @@ async function aiReviewCodeAction() {
   resultBox.classList.remove('loading');
   resultBox.classList.add('ready');
   resultBox.textContent = result.content;
+  resultBox.dataset.raw = result.content;
   if (!result.error) {
     try {
       const codeBlocks = result.content.match(/```[\s\S]*?```/g);
@@ -1704,26 +2223,35 @@ async function aiReviewCodeAction() {
 }
 
 function aiApplyReview() {
-  const resultBox = document.getElementById('aiReviewResult');
-  const text = resultBox.textContent;
-  const codeBlocks = text.match(/```(?:\w*)?\n([\s\S]*?)```/g);
+  const resultBox = $('aiReviewResult');
+  // textContent 会丢失 ``` 围栏信息；改读 innerHTML，从 <pre><code> 中提取并按 data-lang 判断
+  // 但 aiFormatMarkdown 没有给 code 标签加 data-lang；这里改用 data 来源（首次展示时记录原始 markdown）
+  // 简单方案：直接从原始 result.content 拿（我们让 AI Review 在保存原始文本时记录）
+  const raw = resultBox.dataset.raw || resultBox.textContent;
+  // 优先用带语言标签的反向引用正则提取
+  const codeBlocks = raw.match(/```(\w*)\n([\s\S]*?)```/g);
   if (!codeBlocks || codeBlocks.length === 0) {
     alert('没有可应用的代码建议');
     return;
   }
-  const htmlEd = document.getElementById('htmlEditor');
-  const cssEd = document.getElementById('cssEditor');
-  const jsEd = document.getElementById('jsEditor');
+  let lastEditor = null;
   for (const block of codeBlocks) {
-    const lang = block.match(/```(\w*)/);
-    const code = block.replace(/```\w*\n/, '').replace(/```$/, '').trim();
-    const langStr = lang ? lang[1].toLowerCase() : '';
-    if (langStr === 'html' || (code.includes('<html') || code.includes('<!DOCTYPE'))) {
-      htmlEd.value = code;
-    } else if (langStr === 'css' || (code.includes('{') && code.includes('}') && !code.includes('function'))) {
-      cssEd.value = code;
-    } else if (langStr === 'javascript' || langStr === 'js') {
-      jsEd.value = code;
+    const m = block.match(/^```(\w*)\n([\s\S]*?)```$/);
+    if (!m) continue;
+    const lang = (m[1] || '').toLowerCase();
+    const code = m[2].trim();
+    if (lang === 'html' || (!lang && (code.includes('<html') || code.includes('<!DOCTYPE')))) {
+      htmlEditor.value = code;
+      lastEditor = 'html';
+    } else if (lang === 'css' || (!lang && code.includes('{') && code.includes('}') && !code.includes('function') && !code.includes('=>'))) {
+      cssEditor.value = code;
+      lastEditor = 'css';
+    } else if (lang === 'javascript' || lang === 'js') {
+      jsEditor.value = code;
+      lastEditor = 'js';
+    } else if (!lastEditor) {
+      htmlEditor.value = code;
+      lastEditor = 'html';
     }
   }
   runCode();
@@ -1731,9 +2259,9 @@ function aiApplyReview() {
 }
 
 async function aiGenerateCode() {
-  const prompt = document.getElementById('aiGeneratePrompt').value.trim();
-  const resultBox = document.getElementById('aiGenerateResult');
-  const applyBtn = document.getElementById('aiGenerateResult').parentElement.querySelector('.ai-btn.secondary');
+  const prompt = aiGeneratePrompt.value.trim();
+  const resultBox = aiGenerateResult;
+  const applyBtn = resultBox.parentElement.querySelector('.ai-btn.secondary');
   if (!prompt) {
     resultBox.textContent = '请先描述你想实现的功能';
     return;
@@ -1752,21 +2280,22 @@ async function aiGenerateCode() {
   resultBox.classList.remove('loading');
   resultBox.classList.add('ready');
   resultBox.textContent = result.content;
+  resultBox.dataset.raw = result.content;
   if (!result.error) {
     applyBtn.style.display = 'flex';
   }
 }
 
 function aiApplyGenerated() {
-  const resultBox = document.getElementById('aiGenerateResult');
+  const resultBox = aiGenerateResult;
   const text = resultBox.textContent;
   const htmlMatch = text.match(/```html\n([\s\S]*?)```/);
   const cssMatch = text.match(/```css\n([\s\S]*?)```/);
   const jsMatch = text.match(/```javascript\n([\s\S]*?)```/) || text.match(/```js\n([\s\S]*?)```/);
 
-  if (htmlMatch) document.getElementById('htmlEditor').value = htmlMatch[1].trim();
-  if (cssMatch) document.getElementById('cssEditor').value = cssMatch[1].trim();
-  if (jsMatch) document.getElementById('jsEditor').value = jsMatch[1].trim();
+  if (htmlMatch) htmlEditor.value = htmlMatch[1].trim();
+  if (cssMatch) cssEditor.value = cssMatch[1].trim();
+  if (jsMatch) jsEditor.value = jsMatch[1].trim();
   if (!htmlMatch && !cssMatch && !jsMatch) {
     alert('未能解析出代码块，请手动复制');
     return;
