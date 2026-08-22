@@ -760,6 +760,15 @@ body {
   transition: background 0.2s;
 }
 .ai-retry-btn:hover { background: #4f46e5; }
+.ai-aborted-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  font-size: 11px;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  border-radius: 4px;
+}
 /* 复制/插入成功提示 */
 .ai-toast {
   position: fixed;
@@ -2369,9 +2378,20 @@ function aiRemoveLoading() {
 // ===== 请求去重 / 限流保护 =====
 // GLM 免费模型有 1 QPS 限制；连续点击会触发 429
 let aiRequestInFlight = false;
+let aiCurrentController = null; // 当前进行中的 AbortController，用于主动中断
 let aiRequestLockTimer = null;
 const AI_MIN_INTERVAL_MS = 1100; // 两次请求最小间隔（略大于 1s）
 let lastRequestTime = 0;
+
+// 主动中断当前 AI 请求（发送新消息时自动调用）
+function aiAbortCurrent() {
+  if (aiCurrentController) {
+    try { aiCurrentController.abort(); } catch (e) {}
+    aiCurrentController = null;
+  }
+  aiRequestInFlight = false;
+  aiPanel && aiPanel.classList.remove('generating');
+}
 
 // 把 429/5xx 转成更友好的提示
 function aiFriendlyError(status, err) {
@@ -2388,11 +2408,12 @@ async function aiCallAPI(messages, opts = {}) {
   const apiKey = (window.__PLAYGROUND_SECRETS__ && window.__PLAYGROUND_SECRETS__.apiKey()) || '';
   if (!apiKey) {
     return { error: true, content: '⚠️ AI服务暂未配置密钥，请联系管理员。' };
-  }
-  const useStream = opts.stream !== false;
+  }  const useStream = opts.stream !== false;
   const useWebSearch = !!opts.webSearch;
   const useThinking = opts.thinking !== false;
   const maxRetry = opts.maxRetry != null ? opts.maxRetry : 1; // 默认只重试 1 次
+  // 接受外部 signal（用于主动中断）
+  const externalSignal = opts.signal || null;
 
   const body = {
     model: AI_MODEL,
@@ -2410,13 +2431,18 @@ async function aiCallAPI(messages, opts = {}) {
   // 指数退避重试（仅对 429/5xx）
   for (let attempt = 0; attempt <= maxRetry; attempt++) {
     try {
+      // 如果外部 signal 已经 abort，直接返回
+      if (externalSignal && externalSignal.aborted) {
+        return { content: '', error: true, status: -1, aborted: true };
+      }
       const res = await fetch(AI_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + apiKey
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
+        signal: externalSignal || undefined
       });
       if (!res.ok) {
         // 429 或 5xx 才重试
@@ -2429,7 +2455,7 @@ async function aiCallAPI(messages, opts = {}) {
         return { content: aiFriendlyError(res.status, detail), error: true, status: res.status };
       }
       if (useStream) {
-        return await aiParseStream(res, opts.onDelta);
+        return await aiParseStream(res, opts.onDelta, externalSignal);
       } else {
         const data = await res.json();
         if (data.choices && data.choices[0]) {
@@ -2443,6 +2469,10 @@ async function aiCallAPI(messages, opts = {}) {
         return { content: 'AI 响应异常', error: true };
       }
     } catch (e) {
+      // 用户主动中断：不重试、不报错
+      if (e.name === 'AbortError' || (externalSignal && externalSignal.aborted)) {
+        return { content: '', error: true, status: -1, aborted: true };
+      }
       if (attempt < maxRetry) {
         await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
         continue;
@@ -2453,9 +2483,17 @@ async function aiCallAPI(messages, opts = {}) {
 }
 
 // 解析 SSE 流：逐 chunk 调用 onDelta
-async function aiParseStream(res, onDelta) {
+async function aiParseStream(res, onDelta, signal) {
   const reader = res.body && res.body.getReader();
   if (!reader) return { content: '流式响应不可用', error: true };
+  // 监听 abort，主动 cancel reader
+  const onAbort = () => {
+    try { reader.cancel(); } catch (e) {}
+  };
+  if (signal) {
+    if (signal.aborted) onAbort();
+    else signal.addEventListener('abort', onAbort, { once: true });
+  }
   const decoder = new TextDecoder('utf-8');
   let buffer = '';
   let fullContent = '';
@@ -2500,11 +2538,23 @@ function trimHistory(history) {
 }
 
 async function aiSendChat() {
-  // 请求锁：防止用户连点触发 429
+  // 如果有正在进行的请求，主动中断它（用户发新消息 = 主动取消上一次）
   if (aiRequestInFlight) {
-    console.warn('AI 请求正在进行中，请等待...');
-    return;
+    aiAbortCurrent();
+    // 标记上一次的 AI 答案块为"已中断"
+    const pending = aiChatMessages && aiChatMessages.querySelector('.ai-msg.ai.streaming, .ai-msg.ai:not(.user)');
+    if (pending) {
+      const last = aiChatMessages.lastElementChild;
+      while (last && !last.classList.contains('ai-msg')) last = last.previousElementSibling;
+      if (last) {
+        last.classList.add('aborted');
+        // 移除光标
+        const cursor = last.querySelector('.ai-cursor');
+        if (cursor) cursor.remove();
+      }
+    }
   }
+
   const interval = Date.now() - lastRequestTime;
   if (interval < AI_MIN_INTERVAL_MS) {
     const wait = AI_MIN_INTERVAL_MS - interval;
@@ -2590,37 +2640,57 @@ async function aiSendChat() {
 
   // 发送前先截断历史，避免 token 爆炸
   const sendHistory = trimHistory(aiChatHistory);
+  // 创建本轮的 AbortController，存到全局便于 abort
+  aiCurrentController = new AbortController();
   const result = await aiCallAPI(sendHistory, {
     stream: true,
     thinking: useThinking,
     webSearch: aiIsWebSearchOn(),
-    onDelta
+    onDelta,
+    signal: aiCurrentController.signal
   });
 
   // 替换掉光标，输出最终内容
   if (result.error) {
-    answerDiv.textContent = result.content;
-    // 失败时回滚 history（移除刚才 push 的 user），避免污染上下文
-    if (result.status === 429 || result.status === 401) {
-      aiChatHistory.pop(); // 移除 user
-      answerDiv.textContent = result.content + '\n（消息未保留到历史）';
+    // 用户主动中断：保留已生成的内容，不报错
+    if (result.aborted) {
+      if (fullContent) {
+        answerDiv.innerHTML = aiFormatMarkdown(fullContent) + '<span class="ai-aborted-tag">⏹ 已中断</span>';
+      } else {
+        answerDiv.innerHTML = '<span class="ai-aborted-tag">⏹ 已中断</span>';
+        // 中断且无内容：移除答案块，移除对应的 user 消息和 history
+        answerDiv.remove();
+        if (aiChatHistory.length > 0 && aiChatHistory[aiChatHistory.length - 1].role === 'user') {
+          aiChatHistory.pop();
+          // 同步移除消息流里的 user 块
+          const userMsg = aiChatMessages && aiChatMessages.querySelector('.ai-msg.user:last-of-type');
+          if (userMsg) userMsg.remove();
+        }
+      }
+    } else {
+      answerDiv.textContent = result.content;
+      // 失败时回滚 history（移除刚才 push 的 user），避免污染上下文
+      if (result.status === 429 || result.status === 401) {
+        aiChatHistory.pop(); // 移除 user
+        answerDiv.textContent = result.content + '\n（消息未保留到历史）';
+      }
+      // 错误时显示「重试」按钮
+      const retryBtn = document.createElement('button');
+      retryBtn.className = 'ai-retry-btn';
+      retryBtn.innerHTML = '🔄 重试';
+      retryBtn.onclick = () => {
+        // 移除错误消息和重试按钮
+        answerDiv.remove();
+        retryBtn.remove();
+        // 重新发送（弹出用户刚发的那条）
+        const lastUser = [...aiChatHistory].reverse().find(m => m.role === 'user');
+        if (lastUser) aiChatInput.value = lastUser.content;
+        // 把 user 重新 push 一次（因为 history 已被弹出）
+        aiSendChat();
+      };
+      answerDiv.appendChild(document.createElement('br'));
+      answerDiv.appendChild(retryBtn);
     }
-    // 错误时显示「重试」按钮
-    const retryBtn = document.createElement('button');
-    retryBtn.className = 'ai-retry-btn';
-    retryBtn.innerHTML = '🔄 重试';
-    retryBtn.onclick = () => {
-      // 移除错误消息和重试按钮
-      answerDiv.remove();
-      retryBtn.remove();
-      // 重新发送（弹出用户刚发的那条）
-      const lastUser = [...aiChatHistory].reverse().find(m => m.role === 'user');
-      if (lastUser) aiChatInput.value = lastUser.content;
-      // 把 user 重新 push 一次（因为 history 已被弹出）
-      aiSendChat();
-    };
-    answerDiv.appendChild(document.createElement('br'));
-    answerDiv.appendChild(retryBtn);
   } else {
     answerDiv.innerHTML = aiFormatMarkdown(fullContent || result.content);
     // 追加联网引用
@@ -2645,6 +2715,10 @@ async function aiSendChat() {
   if (typeof lucide !== 'undefined') lucide.createIcons();
   if (!result.error) {
     aiChatHistory.push({ role: 'assistant', content: fullContent || result.content });
+    aiSaveHistory();
+  } else if (result.aborted && fullContent) {
+    // 中断但有部分内容：把已生成的内容作为 assistant 消息保留到 history
+    aiChatHistory.push({ role: 'assistant', content: fullContent + '\n[用户中断]' });
     aiSaveHistory();
   }
   // 回答完成：滚到容器底部（chips 在 messages 之前，自动滚出）
